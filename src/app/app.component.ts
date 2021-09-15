@@ -25,4 +25,9 @@ export class AppComponent {
       console.log('Run in browser');
     }
   }
+
+  openSetting() {
+    console.log('open config page dialog');
+    // todo click setting should open setting dialog
+  }
 }
