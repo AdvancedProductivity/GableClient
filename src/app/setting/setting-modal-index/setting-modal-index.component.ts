@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {ElectronService} from '../../core/services';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'app-setting-modal-index',
@@ -7,7 +9,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SettingModalIndexComponent implements OnInit {
 
-  constructor() { }
+  constructor(private translate: TranslateService) {
+  }
 
   ngOnInit(): void {
   }

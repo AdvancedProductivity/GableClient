@@ -10,6 +10,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {BrowserModule} from '@angular/platform-browser';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
 // import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -24,6 +25,7 @@ import {NzDrawerModule} from 'ng-zorro-antd/drawer';
     NzModalModule,
     NzTabsModule,
     NzIconModule,
+    NzRadioModule,
     NzLayoutModule,
     NzGridModule,
     NzButtonModule,
@@ -38,6 +40,7 @@ import {NzDrawerModule} from 'ng-zorro-antd/drawer';
     NzModalModule,
     NzIconModule,
     NzTabsModule,
+    NzRadioModule,
     NzGridModule,
     // NzCardModule,
     NzButtonModule,

@@ -1,0 +1,6 @@
+<nz-radio-group [(ngModel)]="currentLanguage" nzButtonStyle="solid">
+  <label *ngFor="let lang of langs" nz-radio-button nzValue="{{lang}}">{{ 'PAGES.COMMON.LANGS.' + lang | translate }}</label>
+</nz-radio-group>
+<div style="margin-top: 60px">
+  <button nz-button nzType="primary" (click)="doModify()">{{ 'PAGES.COMMON.CONFIG_MODIFY' | translate }}</button>
+</div>

@@ -20,7 +20,13 @@ export class AppComponent {
     private electronService: ElectronService,
     private translate: TranslateService
   ) {
-    this.translate.setDefaultLang('en');
+    let lang = localStorage.getItem('lang');
+    if (lang === null || lang === undefined || lang.length === 0) {
+      lang = 'en';
+      localStorage.setItem('lang', lang);
+    }
+    this.translate.setDefaultLang(lang);
+    this.translate.addLangs(['en', 'zh']);
     console.log('APP_CONFIG', APP_CONFIG);
 
     if (electronService.isElectron) {
