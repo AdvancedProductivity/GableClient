@@ -1,4 +1,4 @@
-import {Component, ViewContainerRef} from '@angular/core';
+import {Component, OnInit, ViewContainerRef} from '@angular/core';
 import { ElectronService } from './core/services';
 import { TranslateService } from '@ngx-translate/core';
 import { APP_CONFIG } from '../environments/environment';
@@ -6,18 +6,21 @@ import {NzModalService} from 'ng-zorro-antd/modal';
 import {SettingModalIndexComponent} from './setting/setting-modal-index/setting-modal-index.component';
 import {NzDrawerService} from 'ng-zorro-antd/drawer';
 import {PlayGroundDrawerIndexComponent} from './play-ground/play-ground-drawer-index/play-ground-drawer-index.component';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
   constructor(
     private modal: NzModalService,
     private drawerService: NzDrawerService,
     private viewContainerRef: ViewContainerRef,
     private electronService: ElectronService,
+    private route: ActivatedRoute,
+    private router: Router,
     private translate: TranslateService
   ) {
     let lang = localStorage.getItem('lang');
@@ -37,6 +40,12 @@ export class AppComponent {
     } else {
       console.log('Run in browser');
     }
+  }
+
+  ngOnInit(): void {
+    console.log('zzq see', this.route.snapshot.url);
+    console.log('zzq see',     this.router.url
+    );
   }
 
   async openSetting() {

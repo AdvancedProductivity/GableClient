@@ -15,6 +15,12 @@
     "PLAY_GROUND": {
       "TITLE": "Play Ground"
     },
+    "UNIT": {
+      "TITLE": "Unit Test"
+    },
+    "INTEGRATE": {
+      "TITLE": "Integrate Test"
+    },
     "COMMON": {
       "CONFIG_MODIFY": "Confirm",
       "LANGS": {

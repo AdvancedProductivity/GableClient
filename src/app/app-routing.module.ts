@@ -2,12 +2,18 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { PageNotFoundComponent } from './shared/components';
 
-import { HomeRoutingModule } from './home/home-routing.module';
+import {IntegrateRoutingModule} from './integrate/integrate-routing.module';
+import {UnitRoutingModule} from './unit/unit-routing.module';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'integrate',
+    pathMatch: 'full'
+  },
+  {
+    path: 'unit',
+    redirectTo: 'unit',
     pathMatch: 'full'
   },
   {
@@ -18,8 +24,10 @@ const routes: Routes = [
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, {relativeLinkResolution: 'legacy'}),
-    HomeRoutingModule],
+    RouterModule.forRoot(routes, {relativeLinkResolution: 'legacy', useHash: true})
+    , IntegrateRoutingModule
+    , UnitRoutingModule
+  ],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

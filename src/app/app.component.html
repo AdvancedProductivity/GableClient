@@ -1,13 +1,13 @@
 <nz-layout style="height: 100%">
   <nz-sider [nzWidth]="'100px'">
     <div style="background: #ECECEC;padding-top:30px;height: 100%;overflow-y: auto">
-      <div style="text-align: center;margin-bottom:  45px;cursor: pointer">
+      <div style="text-align: center;margin-bottom:  45px;cursor: pointer" routerLink="/unit" routerLinkActive="active">
         <i style="font-size: 22px" nz-icon nzType="bug" nzTheme="twotone" [nzTwotoneColor]="'#ff9900'"></i>
-        <h4 style="margin-top: 5px">Module 1</h4>
+        <h4 style="margin-top: 5px">{{ 'PAGES.UNIT.TITLE' | translate }}</h4>
       </div>
-      <div style="text-align: center;margin-bottom:  45px;cursor: pointer">
+      <div style="text-align: center;margin-bottom:  45px;cursor: pointer"  routerLink="/integrate" routerLinkActive="active">
         <i style="font-size: 22px" nz-icon nzType="experiment" nzTheme="twotone" [nzTwotoneColor]="'#ff9900'"></i>
-        <h4 style="margin-top: 5px">Module 2</h4>
+        <h4 style="margin-top: 5px">{{ 'PAGES.INTEGRATE.TITLE' | translate }}</h4>
       </div>
       <div style="text-align: center;margin-bottom:  45px;cursor: pointer" (click)="openPlayGround()">
         <i style="font-size: 22px" nz-icon nzType="code" nzTheme="twotone" [nzTwotoneColor]="'#ff9900'"></i>

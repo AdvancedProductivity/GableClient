@@ -11,11 +11,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
-import { HomeModule } from './home/home.module';
 
 import { AppComponent } from './app.component';
 import {SettingModule} from './setting/setting.module';
 import {PlayGroundModule} from './play-ground/play-ground.module';
+import {UnitModule} from './unit/unit.module';
+import {IntegrateModule} from './integrate/integrate.module';
 
 // AoT requires an exported function for factories
 const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>  new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -28,7 +29,8 @@ const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>  new Transl
     HttpClientModule,
     CoreModule,
     SharedModule,
-    HomeModule,
+    UnitModule,
+    IntegrateModule,
     SettingModule,
     PlayGroundModule,
     AppRoutingModule,
