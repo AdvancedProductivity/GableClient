@@ -9,6 +9,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {BrowserModule} from '@angular/platform-browser';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
 // import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -20,6 +21,7 @@ import {NzModalModule} from 'ng-zorro-antd/modal';
     TranslateModule,
     // NzCardModule,
     NzModalModule,
+    NzTabsModule,
     NzIconModule,
     NzLayoutModule,
     NzGridModule,
@@ -32,6 +34,7 @@ import {NzModalModule} from 'ng-zorro-antd/modal';
     NzLayoutModule,
     NzModalModule,
     NzIconModule,
+    NzTabsModule,
     NzGridModule,
     // NzCardModule,
     NzButtonModule,
