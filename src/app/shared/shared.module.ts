@@ -14,6 +14,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import {NzModalModule} from 'ng-zorro-antd/modal';
+import {NzDrawerModule} from 'ng-zorro-antd/drawer';
 
 @NgModule({
   declarations: [PageNotFoundComponent, WebviewDirective],
@@ -27,11 +28,13 @@ import {NzModalModule} from 'ng-zorro-antd/modal';
     NzGridModule,
     NzButtonModule,
     ReactiveFormsModule,
+    NzDrawerModule,
     BrowserModule,
     BrowserAnimationsModule,
     FormsModule],
   exports: [TranslateModule, WebviewDirective,
     NzLayoutModule,
+    NzDrawerModule,
     NzModalModule,
     NzIconModule,
     NzTabsModule,
