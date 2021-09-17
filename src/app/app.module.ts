@@ -17,6 +17,8 @@ import {SettingModule} from './setting/setting.module';
 import {PlayGroundModule} from './play-ground/play-ground.module';
 import {UnitModule} from './unit/unit.module';
 import {IntegrateModule} from './integrate/integrate.module';
+import {RouteReuseStrategy} from '@angular/router';
+import {AppRoutingCache} from './AppRoutingCache';
 
 // AoT requires an exported function for factories
 const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>  new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -42,7 +44,7 @@ const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader =>  new Transl
       }
     })
   ],
-  providers: [],
+  providers: [{ provide: RouteReuseStrategy, useClass: AppRoutingCache }],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

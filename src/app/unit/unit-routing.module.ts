@@ -7,6 +7,10 @@ const routes: Routes = [
   {
     path: 'unit',
     component: UnitIndexComponent
+  },
+  {
+    path: 'unit/:id',
+    component: UnitIndexComponent
   }
 ];
 

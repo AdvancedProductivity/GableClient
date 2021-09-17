@@ -14,6 +14,7 @@ import {ActivatedRoute, Router} from '@angular/router';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit{
+  isOnUnit = true;
   constructor(
     private modal: NzModalService,
     private drawerService: NzDrawerService,
@@ -43,13 +44,9 @@ export class AppComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    console.log('zzq see', this.route.snapshot.url);
-    console.log('zzq see',     this.router.url
-    );
   }
 
   async openSetting() {
-    console.log('open config page dialog');
     const settingTip: string = await this.getTrans('PAGES.SETTING.TITLE');
     this.modal.create({
       nzTitle: settingTip,
@@ -70,6 +67,16 @@ export class AppComponent implements OnInit{
       nzWidth: '90%',
       nzContent: PlayGroundDrawerIndexComponent
     });
+  }
+
+  gotoUnit() {
+    const v = localStorage.getItem('selectTabIndex');
+    if (v !== undefined && v != null) {
+      this.router.navigate(['unit'], {queryParams: {tab: v}});
+    }else {
+      this.router.navigate(['unit']);
+    }
+    this.isOnUnit = true;
   }
 
   private async getTrans(key: string) {

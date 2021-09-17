@@ -1,1 +1,60 @@
-<p>unit-index works!</p>
+<div>
+  <nz-layout>
+    <nz-sider>
+      <ul nz-menu nzMode="inline">
+        <li nz-submenu nzTitle="Navigation One" nzIcon="mail" >
+          <ul>
+            <li nz-menu-group nzTitle="Item 1">
+              <ul>
+                <li [nzSelected]="urls.length> 0 && 'tab1'==urls[index].lable" (click)="addUrl('tab1', 'Content 1')" nz-menu-item [routerLink]="['.']"  [queryParams]="{ tab: 'tab1'}">
+                  Content 1
+                </li>
+                <li [nzSelected]="urls.length> 0 && 'tab2'==urls[index].lable" (click)="addUrl('tab2', 'Content 2')" nz-menu-item [routerLink]="['.']"  [queryParams]="{ tab: 'tab2'}">
+                  Content 2
+                </li>
+                <li [nzSelected]="urls.length> 0 && 'tab3'==urls[index].lable" (click)="addUrl('tab3', 'Content 3')" nz-menu-item [routerLink]="['.']"  [queryParams]="{ tab: 'tab3'}">
+                  Content 3
+                </li>
+                <li [nzSelected]="urls.length> 0 && 'tab4'==urls[index].lable" (click)="addUrl('tab4', 'Content 4')" nz-menu-item [routerLink]="['.']"  [queryParams]="{ tab: 'tab4'}">
+                  Content 4
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li nz-submenu nzTitle="Navigation Two" nzIcon="file" >
+          <ul>
+            <li [nzSelected]="urls.length> 0 && 'tab5'==urls[index].lable" (click)="addUrl('tab5', 'Content 5')" nz-menu-item [routerLink]="['.']"  [queryParams]="{ tab: 'tab5'}">
+              Content 5
+            </li>
+            <li [nzSelected]="urls.length> 0 && 'tab6'==urls[index].lable" (click)="addUrl('tab6', 'Content 6')" nz-menu-item [routerLink]="['.']"  [queryParams]="{ tab: 'tab6'}">
+              Content 6
+            </li>
+            <li [nzSelected]="urls.length> 0 && 'tab7'==urls[index].lable" (click)="addUrl('tab7', 'Content 7')" nz-menu-item [routerLink]="['.']"  [queryParams]="{ tab: 'tab7'}">
+              Content 7
+            </li>
+            <li [nzSelected]="urls.length> 0 && 'tab8'==urls[index].lable" (click)="addUrl('tab8', 'Content 8')" nz-menu-item [routerLink]="['.']"  [queryParams]="{ tab: 'tab8'}">
+              Content 8
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </nz-sider>
+    <nz-content>
+      <nz-tabset (nzSelectedIndexChange)="changeSelectTabs($event)" [(nzSelectedIndex)]="index" nzType="editable-card" nzLinkRouter>
+        <nz-tab *ngFor="let url of urls;let i = index" >
+          <a *nzTabLink (contextmenu)="contextMenu($event, menu)" [style]="{color: index==i?'green': '#1890ff'}" style="width: 100%;height: 100%"
+             nz-tab-link [routerLink]="['.']" [queryParams]="{ tab: url.lable }" queryParamsHandling="merge">
+            {{url.lable}}
+          </a>
+          this is {{url.lable}}
+          <nz-dropdown-menu #menu="nzDropdownMenu">
+            <ul nz-menu>
+              <li nz-menu-item (click)="deleteTab(i)">close</li>
+            </ul>
+          </nz-dropdown-menu>
+        </nz-tab>
+      </nz-tabset>
+    </nz-content>
+  </nz-layout>
+</div>

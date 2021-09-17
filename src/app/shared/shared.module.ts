@@ -11,6 +11,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 // import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -32,11 +33,13 @@ import {NzDrawerModule} from 'ng-zorro-antd/drawer';
     ReactiveFormsModule,
     NzDrawerModule,
     BrowserModule,
+    NzDropDownModule,
     BrowserAnimationsModule,
     FormsModule],
   exports: [TranslateModule, WebviewDirective,
     NzLayoutModule,
     NzDrawerModule,
+    NzDropDownModule,
     NzModalModule,
     NzIconModule,
     NzTabsModule,
