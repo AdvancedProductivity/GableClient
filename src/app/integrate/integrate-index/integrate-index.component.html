@@ -4,3 +4,6 @@
 <div style="padding: 30px">
   <button nz-button nzType="primary" (click)="calculation()">calculate</button>
 </div>
+<div style="width: 600px;height: 600px">
+  <ngx-monaco-editor style="z-index: 2" [options]="textConfig" [(ngModel)]="code" ></ngx-monaco-editor>
+</div>

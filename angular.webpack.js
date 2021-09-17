@@ -1,6 +1,7 @@
 /**
  * Custom angular webpack configuration
  */
+const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 
 module.exports = (config, options) => {
     config.target = 'electron-renderer';
@@ -20,5 +21,9 @@ module.exports = (config, options) => {
         }
     }
 
+    config.plugins.push(new MonacoWebpackPlugin({
+      languages: ['css', 'html', 'javascript', 'sql', 'typescript'],
+      features: ['contextmenu', 'clipboard', 'find'],
+    }));
     return config;
 }

@@ -8,12 +8,12 @@ import {UnitRoutingModule} from './unit/unit-routing.module';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'integrate',
+    redirectTo: 'unit',
     pathMatch: 'full'
   },
   {
-    path: 'unit',
-    redirectTo: 'unit',
+    path: 'integrate',
+    redirectTo: 'integrate',
     pathMatch: 'full'
   },
   {

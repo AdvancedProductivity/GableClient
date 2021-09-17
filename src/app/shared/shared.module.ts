@@ -17,6 +17,7 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import {NzModalModule} from 'ng-zorro-antd/modal';
 import {NzDrawerModule} from 'ng-zorro-antd/drawer';
+import {MonacoEditorModule} from '@materia-ui/ngx-monaco-editor';
 
 @NgModule({
   declarations: [PageNotFoundComponent, WebviewDirective],
@@ -29,6 +30,7 @@ import {NzDrawerModule} from 'ng-zorro-antd/drawer';
     NzRadioModule,
     NzLayoutModule,
     NzGridModule,
+    MonacoEditorModule,
     NzButtonModule,
     ReactiveFormsModule,
     NzDrawerModule,
@@ -42,6 +44,7 @@ import {NzDrawerModule} from 'ng-zorro-antd/drawer';
     NzDropDownModule,
     NzModalModule,
     NzIconModule,
+    MonacoEditorModule,
     NzTabsModule,
     NzRadioModule,
     NzGridModule,
