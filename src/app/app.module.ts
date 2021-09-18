@@ -1,7 +1,7 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {HttpClientModule, HttpClient} from '@angular/common/http';
+import {HttpClientModule, HttpClient, HTTP_INTERCEPTORS} from '@angular/common/http';
 import {CoreModule} from './core/core.module';
 import {SharedModule} from './shared/shared.module';
 
@@ -18,8 +18,9 @@ import {PlayGroundModule} from './play-ground/play-ground.module';
 import {UnitModule} from './unit/unit.module';
 import {IntegrateModule} from './integrate/integrate.module';
 import {RouteReuseStrategy} from '@angular/router';
-import {AppRoutingCache} from './AppRoutingCache';
+import {AppRoutingCache} from './core/AppRoutingCache';
 import {MONACO_PATH} from '@materia-ui/ngx-monaco-editor';
+import {HttpI18nInterceptor} from './core/HttpI18nInterceptor';
 
 // AoT requires an exported function for factories
 const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader => new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -45,10 +46,16 @@ const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader => new Transla
       }
     })
   ],
-  providers: [{provide: RouteReuseStrategy, useClass: AppRoutingCache}, {
-    provide: MONACO_PATH,
-    useValue: 'https://unpkg.com/monaco-editor@0.25.2/min/vs'
-  }],
+  providers: [{provide: RouteReuseStrategy, useClass: AppRoutingCache}
+    , {
+      provide: MONACO_PATH,
+      useValue: 'https://unpkg.com/monaco-editor@0.25.2/min/vs'
+    }
+    , {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpI18nInterceptor, multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
