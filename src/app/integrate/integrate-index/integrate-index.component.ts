@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
+import {GableBackendService} from "../../core/services/gable-backend.service";
 
 @Component({
   selector: 'app-integrate-index',
@@ -17,7 +18,8 @@ export class SomeComponent {}`;
     theme: 'vs-light', language: 'typescript', fontSize: 14, glance: false, minimap: {enabled: false},
     lineDecorationsWidth: 1, readOnly: false
   };
-  constructor(private http: HttpClient) { }
+  lang = 'unGet';
+  constructor(private http: HttpClient, private gableBackend: GableBackendService) { }
 
   ngOnInit(): void {
   }
@@ -30,4 +32,9 @@ export class SomeComponent {}`;
   }
 
 
+  getLang() {
+    this.gableBackend.getBackendLanguage().subscribe((res: string) => {
+      this.lang = res;
+    });
+  }
 }
