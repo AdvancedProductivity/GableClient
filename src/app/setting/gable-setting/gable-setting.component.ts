@@ -31,9 +31,15 @@ export class GableSettingComponent implements OnInit {
     try {
       const config = JSON.parse(this.code);
       this.service.updateGableConfig(config).subscribe((response: any) => {
-        this.transService.get('MODIFY_SUCCESS').subscribe((str) => {
-          this.messageService.success(str);
-        });
+        if (response.result) {
+          this.transService.get('MODIFY_SUCCESS').subscribe((str) => {
+            this.messageService.success(str);
+          });
+        }else {
+          this.transService.get('MODIFY_ERROR').subscribe((str) => {
+            this.messageService.success(str + ' ' + response.message, {nzDuration: 3500});
+          });
+        }
       }, error => {
         this.transService.get('MODIFY_ERROR').subscribe((str) => {
           this.messageService.error(str);
