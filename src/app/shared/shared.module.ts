@@ -12,6 +12,7 @@ import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzMessageModule } from 'ng-zorro-antd/message';
 // import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -30,6 +31,7 @@ import {MonacoEditorModule} from '@materia-ui/ngx-monaco-editor';
     NzRadioModule,
     NzLayoutModule,
     NzGridModule,
+    NzMessageModule,
     MonacoEditorModule,
     NzButtonModule,
     ReactiveFormsModule,
@@ -44,6 +46,7 @@ import {MonacoEditorModule} from '@materia-ui/ngx-monaco-editor';
     NzDropDownModule,
     NzModalModule,
     NzIconModule,
+    NzMessageModule,
     MonacoEditorModule,
     NzTabsModule,
     NzRadioModule,

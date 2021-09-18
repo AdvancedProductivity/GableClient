@@ -10,7 +10,8 @@
     },
     "SETTING": {
       "TITLE": "Setting",
-      "LANGUAGE": "language"
+      "LANGUAGE": "language",
+      "GABLE_CONFIG": "Gable Config"
     },
     "PLAY_GROUND": {
       "TITLE": "Play Ground"
@@ -28,5 +29,8 @@
         "zh-CN": "中文"
       }
     }
-  }
+  },
+  "MODIFY_SUCCESS": "modify success",
+  "MODIFY_ERROR": "modify failed",
+  "INVALID_JSON_STR": "the json string is invalid"
 }
