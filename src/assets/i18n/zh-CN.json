@@ -10,7 +10,8 @@
     },
     "SETTING": {
       "TITLE": "设置",
-      "LANGUAGE": "语言"
+      "LANGUAGE": "语言",
+      "GABLE_CONFIG": "服务端设置"
     },
     "PLAY_GROUND": {
       "TITLE": "演练场"
@@ -24,9 +25,12 @@
     "COMMON": {
       "CONFIG_MODIFY": "确认",
       "LANGS": {
-        "en_US": "English",
-        "zh_CN": "中文"
+        "en-US": "English",
+        "zh-CN": "中文"
       }
     }
-  }
+  },
+  "MODIFY_SUCCESS": "修改成功",
+  "MODIFY_ERROR": "修改失败",
+  "INVALID_JSON_STR": "json字符串不合法"
 }

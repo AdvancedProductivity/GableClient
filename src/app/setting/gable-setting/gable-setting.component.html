@@ -1,0 +1,8 @@
+<div style="height: 305px;background-color: blue;width: 100%">
+  <ngx-monaco-editor style="z-index: 2" [options]="config" [(ngModel)]="code" ></ngx-monaco-editor>
+</div>
+<div>
+  <button nz-button nzType="primary" (click)="save()">
+    {{ 'PAGES.COMMON.CONFIG_MODIFY' | translate }}
+  </button>
+</div>
