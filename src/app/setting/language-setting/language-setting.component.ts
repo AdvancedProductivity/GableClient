@@ -9,8 +9,8 @@ import {NzModalRef} from 'ng-zorro-antd/modal';
   ]
 })
 export class LanguageSettingComponent implements OnInit {
-  currentLanguage = 'en';
-  originLanguage = 'en';
+  currentLanguage = 'en_US';
+  originLanguage = 'en_US';
   langs: string[] = [];
   constructor(private translate: TranslateService,
               private modal: NzModalRef) { }

@@ -26,11 +26,17 @@ export class AppComponent implements OnInit{
   ) {
     let lang = localStorage.getItem('lang');
     if (lang === null || lang === undefined || lang.length === 0) {
-      lang = 'en';
+      lang = 'en_US';
       localStorage.setItem('lang', lang);
+    }else {
+      // judge the stored i18n key is support
+      if (lang !== 'en_US' && lang !== 'zh_CN') {
+        lang = 'en_US';
+        localStorage.setItem('lang', lang);
+      }
     }
     this.translate.setDefaultLang(lang);
-    this.translate.addLangs(['en', 'zh']);
+    this.translate.addLangs(['en_US', 'zh_CN']);
     console.log('APP_CONFIG', APP_CONFIG);
 
     if (electronService.isElectron) {

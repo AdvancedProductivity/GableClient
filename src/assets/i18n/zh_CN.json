@@ -9,23 +9,23 @@
       "BACK_TO_HOME": "Back to Home"
     },
     "SETTING": {
-      "TITLE": "Setting",
-      "LANGUAGE": "language"
+      "TITLE": "设置",
+      "LANGUAGE": "语言"
     },
     "PLAY_GROUND": {
-      "TITLE": "Play Ground"
+      "TITLE": "演练场"
     },
     "UNIT": {
-      "TITLE": "Unit Test"
+      "TITLE": "单元测试"
     },
     "INTEGRATE": {
-      "TITLE": "Integrate Test"
+      "TITLE": "集成测试"
     },
     "COMMON": {
-      "CONFIG_MODIFY": "Confirm",
+      "CONFIG_MODIFY": "确认",
       "LANGS": {
-        "en": "English",
-        "zh": "中文"
+        "en_US": "English",
+        "zh_CN": "中文"
       }
     }
   }
