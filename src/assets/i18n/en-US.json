@@ -14,7 +14,8 @@
       "GABLE_CONFIG": "Gable Config"
     },
     "PLAY_GROUND": {
-      "TITLE": "Play Ground"
+      "TITLE": "Play Ground",
+      "SAMPLE_GROOVY": "Groovy Demo Code"
     },
     "UNIT": {
       "TITLE": "Unit Test"
@@ -30,6 +31,8 @@
       }
     }
   },
+  "RUN": "run",
+  "SHOW_RESULT": "show result",
   "MODIFY_SUCCESS": "modify success",
   "MODIFY_ERROR": "modify failed",
   "INVALID_JSON_STR": "the json string is invalid"

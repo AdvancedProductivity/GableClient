@@ -14,7 +14,8 @@
       "GABLE_CONFIG": "服务端设置"
     },
     "PLAY_GROUND": {
-      "TITLE": "演练场"
+      "TITLE": "演练场",
+      "SAMPLE_GROOVY": "Groovy Demo代码"
     },
     "UNIT": {
       "TITLE": "单元测试"
@@ -30,6 +31,8 @@
       }
     }
   },
+  "RUN": "运行",
+  "SHOW_RESULT": "查看结果",
   "MODIFY_SUCCESS": "修改成功",
   "MODIFY_ERROR": "修改失败",
   "INVALID_JSON_STR": "json字符串不合法"

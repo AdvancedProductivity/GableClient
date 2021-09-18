@@ -22,4 +22,14 @@ export class GableBackendService {
   public updateGableConfig(config: any): Observable<any> {
     return this.httpClient.post('api/GableConfig', config);
   }
+
+  public getSampleGroovyCode(): Observable<string> {
+    return this.httpClient.get('/api/SampleCode', {
+      responseType: 'text'
+    });
+  }
+
+  public runGroovySampleCode(codeContent: string): Observable<any> {
+    return this.httpClient.post('/api/SampleCode', codeContent);
+  }
 }

@@ -22,7 +22,7 @@ module.exports = (config, options) => {
     }
 
     config.plugins.push(new MonacoWebpackPlugin({
-      languages: ['css', 'html', 'javascript', 'sql', 'typescript'],
+      languages: ['css', 'html', 'javascript', 'sql', 'typescript', 'groovy'],
       features: ['contextmenu', 'clipboard', 'find'],
     }));
     return config;
