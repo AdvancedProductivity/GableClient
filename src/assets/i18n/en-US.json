@@ -11,6 +11,7 @@
     "SETTING": {
       "TITLE": "Setting",
       "LANGUAGE": "language",
+      "HOST_SETTING": "Host",
       "GABLE_CONFIG": "Gable Config"
     },
     "PLAY_GROUND": {
@@ -30,6 +31,9 @@
         "zh-CN": "中文"
       }
     }
+  },
+  "TIPS": {
+    "INPUT_HOST": "Please enter gable backend api host"
   },
   "RUN": "run",
   "SHOW_RESULT": "show result",

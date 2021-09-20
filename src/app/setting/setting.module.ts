@@ -4,12 +4,14 @@ import { SettingModalIndexComponent } from './setting-modal-index/setting-modal-
 import {SharedModule} from '../shared/shared.module';
 import { LanguageSettingComponent } from './language-setting/language-setting.component';
 import { GableSettingComponent } from '../setting/gable-setting/gable-setting.component';
+import { HostSettingComponent } from './host-setting/host-setting.component';
 
 @NgModule({
   declarations: [
     SettingModalIndexComponent,
     LanguageSettingComponent,
-    GableSettingComponent
+    GableSettingComponent,
+    HostSettingComponent
   ],
   imports: [
     CommonModule,

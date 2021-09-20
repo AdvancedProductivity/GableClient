@@ -1,0 +1,32 @@
+import { Component, OnInit } from '@angular/core';
+import {GableBackendService} from "../../core/services/gable-backend.service";
+import {ElectronService} from "../../core/services";
+import {main} from "ts-node/dist/bin";
+
+@Component({
+  selector: 'app-host-setting',
+  templateUrl: './host-setting.component.html',
+  styles: [
+  ]
+})
+export class HostSettingComponent implements OnInit {
+  host = '';
+  constructor(private gableBackendService: GableBackendService,
+              private electronService: ElectronService) { }
+
+  ngOnInit(): void {
+    this.host = this.gableBackendService.getServer();
+  }
+
+  save() {
+    const b = this.gableBackendService.setServer(this.host);
+    if (b) {
+      if (this.electronService.isElectron) {
+        // todo electron reload
+        location.reload();
+      } else {
+        location.reload();
+      }
+    }
+  }
+}

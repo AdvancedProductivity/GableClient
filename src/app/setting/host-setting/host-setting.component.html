@@ -1,0 +1,8 @@
+<nz-input-group nzSearch nzSize="large" [nzAddOnAfter]="suffixButton">
+  <input type="text" [(ngModel)]="host" nz-input placeholder="{{ 'TIPS.INPUT_HOST' | translate }}" />
+</nz-input-group>
+<ng-template #suffixButton>
+  <button (click)="save()" nz-button nzType="primary" nzSize="large">
+    {{ 'PAGES.COMMON.CONFIG_MODIFY' | translate }}
+  </button>
+</ng-template>

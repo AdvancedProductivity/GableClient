@@ -11,6 +11,7 @@
     "SETTING": {
       "TITLE": "设置",
       "LANGUAGE": "语言",
+      "HOST_SETTING": "主机地址",
       "GABLE_CONFIG": "服务端设置"
     },
     "PLAY_GROUND": {
@@ -30,6 +31,9 @@
         "zh-CN": "中文"
       }
     }
+  },
+  "TIPS": {
+    "INPUT_HOST": "请输入向Gable服务发送api请求的地址"
   },
   "RUN": "运行",
   "SHOW_RESULT": "查看结果",
