@@ -49,7 +49,7 @@ export class GableBackendService {
   }
 
   public getSampleGroovyCode(): Observable<string> {
-    return this.httpClient.get(this.prefix + '/api/SampleCode', {
+    return this.httpClient.get(this.prefix + 'api/SampleCode', {
       responseType: 'text'
     });
   }
