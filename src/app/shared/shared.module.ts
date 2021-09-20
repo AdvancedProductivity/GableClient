@@ -13,6 +13,9 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzMessageModule } from 'ng-zorro-antd/message';
+import { NzResizableModule } from 'ng-zorro-antd/resizable';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { NzAlertModule } from 'ng-zorro-antd/alert';
 // import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -27,8 +30,11 @@ import { NzInputModule } from 'ng-zorro-antd/input';
     TranslateModule,
     // NzCardModule,
     NzModalModule,
+    NzResizableModule,
     NzTabsModule,
+    NzSpinModule,
     NzIconModule,
+    NzAlertModule,
     NzRadioModule,
     NzLayoutModule,
     NzGridModule,
@@ -46,11 +52,14 @@ import { NzInputModule } from 'ng-zorro-antd/input';
     NzLayoutModule,
     NzDrawerModule,
     NzDropDownModule,
+    NzSpinModule,
     NzModalModule,
     NzIconModule,
+    NzAlertModule,
     NzInputModule,
     NzMessageModule,
     MonacoEditorModule,
+    NzResizableModule,
     NzTabsModule,
     NzRadioModule,
     NzGridModule,

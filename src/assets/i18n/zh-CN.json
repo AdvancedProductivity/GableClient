@@ -36,6 +36,8 @@
     "INPUT_HOST": "请输入向Gable服务发送api请求的地址"
   },
   "RUN": "运行",
+  "IN": "输入",
+  "OUT": "输出",
   "SHOW_RESULT": "查看结果",
   "MODIFY_SUCCESS": "修改成功",
   "MODIFY_ERROR": "修改失败",

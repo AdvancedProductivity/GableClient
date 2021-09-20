@@ -1,0 +1,30 @@
+<div
+  nz-resizable
+  [style.height.px]="contentHeight"
+  [nzMaxHeight]="height-200"
+  [nzMinHeight]="200"
+  (nzResize)="onContentResize($event)"
+>
+  <nz-resize-handle nzDirection="bottom">
+    <div class="content-resize-line"></div>
+  </nz-resize-handle>
+  <div>
+    <button nz-button nzType="primary" (click)="run()">
+      {{ 'RUN' | translate }}
+    </button>
+  </div>
+  <nz-alert nzType="info" nzMessage="{{ 'IN' | translate }}"></nz-alert>
+
+  <div [style]="{height: (contentHeight -32 -31.6) + 'px'}">
+    <ngx-monaco-editor style="z-index: 2" [options]="config" [(ngModel)]="configJson" ></ngx-monaco-editor>
+  </div>
+</div>
+<div >
+  <nz-alert nzType="success" nzMessage="{{ 'OUT' | translate }}"></nz-alert>
+  <nz-spin [nzSpinning]="isRunning">
+    <div [style]="{height: (height-contentHeight -31.6) + 'px'}">
+      <ngx-monaco-editor style="z-index: 2" [options]="response" [(ngModel)]="responseJson" ></ngx-monaco-editor>
+    </div>
+  </nz-spin>
+</div>
+

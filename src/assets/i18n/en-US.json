@@ -36,6 +36,8 @@
     "INPUT_HOST": "Please enter gable backend api host"
   },
   "RUN": "run",
+  "IN": "In",
+  "OUT": "Out",
   "SHOW_RESULT": "show result",
   "MODIFY_SUCCESS": "modify success",
   "MODIFY_ERROR": "modify failed",
