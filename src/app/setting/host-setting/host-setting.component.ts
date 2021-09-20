@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {GableBackendService} from "../../core/services/gable-backend.service";
-import {ElectronService} from "../../core/services";
-import {main} from "ts-node/dist/bin";
+import {GableBackendService} from '../../core/services/gable-backend.service';
+import {ElectronService} from '../../core/services';
 
 @Component({
   selector: 'app-host-setting',
