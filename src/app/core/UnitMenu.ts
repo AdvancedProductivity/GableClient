@@ -11,6 +11,10 @@ export interface UnitMenuGroup{
   units: UnitMenu[];
 }
 export interface UnitResponse{
-  public: UnitMenuGroup;
-  user: UnitMenuGroup;
+  public: UnitMenuGroup[];
+  user: UnitMenuGroup[];
+}
+export interface GroupInfo{
+  name: string;
+  id: string;
 }

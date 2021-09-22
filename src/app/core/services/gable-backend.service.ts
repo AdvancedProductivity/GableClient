@@ -63,4 +63,17 @@ export class GableBackendService {
   public getUnitMenu(): Observable<Result<UnitResponse>> {
     return this.httpClient.get<Result<UnitResponse>>(this.prefix + 'api/menu');
   }
+
+  public addGroup(value: string): Observable<Result<UnitResponse>>  {
+    return this.httpClient.post<Result<UnitResponse>>(this.prefix + 'api/menu/group', value);
+  }
+
+  public addTest(group: string, t: string, name: string): Observable<Result<UnitResponse>> {
+    return this.httpClient.post<Result<UnitResponse>>(this.prefix + 'api/menu/unit', name, {
+      params: {
+        groupUuid: group,
+        type: t
+      }
+    });
+  }
 }

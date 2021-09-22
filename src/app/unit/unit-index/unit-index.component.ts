@@ -3,37 +3,43 @@ import {NzContextMenuService, NzDropdownMenuComponent} from 'ng-zorro-antd/dropd
 import {ActivatedRoute} from '@angular/router';
 import {GableBackendService} from '../../core/services/gable-backend.service';
 import {Result} from '../../core/Result';
-import {UnitMenuGroup, UnitResponse} from '../../core/UnitMenu';
+import {GroupInfo, UnitMenuGroup, UnitResponse} from '../../core/UnitMenu';
 import {TabInfo} from '../../core/TabInfo';
 @Component({
   selector: 'app-unit-index',
   templateUrl: './unit-index.component.html',
   styles: [
+    `
+      .menuL {
+        height: 100%;
+        overflow-y: auto;
+      }
+    `
   ]
 })
 export class UnitIndexComponent implements OnInit {
   title = 'GableWeb';
   urls: TabInfo[] = [];
+  height = 0;
   index = 0;
   isShowAddDialog = false;
-  publicMenu: UnitMenuGroup;
-  userMenu: UnitMenuGroup;
+  publicMenu: UnitMenuGroup[];
+  userMenu: UnitMenuGroup[];
+  groups: GroupInfo[] = [];
   constructor(private nzContextMenuService: NzContextMenuService,
               private gableBackendService: GableBackendService,
               private route: ActivatedRoute) {}
 
   ngOnInit(): void {
+    this.height = document.documentElement.clientHeight;
     const tabsInfoStr = localStorage.getItem('openTabs');
     if (tabsInfoStr !== null && tabsInfoStr !== undefined) {
       this.urls = JSON.parse(tabsInfoStr);
     }
     const enterId = this.route.snapshot.queryParams.tab;
-    console.log('enter id', enterId);
-    console.log('urls', this.urls);
     if (enterId !== undefined && enterId !== null && this.urls !== undefined && this.urls !== null && this.urls.length > 0) {
       this.urls.forEach((value, index) => {
         if (value.uuid === enterId) {
-          console.log('find');
           this.index = index;
         }
       });
@@ -90,15 +96,18 @@ export class UnitIndexComponent implements OnInit {
     localStorage.setItem('selectTabIndex', this.urls[no].uuid);
   }
 
-  addDialog() {
-
+  updateUserMenu(newMenu: UnitMenuGroup[]) {
+    this.userMenu = newMenu;
+    this.isShowAddDialog = false;
   }
 
   private getMenu() {
     this.gableBackendService.getUnitMenu().subscribe((menu: Result<UnitResponse>) => {
       this.publicMenu = menu.data.public;
       this.userMenu = menu.data.user;
-      console.log('zzq see menu', this.publicMenu);
+      this.userMenu.forEach(value => {
+        this.groups.push({name: value.groupName, id: value.uuid});
+      });
     });
   }
 }

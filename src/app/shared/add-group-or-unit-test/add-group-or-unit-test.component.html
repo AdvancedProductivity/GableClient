@@ -1,1 +1,62 @@
-<p>add-group-or-unit-test works!</p>
+<div style="height: 400px">
+  <nz-tabset>
+    <nz-tab nzTitle="{{ 'ADD_GROUP' | translate }}">
+      <form nz-form [nzLayout]="'inline'" [formGroup]="groupForm" (ngSubmit)="addGroup()">
+        <nz-form-item>
+          <nz-form-control nzErrorTip="{{ 'TIPS.GROUP_NAME' | translate }}">
+            <nz-input-group nzPrefixIcon="folder">
+              <input style="width: 300px" formControlName="groupName" nz-input placeholder="{{ 'TIPS.GROUP_NAME' | translate }}" />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control>
+            <button nz-button nzType="primary" [disabled]="!groupForm.valid">{{ 'CONFIG' | translate }}</button>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+    </nz-tab>
+    <nz-tab nzTitle="{{ 'ADD_TEST' | translate }}">
+      <form  nz-form [formGroup]="unitForm" (ngSubmit)="addUnit()">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="6" nzFor="groupUuid">{{ 'TIPS.GROUP' | translate }}</nz-form-label>
+          <nz-form-control nzErrorTip="{{ 'TIPS.GROUP_TYPE' | translate }}">
+            <nz-select style="width: 300px"
+                       nzShowSearch
+                       nzAllowClear
+                       nzPlaceHolder="{{ 'TIPS.GROUP_TYPE' | translate }}"
+                       formControlName="groupUuid">
+              <nz-option *ngFor="let g of groups" nzLabel="{{g.name}}" nzValue="{{g.id}}"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label [nzSpan]="6" nzFor="type">{{ 'TIPS.TYPE' | translate }}</nz-form-label>
+          <nz-form-control nzErrorTip="{{ 'TIPS.TEST_TYPE' | translate }}">
+            <nz-select style="width: 300px"  nzShowSearch nzAllowClear
+                       nzPlaceHolder="{{ 'TIPS.TEST_TYPE' | translate }}"
+                       formControlName="type">
+              <nz-option nzLabel="Http" nzValue="HTTP"></nz-option>
+              <nz-option nzLabel="Groovy Code" nzValue="GROOVY_SCRIPT"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label [nzSpan]="6" nzFor="unitName">{{ 'TIPS.UNIT_NAME' | translate }}</nz-form-label>
+          <nz-form-control nzErrorTip="{{ 'TIPS.TEST_NAME' | translate }}">
+            <input  style="width: 300px"
+                    formControlName="unitName"
+                    nz-input
+                    placeholder="{{ 'TIPS.TEST_NAME' | translate }}"/>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control [nzSpan]="14" [nzOffset]="6">
+            <button nz-button nzType="primary"
+                    [disabled]="!unitForm.valid">{{ 'CONFIG' | translate }}</button>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+    </nz-tab>
+  </nz-tabset>
+</div>

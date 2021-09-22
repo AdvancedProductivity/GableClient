@@ -1,49 +1,51 @@
 <div>
   <nz-layout>
-    <nz-sider nzTheme="light">
-      <ul nz-menu nzMode="inline" nzTheme="light">
-        <li nzTitle="Public" nzIcon="laptop">
-          <ul>
-            <li *ngFor="let m of publicMenu" nz-submenu nzTitle="{{m.groupName}}" >
-              <ul>
-                <li *ngFor="let item of m.units" (contextmenu)="contextMenu($event, menu)"
-                    [nzSelected]="urls.length> 0 && item.uuid === urls[index].uuid"
-                    (click)="addUrl(item.uuid, item.unitName, m.uuid, m.groupName)"
-                    nz-menu-item
-                    [routerLink]="['.']"
-                    [queryParams]="{ tab: item.uuid}">
-                  {{item.unitName}}
-                </li>
-              </ul>
-              <nz-dropdown-menu #menu="nzDropdownMenu">
-                <ul nz-menu>
-                  <li nz-menu-item >{{ 'COPY_TO_OTHER' | translate }}</li>
+    <nz-sider nzTheme="light" >
+      <div [style]="{height: height + 'px', overflowY: 'auto'}">
+        <ul nz-menu nzMode="inline" nzTheme="light">
+          <li nzTitle="Public" nzIcon="laptop">
+            <ul>
+              <li *ngFor="let m of publicMenu" nz-submenu nzTitle="{{m.groupName}}" >
+                <ul>
+                  <li *ngFor="let item of m.units" (contextmenu)="contextMenu($event, menu)"
+                      [nzSelected]="urls.length> 0 && item.uuid === urls[index].uuid"
+                      (click)="addUrl(item.uuid, item.unitName, m.uuid, m.groupName)"
+                      nz-menu-item
+                      [routerLink]="['.']"
+                      [queryParams]="{ tab: item.uuid}">
+                    {{item.unitName}}
+                  </li>
                 </ul>
-              </nz-dropdown-menu>
-            </li>
-          </ul>
-        </li>
-        <li *ngFor="let m of userMenu" nz-submenu
-            nzIcon="{{m.icon}}"
-            nzTitle="{{m.groupName}}" >
-          <ul>
-            <li *ngFor="let item of m.units" (contextmenu)="contextMenu($event, menu)"
-                [nzSelected]="urls.length> 0 && item.uuid === urls[index].uuid"
-                (click)="addUrl(item.uuid, item.unitName, m.uuid, m.groupName)"
-                nz-menu-item
-                [routerLink]="['.']"
-                [queryParams]="{ tab: item.uuid}">
-              {{item.unitName}}
-            </li>
-          </ul>
-          <nz-dropdown-menu #menu="nzDropdownMenu">
-            <ul nz-menu>
-              <li nz-menu-item >{{ 'COPY' | translate }}</li>
-              <li nz-menu-item >{{ 'COPY_TO_OTHER' | translate }}</li>
+                <nz-dropdown-menu #menu="nzDropdownMenu">
+                  <ul nz-menu>
+                    <li nz-menu-item >{{ 'COPY_TO_OTHER' | translate }}</li>
+                  </ul>
+                </nz-dropdown-menu>
+              </li>
             </ul>
-          </nz-dropdown-menu>
-        </li>
-      </ul>
+          </li>
+          <li *ngFor="let m of userMenu" nz-submenu
+              nzIcon="{{m.icon}}"
+              nzTitle="{{m.groupName}}" >
+            <ul>
+              <li *ngFor="let item of m.units" (contextmenu)="contextMenu($event, menu)"
+                  [nzSelected]="urls.length> 0 && item.uuid === urls[index].uuid"
+                  (click)="addUrl(item.uuid, item.unitName, m.uuid, m.groupName)"
+                  nz-menu-item
+                  [routerLink]="['.']"
+                  [queryParams]="{ tab: item.uuid}">
+                {{item.unitName}}
+              </li>
+            </ul>
+            <nz-dropdown-menu #menu="nzDropdownMenu">
+              <ul nz-menu>
+                <li nz-menu-item >{{ 'COPY' | translate }}</li>
+                <li nz-menu-item >{{ 'COPY_TO_OTHER' | translate }}</li>
+              </ul>
+            </nz-dropdown-menu>
+          </li>
+        </ul>
+      </div>
     </nz-sider>
     <nz-content>
       <nz-tabset (nzSelectedIndexChange)="changeSelectTabs($event)"
@@ -72,9 +74,9 @@
       <nz-modal [(nzVisible)]="isShowAddDialog"
                 nzTitle="{{ 'ADD_GROUP_OR_UNIT' | translate }}"
                 (nzOnCancel)="isShowAddDialog = false"
-                (nzOnOk)="isShowAddDialog = false">
+                [nzFooter]="null">
         <ng-container *nzModalContent>
-          <app-add-group-or-unit-test></app-add-group-or-unit-test>
+          <app-add-group-or-unit-test (menuEvent)="updateUserMenu($event)" [groups]="groups"></app-add-group-or-unit-test>
         </ng-container>
       </nz-modal>
     </nz-content>

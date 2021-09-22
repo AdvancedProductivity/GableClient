@@ -33,7 +33,6 @@ export class AppRoutingCache implements RouteReuseStrategy {
     if (!route.routeConfig) {
       return null;
     }
-    console.log('zzq see get cache key: ' + route.routeConfig.path, AppRoutingCache.handlers);
     return AppRoutingCache.handlers[route.routeConfig.path];
   }
 

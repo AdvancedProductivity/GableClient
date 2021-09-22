@@ -33,7 +33,14 @@
     }
   },
   "TIPS": {
-    "INPUT_HOST": "Please enter gable backend api host"
+    "INPUT_HOST": "Please enter gable backend api host",
+    "GROUP_NAME": "Please enter new group name",
+    "TEST_NAME": "Please enter new test name",
+    "TEST_TYPE": "Please select test type",
+    "GROUP_TYPE": "Please select group type",
+    "GROUP": "Group",
+    "TYPE": "Test Type",
+    "UNIT_NAME": "Unit NAME"
   },
   "RUN": "run",
   "IN": "In",
@@ -44,5 +51,8 @@
   "INVALID_JSON_STR": "the json string is invalid",
   "ADD_GROUP_OR_UNIT": "add group or add unit test",
   "COPY": "copy",
-  "COPY_TO_OTHER": "copy to other group"
+  "COPY_TO_OTHER": "copy to other group",
+  "ADD_GROUP": "Add Group",
+  "ADD_TEST": "Add Test",
+  "CONFIG": "Confirm"
 }

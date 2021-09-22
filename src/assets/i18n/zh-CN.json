@@ -33,7 +33,14 @@
     }
   },
   "TIPS": {
-    "INPUT_HOST": "请输入向Gable服务发送api请求的地址"
+    "INPUT_HOST": "请输入向Gable服务发送api请求的地址",
+    "GROUP_NAME": "请输入新的组名",
+    "TEST_NAME": "请输入新的测试名称",
+    "TEST_TYPE": "请选择测试类型",
+    "GROUP_TYPE": "请选择测试组",
+    "GROUP": "组",
+    "TYPE": "测试类型",
+    "UNIT_NAME": "测试名称"
   },
   "RUN": "运行",
   "IN": "输入",
@@ -44,5 +51,8 @@
   "INVALID_JSON_STR": "json字符串不合法",
   "ADD_GROUP_OR_UNIT": "添加分组或者添加单元测试",
   "COPY": "复制一份",
-  "COPY_TO_OTHER": "复制到其它组"
+  "COPY_TO_OTHER": "复制到其它组",
+  "ADD_GROUP": "添加组",
+  "ADD_TEST": "添加测试",
+  "CONFIG": "确认"
 }
