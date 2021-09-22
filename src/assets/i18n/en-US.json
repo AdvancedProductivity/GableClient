@@ -42,5 +42,7 @@
   "MODIFY_SUCCESS": "modify success",
   "MODIFY_ERROR": "modify failed",
   "INVALID_JSON_STR": "the json string is invalid",
-  "ADD_GROUP_OR_UNIT": "add group or add unit test"
+  "ADD_GROUP_OR_UNIT": "add group or add unit test",
+  "COPY": "copy",
+  "COPY_TO_OTHER": "copy to other group"
 }

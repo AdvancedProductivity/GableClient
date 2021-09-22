@@ -2,44 +2,46 @@
   <nz-layout>
     <nz-sider nzTheme="light">
       <ul nz-menu nzMode="inline" nzTheme="light">
-        <li nz-submenu nzTitle="Navigation One" nzIcon="mail">
+        <li nzTitle="Public" nzIcon="laptop">
           <ul>
-            <li  (contextmenu)="contextMenu($event, menu)" [nzSelected]="urls.length> 0 && 'tab1' === urls[index].lable" (click)="addUrl('tab1', 'Content 1')" nz-menu-item [routerLink]="['.']"  [queryParams]="{ tab: 'tab1'}">
-              Content 1
+            <li *ngFor="let m of publicMenu" nz-submenu nzTitle="{{m.groupName}}" >
+              <ul>
+                <li *ngFor="let item of m.units" (contextmenu)="contextMenu($event, menu)"
+                    [nzSelected]="urls.length> 0 && item.uuid === urls[index].uuid"
+                    (click)="addUrl(item.uuid, item.unitName, m.uuid, m.groupName)"
+                    nz-menu-item
+                    [routerLink]="['.']"
+                    [queryParams]="{ tab: item.uuid}">
+                  {{item.unitName}}
+                </li>
+              </ul>
+              <nz-dropdown-menu #menu="nzDropdownMenu">
+                <ul nz-menu>
+                  <li nz-menu-item >{{ 'COPY_TO_OTHER' | translate }}</li>
+                </ul>
+              </nz-dropdown-menu>
             </li>
-            <li [nzSelected]="urls.length> 0 && 'tab2'===urls[index].lable" (click)="addUrl('tab2', 'Content 2')" nz-menu-item [routerLink]="['.']"  [queryParams]="{ tab: 'tab2'}">
-              Content 2
-            </li>
-            <li [nzSelected]="urls.length> 0 && 'tab3'===urls[index].lable" (click)="addUrl('tab3', 'Content 3')" nz-menu-item [routerLink]="['.']"  [queryParams]="{ tab: 'tab3'}">
-              Content 3
-            </li>
-            <li [nzSelected]="urls.length> 0 && 'tab4'===urls[index].lable" (click)="addUrl('tab4', 'Content 4')" nz-menu-item [routerLink]="['.']"  [queryParams]="{ tab: 'tab4'}">
-              Content 4
+          </ul>
+        </li>
+        <li *ngFor="let m of userMenu" nz-submenu
+            nzIcon="{{m.icon}}"
+            nzTitle="{{m.groupName}}" >
+          <ul>
+            <li *ngFor="let item of m.units" (contextmenu)="contextMenu($event, menu)"
+                [nzSelected]="urls.length> 0 && item.uuid === urls[index].uuid"
+                (click)="addUrl(item.uuid, item.unitName, m.uuid, m.groupName)"
+                nz-menu-item
+                [routerLink]="['.']"
+                [queryParams]="{ tab: item.uuid}">
+              {{item.unitName}}
             </li>
           </ul>
           <nz-dropdown-menu #menu="nzDropdownMenu">
             <ul nz-menu>
-              <li nz-menu-item >复制</li>
-              <li nz-menu-item >复制到其它</li>
-              <li nz-menu-item  style="color: red">删除</li>
+              <li nz-menu-item >{{ 'COPY' | translate }}</li>
+              <li nz-menu-item >{{ 'COPY_TO_OTHER' | translate }}</li>
             </ul>
           </nz-dropdown-menu>
-        </li>
-        <li nz-submenu nzTitle="Navigation Two" nzIcon="file" >
-          <ul>
-            <li [nzSelected]="urls.length> 0 && 'tab5'===urls[index].lable" (click)="addUrl('tab5', 'Content 5')" nz-menu-item [routerLink]="['.']"  [queryParams]="{ tab: 'tab5'}">
-              Content 5
-            </li>
-            <li [nzSelected]="urls.length> 0 && 'tab6'===urls[index].lable" (click)="addUrl('tab6', 'Content 6')" nz-menu-item [routerLink]="['.']"  [queryParams]="{ tab: 'tab6'}">
-              Content 6
-            </li>
-            <li [nzSelected]="urls.length> 0 && 'tab7'===urls[index].lable" (click)="addUrl('tab7', 'Content 7')" nz-menu-item [routerLink]="['.']"  [queryParams]="{ tab: 'tab7'}">
-              Content 7
-            </li>
-            <li [nzSelected]="urls.length> 0 && 'tab8'===urls[index].lable" (click)="addUrl('tab8', 'Content 8')" nz-menu-item [routerLink]="['.']"  [queryParams]="{ tab: 'tab8'}">
-              Content 8
-            </li>
-          </ul>
         </li>
       </ul>
     </nz-sider>
@@ -50,9 +52,14 @@
                  (nzAdd)="isShowAddDialog = true"
                  nzLinkRouter>
         <nz-tab *ngFor="let url of urls;let i = index" >
-          <a *nzTabLink (contextmenu)="contextMenu($event, menu)" [style]="{color: index === i ?'green': '#1890ff'}" style="width: 100%;height: 100%"
-             nz-tab-link [routerLink]="['.']" [queryParams]="{ tab: url.lable }" queryParamsHandling="merge">
-            {{url.lable}}
+          <a *nzTabLink (contextmenu)="contextMenu($event, menu)"
+             [style]="{color: index === i ?'green': '#1890ff'}"
+             style="width: 100%;height: 100%"
+             nz-tab-link
+             [routerLink]="['.']"
+             [queryParams]="{ tab: url.uuid }"
+             queryParamsHandling="merge">
+            {{url.name}}
           </a>
           <app-unit-dashboard [id]="url.lable"></app-unit-dashboard>
           <nz-dropdown-menu #menu="nzDropdownMenu">

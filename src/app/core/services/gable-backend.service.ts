@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
+import {Result} from '../Result';
+import {UnitResponse} from '../UnitMenu';
 
 @Injectable({
   providedIn: 'root'
@@ -56,5 +58,9 @@ export class GableBackendService {
 
   public runGroovySampleCode(codeContent: string): Observable<any> {
     return this.httpClient.post(this.prefix + 'api/SampleCode', codeContent);
+  }
+
+  public getUnitMenu(): Observable<Result<UnitResponse>> {
+    return this.httpClient.get<Result<UnitResponse>>(this.prefix + 'api/menu');
   }
 }
