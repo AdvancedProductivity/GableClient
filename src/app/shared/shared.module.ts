@@ -23,9 +23,10 @@ import {NzModalModule} from 'ng-zorro-antd/modal';
 import {NzDrawerModule} from 'ng-zorro-antd/drawer';
 import {MonacoEditorModule} from '@materia-ui/ngx-monaco-editor';
 import { NzInputModule } from 'ng-zorro-antd/input';
+import { AddGroupOrUnitTestComponent } from './add-group-or-unit-test/add-group-or-unit-test.component';
 
 @NgModule({
-  declarations: [PageNotFoundComponent, WebviewDirective],
+  declarations: [PageNotFoundComponent, WebviewDirective, AddGroupOrUnitTestComponent],
   imports: [CommonModule,
     TranslateModule,
     // NzCardModule,
@@ -65,7 +66,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
     NzGridModule,
     // NzCardModule,
     NzButtonModule,
-    FormsModule]
+    FormsModule, AddGroupOrUnitTestComponent]
 })
 export class SharedModule {
 }

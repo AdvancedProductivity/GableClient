@@ -2,25 +2,28 @@
   <nz-layout>
     <nz-sider nzTheme="light">
       <ul nz-menu nzMode="inline" nzTheme="light">
-        <li nz-submenu nzTitle="Navigation One" nzIcon="mail" >
+        <li nz-submenu nzTitle="Navigation One" nzIcon="mail">
           <ul>
-            <li nz-menu-group nzTitle="Item 1">
-              <ul>
-                <li [nzSelected]="urls.length> 0 && 'tab1' === urls[index].lable" (click)="addUrl('tab1', 'Content 1')" nz-menu-item [routerLink]="['.']"  [queryParams]="{ tab: 'tab1'}">
-                  Content 1
-                </li>
-                <li [nzSelected]="urls.length> 0 && 'tab2'===urls[index].lable" (click)="addUrl('tab2', 'Content 2')" nz-menu-item [routerLink]="['.']"  [queryParams]="{ tab: 'tab2'}">
-                  Content 2
-                </li>
-                <li [nzSelected]="urls.length> 0 && 'tab3'===urls[index].lable" (click)="addUrl('tab3', 'Content 3')" nz-menu-item [routerLink]="['.']"  [queryParams]="{ tab: 'tab3'}">
-                  Content 3
-                </li>
-                <li [nzSelected]="urls.length> 0 && 'tab4'===urls[index].lable" (click)="addUrl('tab4', 'Content 4')" nz-menu-item [routerLink]="['.']"  [queryParams]="{ tab: 'tab4'}">
-                  Content 4
-                </li>
-              </ul>
+            <li  (contextmenu)="contextMenu($event, menu)" [nzSelected]="urls.length> 0 && 'tab1' === urls[index].lable" (click)="addUrl('tab1', 'Content 1')" nz-menu-item [routerLink]="['.']"  [queryParams]="{ tab: 'tab1'}">
+              Content 1
+            </li>
+            <li [nzSelected]="urls.length> 0 && 'tab2'===urls[index].lable" (click)="addUrl('tab2', 'Content 2')" nz-menu-item [routerLink]="['.']"  [queryParams]="{ tab: 'tab2'}">
+              Content 2
+            </li>
+            <li [nzSelected]="urls.length> 0 && 'tab3'===urls[index].lable" (click)="addUrl('tab3', 'Content 3')" nz-menu-item [routerLink]="['.']"  [queryParams]="{ tab: 'tab3'}">
+              Content 3
+            </li>
+            <li [nzSelected]="urls.length> 0 && 'tab4'===urls[index].lable" (click)="addUrl('tab4', 'Content 4')" nz-menu-item [routerLink]="['.']"  [queryParams]="{ tab: 'tab4'}">
+              Content 4
             </li>
           </ul>
+          <nz-dropdown-menu #menu="nzDropdownMenu">
+            <ul nz-menu>
+              <li nz-menu-item >复制</li>
+              <li nz-menu-item >复制到其它</li>
+              <li nz-menu-item  style="color: red">删除</li>
+            </ul>
+          </nz-dropdown-menu>
         </li>
         <li nz-submenu nzTitle="Navigation Two" nzIcon="file" >
           <ul>
@@ -41,7 +44,11 @@
       </ul>
     </nz-sider>
     <nz-content>
-      <nz-tabset (nzSelectedIndexChange)="changeSelectTabs($event)" [(nzSelectedIndex)]="index" nzType="editable-card" nzLinkRouter>
+      <nz-tabset (nzSelectedIndexChange)="changeSelectTabs($event)"
+                 [(nzSelectedIndex)]="index"
+                 nzType="editable-card"
+                 (nzAdd)="isShowAddDialog = true"
+                 nzLinkRouter>
         <nz-tab *ngFor="let url of urls;let i = index" >
           <a *nzTabLink (contextmenu)="contextMenu($event, menu)" [style]="{color: index === i ?'green': '#1890ff'}" style="width: 100%;height: 100%"
              nz-tab-link [routerLink]="['.']" [queryParams]="{ tab: url.lable }" queryParamsHandling="merge">
@@ -55,6 +62,14 @@
           </nz-dropdown-menu>
         </nz-tab>
       </nz-tabset>
+      <nz-modal [(nzVisible)]="isShowAddDialog"
+                nzTitle="{{ 'ADD_GROUP_OR_UNIT' | translate }}"
+                (nzOnCancel)="isShowAddDialog = false"
+                (nzOnOk)="isShowAddDialog = false">
+        <ng-container *nzModalContent>
+          <app-add-group-or-unit-test></app-add-group-or-unit-test>
+        </ng-container>
+      </nz-modal>
     </nz-content>
   </nz-layout>
 </div>

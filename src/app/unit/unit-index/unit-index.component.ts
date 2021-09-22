@@ -16,6 +16,7 @@ export class UnitIndexComponent implements OnInit {
   urls: A[] = [
   ];
   index = 0;
+  isShowAddDialog = false;
   constructor(private nzContextMenuService: NzContextMenuService,
               private route: ActivatedRoute) {}
 
@@ -82,5 +83,9 @@ export class UnitIndexComponent implements OnInit {
 
   changeSelectTabs(no: any) {
     localStorage.setItem('selectTabIndex', this.urls[no].lable);
+  }
+
+  addDialog() {
+
   }
 }
