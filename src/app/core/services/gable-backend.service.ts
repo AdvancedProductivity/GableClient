@@ -77,10 +77,22 @@ export class GableBackendService {
     });
   }
 
-  getUnitConfig(id: string): Observable<Result<any>>  {
+  public getUnitConfig(id: string): Observable<Result<any>>  {
     return this.httpClient.get<Result<UnitResponse>>(this.prefix + 'api/unit', {
       params: {
         uuid: id
+      }
+    });
+  }
+
+  public runUnit(config: string, id: string, testType: string): Observable<Result<any>> {
+    return this.httpClient.post<Result<UnitResponse>>(this.prefix + 'api/unit/run', config, {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      params: {
+        uuid: id,
+        type: testType
       }
     });
   }

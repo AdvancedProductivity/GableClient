@@ -20,13 +20,14 @@ export class DefaultTestComponent implements OnInit {
   @Input() uuid = '';
   id = -1;
   contentHeight =350;
+  type = '';
   config = {
     theme: 'vs-light', language: 'json', fontSize: 12, glance: false, minimap: {enabled: false},
     lineDecorationsWidth: 1, readOnly: false
   };
   response = {
     theme: 'vs-light', language: 'json', fontSize: 12, glance: false, minimap: {enabled: false},
-    lineDecorationsWidth: 1, readOnly: false
+    lineDecorationsWidth: 1, readOnly: true
   };
   configJson = `
   {
@@ -56,13 +57,22 @@ export class DefaultTestComponent implements OnInit {
 
   run() {
     this.isRunning = true;
-    setTimeout(() => {
+    this.gableBackendService.runUnit(this.configJson, this.uuid, this.type).subscribe((res: any) => {
+      if (this.type === 'HTTP' && res.result && res.data.code === 200) {
+        this.responseJson = JSON.stringify(JSON.parse(res.data.content), null, '\t');
+      } else {
+        this.responseJson = JSON.stringify(res.data, null, '\t');
+      }
       this.isRunning = false;
-    }, 3000);
+    }, error => {
+      this.isRunning = false;
+      this.responseJson = JSON.stringify(error, null, '\t');
+    });
   }
 
   private getConfig() {
     this.gableBackendService.getUnitConfig(this.uuid).subscribe((res) => {
+      this.type = res.data.type;
       this.configJson = JSON.stringify(res.data.config, null, '\t');
     });
   }
