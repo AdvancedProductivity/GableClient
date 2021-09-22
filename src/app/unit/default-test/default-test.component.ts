@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {NzResizeEvent} from 'ng-zorro-antd/resizable';
+import {GableBackendService} from "../../core/services/gable-backend.service";
 
 @Component({
   selector: 'app-default-test',
@@ -16,6 +17,7 @@ import {NzResizeEvent} from 'ng-zorro-antd/resizable';
 })
 export class DefaultTestComponent implements OnInit {
   @Input() height = 500;
+  @Input() uuid = '';
   id = -1;
   contentHeight =350;
   config = {
@@ -24,7 +26,7 @@ export class DefaultTestComponent implements OnInit {
   };
   response = {
     theme: 'vs-light', language: 'json', fontSize: 12, glance: false, minimap: {enabled: false},
-    lineDecorationsWidth: 1, readOnly: false
+    lineDecorationsWidth: 1, readOnly: true
   };
   configJson = `
   {
@@ -35,10 +37,14 @@ export class DefaultTestComponent implements OnInit {
   "not run"
   `;
   isRunning = false;
-  constructor() {
+  constructor(private gableBackendService: GableBackendService) {
   }
 
   ngOnInit(): void {
+    if (this.uuid !== undefined) {
+      this.getConfig();
+    }
+    console.log('zzq see config', this.uuid);
   }
 
   onContentResize({height}: NzResizeEvent) {
@@ -55,4 +61,9 @@ export class DefaultTestComponent implements OnInit {
     }, 3000);
   }
 
+  private getConfig() {
+    this.gableBackendService.getUnitConfig(this.uuid).subscribe((res) => {
+      this.configJson = JSON.stringify(res.data.config, null, '\t');
+    });
+  }
 }

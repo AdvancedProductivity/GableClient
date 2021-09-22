@@ -76,4 +76,12 @@ export class GableBackendService {
       }
     });
   }
+
+  getUnitConfig(id: string): Observable<Result<any>>  {
+    return this.httpClient.get<Result<UnitResponse>>(this.prefix + 'api/unit', {
+      params: {
+        uuid: id
+      }
+    });
+  }
 }

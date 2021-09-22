@@ -63,7 +63,7 @@
              queryParamsHandling="merge">
             {{url.name}}
           </a>
-          <app-unit-dashboard [id]="url.lable"></app-unit-dashboard>
+          <app-unit-dashboard [id]="url.uuid"></app-unit-dashboard>
           <nz-dropdown-menu #menu="nzDropdownMenu">
             <ul nz-menu>
               <li nz-menu-item (click)="deleteTab(i)">close</li>
