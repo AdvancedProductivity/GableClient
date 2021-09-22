@@ -43,6 +43,8 @@
     "UNIT_NAME": "测试名称"
   },
   "RUN": "运行",
+  "CASE": "测试用例",
+  "RUN_TYPE": "运行",
   "IN": "输入",
   "OUT": "输出",
   "SHOW_RESULT": "查看结果",

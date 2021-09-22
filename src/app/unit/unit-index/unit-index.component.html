@@ -48,7 +48,8 @@
       </div>
     </nz-sider>
     <nz-content>
-      <nz-tabset (nzSelectedIndexChange)="changeSelectTabs($event)"
+      <nz-tabset
+        (nzSelectedIndexChange)="changeSelectTabs($event)"
                  [(nzSelectedIndex)]="index"
                  nzType="editable-card"
                  (nzAdd)="isShowAddDialog = true"

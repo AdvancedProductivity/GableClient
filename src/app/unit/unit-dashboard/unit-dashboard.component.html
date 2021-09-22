@@ -1,7 +1,15 @@
 <div style="width: 100%;color: white;"
      [style]="{height: height + 'px'}">
-  <app-default-test
-    [height]="height"
-    [uuid]="id"
-  ></app-default-test>
+  <nz-tabset>
+    <nz-tab nzTitle="{{ 'RUN_TYPE' | translate }}">
+      <app-default-test
+        [height]="height - 72"
+        [uuid]="id"
+      ></app-default-test>
+    </nz-tab>
+    <nz-tab nzTitle="{{ 'CASE' | translate }}">
+
+    </nz-tab>
+  </nz-tabset>
+
 </div>

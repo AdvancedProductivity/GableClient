@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {NzResizeEvent} from 'ng-zorro-antd/resizable';
-import {GableBackendService} from "../../core/services/gable-backend.service";
+import {GableBackendService} from '../../core/services/gable-backend.service';
 
 @Component({
   selector: 'app-default-test',
@@ -26,7 +26,7 @@ export class DefaultTestComponent implements OnInit {
   };
   response = {
     theme: 'vs-light', language: 'json', fontSize: 12, glance: false, minimap: {enabled: false},
-    lineDecorationsWidth: 1, readOnly: true
+    lineDecorationsWidth: 1, readOnly: false
   };
   configJson = `
   {

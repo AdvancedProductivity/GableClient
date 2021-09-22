@@ -43,6 +43,8 @@
     "UNIT_NAME": "Unit NAME"
   },
   "RUN": "run",
+  "CASE": "Case",
+  "RUN_TYPE": "Run",
   "IN": "In",
   "OUT": "Out",
   "SHOW_RESULT": "show result",
