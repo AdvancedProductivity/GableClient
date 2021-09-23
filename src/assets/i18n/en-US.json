@@ -12,7 +12,8 @@
       "TITLE": "Setting",
       "LANGUAGE": "language",
       "HOST_SETTING": "Host",
-      "GABLE_CONFIG": "Gable Config"
+      "GABLE_CONFIG": "Gable Config",
+      "ENV_CONFIG": "Env Config"
     },
     "PLAY_GROUND": {
       "TITLE": "Play Ground",
@@ -40,7 +41,8 @@
     "GROUP_TYPE": "Please select group type",
     "GROUP": "Group",
     "TYPE": "Test Type",
-    "UNIT_NAME": "Unit NAME"
+    "UNIT_NAME": "Unit NAME",
+    "ENV_NAME": "Please enter env name"
   },
   "RUN": "run",
   "CASE": "Case",
@@ -56,5 +58,7 @@
   "COPY_TO_OTHER": "copy to other group",
   "ADD_GROUP": "Add Group",
   "ADD_TEST": "Add Test",
-  "CONFIG": "Confirm"
+  "SAVE": "save",
+  "CONFIG": "Confirm",
+  "ADD_ENV": "add env"
 }

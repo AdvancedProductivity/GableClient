@@ -1,0 +1,40 @@
+<nz-layout>
+  <nz-sider nzTheme="light" >
+<!--    <div>-->
+<!--      <button nzSize="small" nz-button nzType="primary" >-->
+<!--        {{ 'ADD_ENV' | translate }}-->
+<!--      </button>-->
+<!--    </div>-->
+    <div style="height: 305px;overflow-y: auto">
+      <ul nz-menu nzMode="inline">
+        <li *ngFor="let env of envs" (contextmenu)="contextMenu($event, menu)"
+            nz-submenu nzTitle="{{env.typeName}}" nzOpen>
+          <ul>
+            <li nz-menu-item [nzSelected]="d.uuid === selectedId" *ngFor="let d of env.configs" (click)="modify(d.uuid,d.name)">{{d.name}}</li>
+          </ul>
+          <nz-dropdown-menu #menu="nzDropdownMenu">
+            <ul nz-menu>
+              <li nz-menu-item (click)="addNew(env.typeName)">{{ 'ADD_ENV' | translate }}</li>
+            </ul>
+          </nz-dropdown-menu>
+        </li>
+      </ul>
+    </div>
+  </nz-sider>
+  <nz-content>
+    <nz-spin [nzSpinning]="isGettingData">
+      <div *ngIf="selectedId !== ''">
+        <div>
+          <input style="width: 300px" [(ngModel)]="name" nz-input placeholder="{{ 'PAGES.TIPS.ENV_NAME' | translate }}" />
+          <button nz-button nzType="primary" (click)="saveConfig()">{{ 'SAVE' | translate }}</button>
+        </div>
+        <div style="height: 270px;width: 100%;padding: 10px;border:1px solid #d9d9d9;">
+          <ngx-monaco-editor style="z-index: 2" [options]="config" [(ngModel)]="configStr" ></ngx-monaco-editor>
+        </div>
+      </div>
+      <div *ngIf="selectedId === ''">
+        <h1>Not Selected</h1>
+      </div>
+    </nz-spin>
+  </nz-content>
+</nz-layout>

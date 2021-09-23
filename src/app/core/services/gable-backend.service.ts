@@ -9,6 +9,7 @@ import {UnitResponse} from '../UnitMenu';
 })
 export class GableBackendService {
   private prefix = '/';
+  private envMap = new Map();
   constructor(private httpClient: HttpClient) {
     let s = localStorage.getItem('host');
     if (s === null || s === undefined || s.length === 0) {
@@ -18,10 +19,22 @@ export class GableBackendService {
       s += '/';
     }
     this.prefix = s;
+    const envStr = localStorage.getItem('env');
+    if (envStr != null && envStr.length > 0) {
+      this.setEnv(JSON.parse(envStr));
+    }
   }
 
   getServer(): string {
     return this.prefix;
+  }
+
+  public setEnv(envs: any){
+    this.envMap.clear();
+    envs.forEach(value => {
+      console.log('zzq see add env ' + value.typeName, value.configs);
+      this.envMap.set(value.typeName, value.configs);
+    });
   }
 
   public setServer(host: string): boolean{
@@ -96,4 +109,41 @@ export class GableBackendService {
       }
     });
   }
+
+  public getEnv(): Observable<any>  {
+    return this.httpClient.get<any>(this.prefix + 'api/env');
+  }
+
+  public addEnv(config: string, envName: string, envType: string) {
+    return this.httpClient.post<Result<any>>(this.prefix + 'api/env', config, {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      params: {
+        name: envName,
+        type: envType
+      }
+    });
+  }
+
+  public updateEnv(config: string, envName: string, envUuid: string) {
+    return this.httpClient.put<Result<any>>(this.prefix + 'api/env', config, {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      params: {
+        name: envName,
+        uuid: envUuid
+      }
+    });
+  }
+
+  public getEnvDetail(id: string): Observable<any>  {
+    return this.httpClient.get<any>(this.prefix + 'api/env/detail', {
+      params: {
+        uuid: id
+      }
+    });
+  }
+
 }

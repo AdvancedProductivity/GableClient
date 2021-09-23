@@ -5,13 +5,15 @@ import {SharedModule} from '../shared/shared.module';
 import { LanguageSettingComponent } from './language-setting/language-setting.component';
 import { GableSettingComponent } from '../setting/gable-setting/gable-setting.component';
 import { HostSettingComponent } from './host-setting/host-setting.component';
+import { EnvSettingComponent } from './env-setting/env-setting.component';
 
 @NgModule({
   declarations: [
     SettingModalIndexComponent,
     LanguageSettingComponent,
     GableSettingComponent,
-    HostSettingComponent
+    HostSettingComponent,
+    EnvSettingComponent
   ],
   imports: [
     CommonModule,

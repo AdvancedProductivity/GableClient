@@ -12,7 +12,8 @@
       "TITLE": "设置",
       "LANGUAGE": "语言",
       "HOST_SETTING": "主机地址",
-      "GABLE_CONFIG": "服务端设置"
+      "GABLE_CONFIG": "服务端设置",
+      "ENV_CONFIG": "环境配置"
     },
     "PLAY_GROUND": {
       "TITLE": "演练场",
@@ -40,7 +41,8 @@
     "GROUP_TYPE": "请选择测试组",
     "GROUP": "组",
     "TYPE": "测试类型",
-    "UNIT_NAME": "测试名称"
+    "UNIT_NAME": "测试名称",
+    "ENV_NAME": "请输入环境名称"
   },
   "RUN": "运行",
   "CASE": "测试用例",
@@ -56,5 +58,7 @@
   "COPY_TO_OTHER": "复制到其它组",
   "ADD_GROUP": "添加组",
   "ADD_TEST": "添加测试",
-  "CONFIG": "确认"
+  "SAVE": "保存",
+  "CONFIG": "确认",
+  "ADD_ENV": "添加环境"
 }
