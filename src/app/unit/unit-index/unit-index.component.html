@@ -3,7 +3,7 @@
     <nz-sider nzTheme="light" >
       <div [style]="{height: height + 'px', overflowY: 'auto'}">
         <ul nz-menu nzMode="inline" nzTheme="light">
-          <li nzTitle="Public" nzIcon="laptop">
+          <li nz-submenu nzTitle="Public" nzIcon="laptop">
             <ul>
               <li *ngFor="let m of publicMenu" nz-submenu nzTitle="{{m.groupName}}" >
                 <ul>

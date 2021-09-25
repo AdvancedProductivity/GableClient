@@ -60,5 +60,9 @@
   "ADD_TEST": "添加测试",
   "SAVE": "保存",
   "CONFIG": "确认",
+  "UPLOAD": "上传表格",
+  "DETAIL": "详情",
+  "UPDATE": "更新",
+  "OPERATION": "操作",
   "ADD_ENV": "添加环境"
 }

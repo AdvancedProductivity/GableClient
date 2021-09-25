@@ -60,5 +60,9 @@
   "ADD_TEST": "Add Test",
   "SAVE": "save",
   "CONFIG": "Confirm",
+  "DETAIL": "Detail",
+  "UPDATE": "Update",
+  "UPLOAD": "Upload Excel",
+  "OPERATION": "Operation",
   "ADD_ENV": "add env"
 }

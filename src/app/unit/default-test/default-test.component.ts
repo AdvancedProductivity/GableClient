@@ -19,6 +19,7 @@ export class DefaultTestComponent implements OnInit {
   @Input() height = 500;
   @Input() uuid = '';
   id = -1;
+  isPublicUnit = false;
   contentHeight =350;
   type = '';
   config = {
@@ -43,6 +44,7 @@ export class DefaultTestComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.uuid !== undefined) {
+      this.isPublicUnit = this.uuid.startsWith('public_');
       this.getConfig();
     }
     console.log('zzq see config', this.uuid);
@@ -57,13 +59,13 @@ export class DefaultTestComponent implements OnInit {
 
   run() {
     this.isRunning = true;
-    this.gableBackendService.runUnit(this.configJson, this.uuid, this.type).subscribe((res: any) => {
-      if (this.type === 'HTTP' && res.result && res.data.code === 200) {
+    this.gableBackendService.runUnit(this.configJson, this.uuid, this.type, this.isPublicUnit).subscribe((res: any) => {
+      this.isRunning = false;
+      if (this.type === 'HTTP' && res.result && res.data.code === 200 && (typeof res.data.content === 'string')) {
         this.responseJson = JSON.stringify(JSON.parse(res.data.content), null, '\t');
       } else {
         this.responseJson = JSON.stringify(res.data, null, '\t');
       }
-      this.isRunning = false;
     }, error => {
       this.isRunning = false;
       this.responseJson = JSON.stringify(error, null, '\t');
@@ -71,7 +73,10 @@ export class DefaultTestComponent implements OnInit {
   }
 
   private getConfig() {
-    this.gableBackendService.getUnitConfig(this.uuid).subscribe((res) => {
+    this.gableBackendService.getUnitConfig(this.uuid, this.isPublicUnit).subscribe((res) => {
+      if (this.isPublicUnit || res.data.isUnmodify) {
+        this.config.readOnly = true;
+      }
       this.type = res.data.type;
       this.configJson = JSON.stringify(res.data.config, null, '\t');
     });

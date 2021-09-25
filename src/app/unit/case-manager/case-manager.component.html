@@ -1,0 +1,63 @@
+<div style="overflow-y:auto;">
+  <div style="padding-bottom: 8px">
+    <nz-upload
+      nzAction="{{uploadPath}}"
+      [nzLimit]="1"
+      style="margin-right: 8px;"
+      [nzAccept]="'.xls,.xlsx'"
+      [nzShowUploadList]="false"
+      (nzChange)="handleChange($event)"
+    >
+      <button nz-button>
+        <i nz-icon nzType="upload"></i>
+        {{ 'UPLOAD' | translate }}
+      </button>
+    </nz-upload>
+<!--    <button style="margin-right: 8px;" nz-button nzType="primary">Primary Button</button>-->
+  </div>
+  <nz-table #middleTable nzSize="middle" [nzData]="records"
+            [nzScroll]="{ y: (height-87) + 'px' }"
+            [nzFrontPagination]="false" nzBordered nzOuterBordered>
+    <thead>
+    <tr>
+      <th *ngFor="let h of headers">{{h}}</th>
+      <th>{{ 'OPERATION' | translate }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of middleTable.data">
+      <td  *ngFor="let h of headers">{{ data['' + h] }}</td>
+      <td>
+        <button style="margin: 3px" nzSize="small" (click)="runCase(data.id)" nz-button nzType="primary">{{ 'Run' | translate }}</button>
+        <button style="margin: 3px" nzSize="small" (click)="showDetail(data.id)" nz-button nzType="primary">{{ 'DETAIL' | translate }}</button>
+      </td>
+    </tr>
+    </tbody>
+  </nz-table>
+  <nz-modal [(nzVisible)]="isShowDetail"
+            nzWidth="80%"
+            nzTitle="The first Modal" (nzOnCancel)="handleCancel()" [nzFooter]="null">
+    <ng-container *nzModalContent>
+      <button *ngIf="canUpdate" style="margin: 3px" nzSize="small" (click)="updateThisCase()" nz-button nzType="primary">{{ 'UPDATE' | translate }}</button>
+      <div nz-row>
+        <div nz-col nzSpan="12">
+          <nz-alert nzType="success" nzMessage="{{leftTip}}"></nz-alert>
+        </div>
+        <div nz-col nzSpan="12">
+          <nz-alert nzType="info" nzMessage="{{rightTip}}"></nz-alert>
+        </div>
+      </div>
+
+      <nz-spin [nzSpinning]="isHandlingData">
+        <div nz-row>
+          <div nz-col nzSpan="12" style="height: 500px">
+            <ngx-monaco-editor style="z-index: 2" [options]="config" [(ngModel)]="leftStr" ></ngx-monaco-editor>
+          </div>
+          <div nz-col nzSpan="12" style="height: 500px">
+            <ngx-monaco-editor style="z-index: 2" [options]="config" [(ngModel)]="rightStr" ></ngx-monaco-editor>
+          </div>
+        </div>
+      </nz-spin>
+    </ng-container>
+  </nz-modal>
+</div>

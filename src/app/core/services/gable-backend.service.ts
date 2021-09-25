@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Result} from '../Result';
@@ -90,22 +90,45 @@ export class GableBackendService {
     });
   }
 
-  public getUnitConfig(id: string): Observable<Result<any>>  {
+  public getUnitConfig(id: string, isPub: boolean): Observable<Result<any>>  {
     return this.httpClient.get<Result<UnitResponse>>(this.prefix + 'api/unit', {
       params: {
-        uuid: id
+        uuid: id,
+        isPublic: isPub
       }
     });
   }
 
-  public runUnit(config: string, id: string, testType: string): Observable<Result<any>> {
-    return this.httpClient.post<Result<UnitResponse>>(this.prefix + 'api/unit/run', config, {
+  public getUnitConfigOfCase(id: string, isPub: boolean, caseID: string, version: number): Observable<Result<any>> {
+    return this.httpClient.get<Result<UnitResponse>>(this.prefix + 'api/unit', {
+      params: {
+        uuid: id,
+        caseId: caseID,
+        caseVersion: version,
+        isPublic: isPub
+      }
+    });
+  }
+
+  public runUnit(config: string, id: string, testType: string, isPub: boolean): Observable<Result<any>> {
+    const data = {
+      config: undefined,
+      instance: undefined
+    };
+    try {
+      data.config = JSON.parse(config);
+      data.instance = {};
+    } catch (e){
+      console.log(e);
+    }
+    return this.httpClient.post<Result<UnitResponse>>(this.prefix + 'api/unit/run', data, {
       headers: {
         'Content-Type': 'application/json'
       },
       params: {
         uuid: id,
-        type: testType
+        type: testType,
+        isPublic: isPub
       }
     });
   }
@@ -146,4 +169,34 @@ export class GableBackendService {
     });
   }
 
+  public getCase(id: string, isPub: boolean) {
+    return this.httpClient.get<Result<any>>(this.prefix + 'api/case', {
+      params: {
+        uuid: id,
+        isPublic: isPub
+      }
+    });
+  }
+
+  getOneCase(id: string, isPub: boolean, currentVersion: number, caseID: string) {
+    return this.httpClient.get<Result<any>>(this.prefix + 'api/case/item', {
+      params: {
+        uuid: id,
+        caseId: caseID,
+        isPublic: isPub,
+        version: currentVersion
+      }
+    });
+  }
+
+  updateCase(id: string, isPub: boolean, currentVersion: number, caseID: string, diffStr: any, jsonSchemaStr: any) {
+    return this.httpClient.put<Result<any>>(this.prefix + 'api/case', {diff:diffStr, jsonSchema: jsonSchemaStr}, {
+      params: {
+        uuid: id,
+        caseId: caseID,
+        isPublic: isPub,
+        version: currentVersion
+      }
+    });
+  }
 }

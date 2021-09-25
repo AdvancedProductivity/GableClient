@@ -98,6 +98,10 @@ export class UnitIndexComponent implements OnInit {
 
   updateUserMenu(newMenu: UnitMenuGroup[]) {
     this.userMenu = newMenu;
+    this.groups = [];
+    this.userMenu.forEach(value => {
+      this.groups.push({name: value.groupName, id: value.uuid});
+    });
     this.isShowAddDialog = false;
   }
 

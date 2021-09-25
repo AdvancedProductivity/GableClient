@@ -8,8 +8,9 @@
       ></app-default-test>
     </nz-tab>
     <nz-tab nzTitle="{{ 'CASE' | translate }}">
-
+      <ng-template nz-tab>
+        <app-case-manager [uuid]="id"></app-case-manager>
+      </ng-template>
     </nz-tab>
   </nz-tabset>
-
 </div>

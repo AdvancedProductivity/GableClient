@@ -26,7 +26,8 @@ import {NzInputModule} from 'ng-zorro-antd/input';
 import {AddGroupOrUnitTestComponent} from './add-group-or-unit-test/add-group-or-unit-test.component';
 import {NzFormModule} from 'ng-zorro-antd/form';
 import { NzSelectModule } from 'ng-zorro-antd/select';
-
+import { NzTableModule } from 'ng-zorro-antd/table';
+import { NzUploadModule } from 'ng-zorro-antd/upload';
 @NgModule({
   declarations: [PageNotFoundComponent, WebviewDirective, AddGroupOrUnitTestComponent],
   imports: [CommonModule,
@@ -38,8 +39,10 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
     NzSpinModule,
     NzIconModule,
     NzAlertModule,
+    NzTableModule,
     NzRadioModule,
     NzFormModule,
+    NzUploadModule,
     NzLayoutModule,
     NzSelectModule,
     NzGridModule,
@@ -58,10 +61,12 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
     NzLayoutModule,
     NzDrawerModule,
     NzDropDownModule,
+    NzTableModule,
     NzSpinModule,
     NzModalModule,
     NzIconModule,
     NzAlertModule,
+    NzUploadModule,
     NzFormModule,
     NzInputModule,
     NzSelectModule,
