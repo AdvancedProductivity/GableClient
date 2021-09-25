@@ -98,6 +98,17 @@ export class GableBackendService {
     });
   }
 
+  public updateConfig(id: string, body: string): Observable<Result<any>>  {
+    return this.httpClient.put<Result<any>>(this.prefix + 'api/unit', body, {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      params: {
+        uuid: id
+      }
+    });
+  }
+
   public getUnitConfigOfCase(id: string, isPub: boolean, caseID: string, version: number): Observable<Result<any>> {
     let p = {};
     if (caseID === undefined || version === undefined) {

@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {NzResizeEvent} from 'ng-zorro-antd/resizable';
 import {GableBackendService} from '../../core/services/gable-backend.service';
+import {NzMessageService} from "ng-zorro-antd/message";
 
 @Component({
   selector: 'app-default-test',
@@ -39,7 +40,9 @@ export class DefaultTestComponent implements OnInit {
   "not run"
   `;
   isRunning = false;
-  constructor(private gableBackendService: GableBackendService) {
+
+  constructor(private messageService: NzMessageService,
+              private gableBackendService: GableBackendService) {
   }
 
   ngOnInit(): void {
@@ -68,6 +71,14 @@ export class DefaultTestComponent implements OnInit {
     }, error => {
       this.isRunning = false;
       this.responseJson = JSON.stringify(error, null, '\t');
+    });
+  }
+
+  update() {
+    this.gableBackendService.updateConfig(this.uuid, this.configJson).subscribe((res) => {
+      if (res.result) {
+        this.messageService.success('Update success');
+      }
     });
   }
 

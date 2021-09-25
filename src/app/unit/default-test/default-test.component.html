@@ -12,6 +12,9 @@
     <button nz-button nzType="primary" (click)="run()">
       {{ 'RUN' | translate }}
     </button>
+    <button *ngIf="!isPublicUnit" style="margin-left: 10px" nz-button nzType="primary" (click)="update()">
+      {{ 'UPDATE' | translate }}
+    </button>
   </div>
   <nz-alert nzType="info" nzMessage="{{ 'IN' | translate }}"></nz-alert>
   <div [style]="{height: (contentHeight -64) + 'px', paddingBottom: '10px'}">

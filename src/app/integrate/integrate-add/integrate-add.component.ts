@@ -30,7 +30,7 @@ export class IntegrateAddComponent implements OnInit {
   loading = false;
   indeterminate = false;
   listOfData: readonly any[] = [];
-  listOfCurrentPageData: readonly [] = [];
+  listOfCurrentPageData: readonly any[] = [];
   setOfCheckedId = new Set<string>();
   selectCaseUuid = '';
   selectCaseName = '';
@@ -97,7 +97,7 @@ export class IntegrateAddComponent implements OnInit {
     }
   }
 
-  onCurrentPageDataChange(listOfCurrentPageData: readonly []): void {
+  onCurrentPageDataChange(listOfCurrentPageData: readonly any[]): void {
     this.listOfCurrentPageData = listOfCurrentPageData;
     this.refreshCheckedStatus();
   }
