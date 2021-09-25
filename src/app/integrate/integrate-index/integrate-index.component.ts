@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {GableBackendService} from "../../core/services/gable-backend.service";
 
 @Component({
   selector: 'app-integrate-index',
@@ -9,32 +7,9 @@ import {GableBackendService} from "../../core/services/gable-backend.service";
   ]
 })
 export class IntegrateIndexComponent implements OnInit {
-  result: Object = 100;
-  code = `import { NzCodeEditorModule } from 'ng-zorro-antd/code-editor'
-
-@Component({})
-export class SomeComponent {}`;
-  textConfig = {
-    theme: 'vs-light', language: 'typescript', fontSize: 14, glance: false, minimap: {enabled: false},
-    lineDecorationsWidth: 1, readOnly: false
-  };
-  lang = 'unGet';
-  constructor(private http: HttpClient, private gableBackend: GableBackendService) { }
+  constructor() { }
 
   ngOnInit(): void {
   }
 
-  calculation() {
-    this.http.post('/api/test/add?a=10&b=12', null).subscribe((res) => {
-      console.log(res);
-      this.result = res;
-    });
-  }
-
-
-  getLang() {
-    this.gableBackend.getBackendLanguage().subscribe((res: string) => {
-      this.lang = res;
-    });
-  }
 }

@@ -32,7 +32,6 @@ export class GableBackendService {
   public setEnv(envs: any){
     this.envMap.clear();
     envs.forEach(value => {
-      console.log('zzq see add env ' + value.typeName, value.configs);
       this.envMap.set(value.typeName, value.configs);
     });
   }
@@ -100,12 +99,40 @@ export class GableBackendService {
   }
 
   public getUnitConfigOfCase(id: string, isPub: boolean, caseID: string, version: number): Observable<Result<any>> {
-    return this.httpClient.get<Result<UnitResponse>>(this.prefix + 'api/unit', {
-      params: {
+    let p = {};
+    if (caseID === undefined || version === undefined) {
+      p = {
+        uuid: id,
+        isPublic: isPub
+      };
+    }else {
+      p = {
         uuid: id,
         caseId: caseID,
         caseVersion: version,
         isPublic: isPub
+      };
+    }
+    return this.httpClient.get<Result<UnitResponse>>(this.prefix + 'api/unit', {
+      params: p
+    });
+  }
+
+  public getUnitHistory(id: string, isPub: boolean, history: number): Observable<Result<any>> {
+    return this.httpClient.get<Result<UnitResponse>>(this.prefix + 'api/unit/history', {
+      params: {
+        uuid: id,
+        isPublic: isPub,
+        historyId: history
+      }
+    });
+  }
+
+  getIntegrateHistory(id: any, hisId: any) {
+    return this.httpClient.get<Result<any>>(this.prefix + 'api/integrate/history', {
+      params: {
+        uuid: id,
+        historyId: hisId
       }
     });
   }
@@ -196,6 +223,34 @@ export class GableBackendService {
         caseId: caseID,
         isPublic: isPub,
         version: currentVersion
+      }
+    });
+  }
+
+  getIntegrate() {
+    return this.httpClient.get<Result<any>>(this.prefix + 'api/integrate');
+  }
+
+  addIntegrate(waitForSave: any[], testName: string) {
+    return this.httpClient.put<Result<any>>(this.prefix + 'api/integrate', waitForSave, {
+      params:{
+        name: testName
+      }
+    });
+  }
+
+  getIntegrateDetail(enterId: string) {
+    return this.httpClient.get<Result<any>>(this.prefix + 'api/integrate/detail', {
+      params: {
+        uuid: enterId
+      }
+    });
+  }
+
+  addIntegrateHistory(integrateUuid: string, record: any[]) {
+    return this.httpClient.post<Result<any>>(this.prefix + 'api/integrate/addHistory', record, {
+      params:{
+        uuid: integrateUuid
       }
     });
   }

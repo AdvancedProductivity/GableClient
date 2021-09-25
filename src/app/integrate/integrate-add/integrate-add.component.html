@@ -1,0 +1,115 @@
+<nz-page-header
+  class="site-page-header"
+  (nzBack)="onBack()"
+  nzBackIcon
+  nzTitle="{{ 'ADD_INTEGRATE' | translate }}"
+>
+  <nz-page-header-extra>
+    <button (click)="saveIntegrateTest()" nz-button nzType="primary">{{ 'SAVE' | translate }}</button>
+  </nz-page-header-extra>
+</nz-page-header>
+<div [style]="{height: height + 'px'}" style="width: 100%;;overflow-y: auto">
+  <div nz-row style="margin-top: 10px">
+    <div nz-col nzSpan="8" style="padding: 20px">
+      <nz-collapse>
+        <nz-collapse-panel
+          [nzExtra]="extraTpl"
+          *ngFor="let unit of list;let i = index" [nzHeader]="unit.groupName" [nzActive]="i == 0">
+          <nz-table #middleTable nzSize="small" [nzData]="unit.units"
+                    [nzScroll]="{ x: '500px' }"
+                    [nzFrontPagination]="false" nzBordered nzOuterBordered>
+            <tbody>
+            <tr *ngFor="let data of middleTable.data">
+              <td>{{data.unitName}}</td>
+              <td style="width: 70px">{{data.type}}</td>
+              <td>
+                <button style="margin: 3px" nzSize="small" (click)="addUnit(data.uuid, data.unitName, data.type)"
+                        nz-button nzType="primary">{{ 'ADD' | translate }}</button>
+                <button style="margin: 3px" nzSize="small"
+                        (click)="selectCase(data.uuid, data.unitName, data.type)"
+                        nz-button nzType="primary">{{ 'CASE' | translate }}</button>
+              </td>
+            </tr>
+            </tbody>
+          </nz-table>
+          <ng-template #extraTpl>
+            <i nz-icon nzType="file-add" nzTheme="outline" (click)="$event.stopPropagation();batchAdd(i)"></i>
+          </ng-template>
+        </nz-collapse-panel>
+      </nz-collapse>
+    </div>
+    <div nz-col nzSpan="8" style="padding: 20px">
+      <nz-table #middleTable nzSize="small"
+                [nzData]="waitForSave.length == 0?[]:waitForSave"
+                [nzScroll]="{ x: '500px',y: (height-200) + 'px' }"
+                [nzFrontPagination]="false" nzBordered nzOuterBordered>
+        <thead>
+        <tr>
+          <th>Tag</th>
+          <th>Type</th>
+          <th>Name</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let data of waitForSave;let i = index" (click)="showItem(i)">
+          <td>
+            <nz-tag *ngIf="data.tag== 'test'" [nzColor]="'#2db7f5'">test</nz-tag>
+            <nz-tag *ngIf="data.tag== 'case'" [nzColor]="'#87d068'">case</nz-tag>
+          </td>
+          <td>{{data.type}}</td>
+          <td>{{data.name}}</td>
+        </tr>
+        </tbody>
+      </nz-table>
+    </div>
+    <div nz-col nzSpan="8" style="padding: 20px">
+      <nz-spin [nzSpinning]="isHandlingData">
+        <div style="height: 500px">
+          <ngx-monaco-editor style="z-index: 2" [options]="config" [(ngModel)]="inStr" ></ngx-monaco-editor>
+        </div>
+      </nz-spin>
+    </div>
+  </div>
+  <nz-modal [(nzVisible)]="isShowCase"
+            nzWidth="80%"
+            nzTitle="The first Modal" (nzOnCancel)="handleCancel()" [nzFooter]="null">
+    <ng-container *nzModalContent>
+      <button
+        nz-button
+        nzType="primary"
+        [disabled]="setOfCheckedId.size === 0"
+        [nzLoading]="loading"
+        (click)="sendRequest()"
+      >
+        {{'ADD_CASE' | translate}}
+      </button>
+      <nz-table #middleTable nzSize="middle"
+                [nzScroll]="{ y: (height-87) + 'px' }"
+                [nzData]="listOfData"
+                (nzCurrentPageDataChange)="onCurrentPageDataChange($event)"
+                [nzFrontPagination]="false" nzBordered nzOuterBordered>
+        <thead>
+        <tr>
+          <th [nzChecked]="checked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="onAllChecked($event)"></th>
+          <th *ngFor="let h of headers">{{h}}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let data of middleTable.data">
+          <td
+            [nzChecked]="setOfCheckedId.has(data.id)"
+            [nzDisabled]="data.disabled"
+            (nzCheckedChange)="onItemChecked(data.id, $event)"
+          ></td>
+          <td  *ngFor="let h of headers">{{ data['' + h] }}</td>
+        </tr>
+        </tbody>
+      </nz-table>
+    </ng-container>
+  </nz-modal>
+  <nz-modal [(nzVisible)]="isSave" nzTitle="The first Modal" (nzOnCancel)="isSave = false" (nzOnOk)="doSave()">
+    <ng-container *nzModalContent>
+      <input nz-input placeholder="Basic usage" [(ngModel)]="name" />
+    </ng-container>
+  </nz-modal>
+</div>

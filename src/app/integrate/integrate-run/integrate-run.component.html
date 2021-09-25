@@ -1,0 +1,42 @@
+
+
+<nz-page-header
+  class="site-page-header"
+  (nzBack)="onBack()"
+  nzBackIcon
+  nzTitle="{{ 'RUN' | translate }}"
+>
+  <nz-page-header-extra>
+    <button *ngIf="!isShowHistory" [disabled]="isRunning" (click)="run()" nz-button nzType="primary">{{ 'RUN' | translate }}</button>
+  </nz-page-header-extra>
+</nz-page-header>
+<div >
+  <div nz-row style="margin-top: 10px">
+    <div  [style]="{height: (height-87) + 'px'}" nz-col nzSpan="4" style="padding: 20px;overflow-y: auto">
+      <nz-steps [nzCurrent]="1" nzDirection="vertical">
+        <nz-step [nzStatus]="data.status"  *ngFor="let data of record" nzTitle="{{data.name}}" [nzDescription]="progressTemplate">
+          <ng-template #progressTemplate >
+            <div (click)="showDetail(data.uuid, data.caseId, data.version,data.historyId)">
+              <nz-tag *ngIf="data.tag== 'test'" [nzColor]="'#2db7f5'">test</nz-tag>
+              <nz-tag *ngIf="data.tag== 'case'" [nzColor]="'#87d068'">case</nz-tag>
+            </div>
+          </ng-template>
+        </nz-step>
+      </nz-steps>
+    </div>
+    <div nz-col nzSpan="10" style="padding: 20px">
+      <nz-spin [nzSpinning]="isHandlingData">
+        <div  [style]="{height: (height-87) + 'px'}" style="height: 500px">
+          <ngx-monaco-editor style="z-index: 2" [options]="config" [(ngModel)]="inStr" ></ngx-monaco-editor>
+        </div>
+      </nz-spin>
+    </div>
+    <div nz-col nzSpan="10" style="padding: 20px">
+      <nz-spin [nzSpinning]="isHandlingData">
+        <div [style]="{height: (height-87) + 'px'}" >
+          <ngx-monaco-editor style="z-index: 2" [options]="config" [(ngModel)]="outStr" ></ngx-monaco-editor>
+        </div>
+      </nz-spin>
+    </div>
+  </div>
+</div>

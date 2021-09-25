@@ -82,14 +82,14 @@ export class CaseManagerComponent implements OnInit {
       }if (typeof res.data.diff === 'string') {
         this.leftStr = res.data.diff;
       }else {
-        this.leftStr = JSON.stringify(res.data.diff);
+        this.leftStr = JSON.stringify(res.data.diff, null, '\t');
       }
       if (res.data.jsonSchema == null){
         this.rightStr = '';
       }if (typeof res.data.jsonSchema === 'string') {
         this.rightStr = res.data.jsonSchema;
       }else {
-        this.rightStr = JSON.stringify(res.data.jsonSchema);
+        this.rightStr = JSON.stringify(res.data.jsonSchema, null, '\t');
       }
       this.isHandlingData = false;
     });

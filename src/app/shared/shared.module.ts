@@ -17,6 +17,7 @@ import {NzResizableModule} from 'ng-zorro-antd/resizable';
 import {NzSpinModule} from 'ng-zorro-antd/spin';
 import {NzAlertModule} from 'ng-zorro-antd/alert';
 // import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzTagModule } from 'ng-zorro-antd/tag';
 import {NzGridModule} from 'ng-zorro-antd/grid';
 import {NzIconModule} from 'ng-zorro-antd/icon';
 import {NzModalModule} from 'ng-zorro-antd/modal';
@@ -28,6 +29,10 @@ import {NzFormModule} from 'ng-zorro-antd/form';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
+import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
+import { NzCollapseModule } from 'ng-zorro-antd/collapse';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { NzStepsModule } from 'ng-zorro-antd/steps';
 @NgModule({
   declarations: [PageNotFoundComponent, WebviewDirective, AddGroupOrUnitTestComponent],
   imports: [CommonModule,
@@ -41,39 +46,49 @@ import { NzUploadModule } from 'ng-zorro-antd/upload';
     NzAlertModule,
     NzTableModule,
     NzRadioModule,
+    NzTagModule,
     NzFormModule,
     NzUploadModule,
     NzLayoutModule,
+    NzCheckboxModule,
     NzSelectModule,
+    NzCollapseModule,
     NzGridModule,
     NzMessageModule,
     NzInputModule,
     MonacoEditorModule,
     NzButtonModule,
+    NzPageHeaderModule,
     NzDrawerModule,
     BrowserModule,
     NzDropDownModule,
     BrowserAnimationsModule,
     FormsModule,
+    NzStepsModule,
     ReactiveFormsModule
   ],
   exports: [TranslateModule, WebviewDirective,
     NzLayoutModule,
     NzDrawerModule,
     NzDropDownModule,
+    NzTagModule,
     NzTableModule,
     NzSpinModule,
     NzModalModule,
     NzIconModule,
+    NzCollapseModule,
     NzAlertModule,
     NzUploadModule,
+    NzCheckboxModule,
     NzFormModule,
     NzInputModule,
     NzSelectModule,
+    NzStepsModule,
     NzMessageModule,
     MonacoEditorModule,
     NzResizableModule,
     NzTabsModule,
+    NzPageHeaderModule,
     NzRadioModule,
     NzGridModule,
     // NzCardModule,

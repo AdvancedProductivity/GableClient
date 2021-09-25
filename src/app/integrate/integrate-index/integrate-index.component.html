@@ -1,11 +1,1 @@
-<div style="padding: 30px">
-  <button nz-button nzType="default" >{{'result is ' + result }}</button>
-  <div>backend language is: {{ lang }}</div>
-</div>
-<div style="padding: 30px">
-  <button nz-button nzType="primary" (click)="calculation()">calculate</button>
-  <button style="margin-left: 10px" nz-button nzType="primary" (click)="getLang()">get language</button>
-</div>
-<div style="width: 600px;height: 600px">
-  <ngx-monaco-editor style="z-index: 2" [options]="textConfig" [(ngModel)]="code" ></ngx-monaco-editor>
-</div>
+<router-outlet></router-outlet>

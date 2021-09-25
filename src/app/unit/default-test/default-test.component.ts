@@ -47,7 +47,6 @@ export class DefaultTestComponent implements OnInit {
       this.isPublicUnit = this.uuid.startsWith('public_');
       this.getConfig();
     }
-    console.log('zzq see config', this.uuid);
   }
 
   onContentResize({height}: NzResizeEvent) {
