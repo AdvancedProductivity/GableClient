@@ -119,6 +119,7 @@ export class CaseManagerComponent implements OnInit {
     this.isHandlingData = true;
     this.leftTip =  'IN';
     this.rightTip = 'OUT';
+    this.selectId = id;
     this.gableBackendService.getUnitConfigOfCase(this.uuid, this.isPublicUnit, id + '', this.currentVersion).subscribe((configRes) => {
       this.testType = configRes.data.type;
       this.leftStr = JSON.stringify(configRes.data.config, null, '\t');
@@ -134,5 +135,13 @@ export class CaseManagerComponent implements OnInit {
         this.isHandlingData = false;
       });
     });
+  }
+
+  gotoModify() {
+    const id = this.selectId;
+    this.handleCancel();
+    setTimeout(() => {
+      this.showDetail(id);
+    }, 350);
   }
 }
