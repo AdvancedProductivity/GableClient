@@ -35,6 +35,7 @@ export class CaseManagerComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.height = document.documentElement.clientHeight - 56 - 46 - 16;
     this.isPublicUnit = this.uuid.startsWith('public_');
     this.uploadPath = this.gableBackendService.getServer() + 'api/case/upload?uuid=' + this.uuid + '&isPublic=' + this.isPublicUnit;
     this.gableBackendService.getCase(this.uuid, this.isPublicUnit).subscribe(res => {

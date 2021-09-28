@@ -1,4 +1,4 @@
-<div style="overflow-y:auto;">
+<div>
   <div style="padding-bottom: 8px">
     <nz-upload
       nzAction="{{uploadPath}}"
@@ -16,7 +16,7 @@
 <!--    <button style="margin-right: 8px;" nz-button nzType="primary">Primary Button</button>-->
   </div>
   <nz-table #middleTable nzSize="middle" [nzData]="records"
-            [nzScroll]="{ y: (height-87) + 'px' }"
+            [nzScroll]="{ y: (height-120) + 'px' }"
             [nzFrontPagination]="false" nzBordered nzOuterBordered>
     <thead>
     <tr>
