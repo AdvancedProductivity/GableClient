@@ -7,14 +7,23 @@
   nzTitle="{{ 'RUN' | translate }}"
 >
   <nz-page-header-extra>
-    <button *ngIf="!isShowHistory" [disabled]="isRunning" (click)="run()" nz-button nzType="primary">{{ 'RUN' | translate }}</button>
+    <nz-select style="margin-right: 10px;width: 150px" nzShowSearch nzAllowClear
+               nzPlaceHolder="{{ 'SELECT_ENV' | translate }}"
+               [(ngModel)]="selectEnvUuid"
+               [nzDisabled]="isRunning"
+    >
+      <nz-option *ngFor="let env of envs" nzLabel="{{env.name}}" nzValue="{{env.uuid}}"></nz-option>
+    </nz-select>
+    <button *ngIf="!isShowHistory" [disabled]="isRunning" (click)="run()"
+            nz-button nzType="primary">{{ 'RUN' | translate }}</button>
   </nz-page-header-extra>
 </nz-page-header>
 <div >
   <div nz-row style="margin-top: 10px">
     <div  [style]="{height: (height-87) + 'px'}" nz-col nzSpan="4" style="padding: 20px;overflow-y: auto">
       <nz-steps [nzCurrent]="1" nzDirection="vertical">
-        <nz-step [nzStatus]="data.status"  *ngFor="let data of record" nzTitle="{{data.name}}" [nzDescription]="progressTemplate">
+        <nz-step [nzStatus]="data.status"  *ngFor="let data of record" nzTitle="{{data.name}}"
+                 [nzDescription]="progressTemplate">
           <ng-template #progressTemplate >
             <div (click)="showDetail(data.uuid, data.caseId, data.version,data.historyId)">
               <nz-tag *ngIf="data.tag== 'test'" [nzColor]="'#2db7f5'">test</nz-tag>

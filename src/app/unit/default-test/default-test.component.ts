@@ -1,7 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {NzResizeEvent} from 'ng-zorro-antd/resizable';
 import {GableBackendService} from '../../core/services/gable-backend.service';
-import {NzMessageService} from "ng-zorro-antd/message";
+import {NzMessageService} from 'ng-zorro-antd/message';
+import {MonacoStandaloneCodeEditor} from '@materia-ui/ngx-monaco-editor';
 
 @Component({
   selector: 'app-default-test',
@@ -40,7 +41,9 @@ export class DefaultTestComponent implements OnInit {
   "not run"
   `;
   isRunning = false;
-
+  envs = [];
+  selectEnvUuid = '';
+  configEditor: MonacoStandaloneCodeEditor | undefined;
   constructor(private messageService: NzMessageService,
               private gableBackendService: GableBackendService) {
   }
@@ -82,13 +85,47 @@ export class DefaultTestComponent implements OnInit {
     });
   }
 
-  private getConfig() {
-    this.gableBackendService.getUnitConfig(this.uuid, this.isPublicUnit).subscribe((res) => {
+  changeEnv() {
+    console.log('zzq see select env', this.selectEnvUuid);
+    this.getConfig(false);
+  }
+
+  initEditor(editor: MonacoStandaloneCodeEditor): void {
+    this.configEditor = editor;
+  }
+
+  setConfigReadOnly(isReadOnly) {
+    if (this.configEditor === undefined) {
+      return;
+    }
+    this.configEditor.updateOptions({readOnly: isReadOnly});
+  }
+
+  private getConfig(isSetEnv: boolean = true) {
+    this.gableBackendService.getUnitConfig(this.uuid, this.isPublicUnit, this.selectEnvUuid).subscribe((res) => {
       if (this.isPublicUnit || res.data.isUnmodify) {
-        this.config.readOnly = true;
+        this.setConfigReadOnly(true);
+      } else {
+        this.setConfigReadOnly(false);
       }
       this.type = res.data.type;
       this.configJson = JSON.stringify(res.data.config, null, '\t');
+      // set env select
+      if (isSetEnv) {
+        this.setEnv(res.data.type);
+      }
     });
   }
+
+  private setEnv(envTypeName: string) {
+    const defaultConfig = {name: 'Un Select', uuid: ''};
+    const envArrays = this.gableBackendService.getEnvByTypeFromCache(envTypeName);
+    const arr = [];
+    arr.push(defaultConfig);
+    envArrays.forEach((value) => {
+      arr.push(value);
+    });
+    this.envs = arr;
+  }
+
 }

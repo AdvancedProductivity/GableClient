@@ -2,6 +2,8 @@ import {Component, Input, OnInit} from '@angular/core';
 import {GableBackendService} from '../../core/services/gable-backend.service';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {NzUploadChangeParam} from 'ng-zorro-antd/upload';
+import {ElectronService} from '../../core/services';
+import {MonacoStandaloneCodeEditor} from '@materia-ui/ngx-monaco-editor';
 
 @Component({
   selector: 'app-case-manager',
@@ -30,11 +32,17 @@ export class CaseManagerComponent implements OnInit {
   isHandlingData = false;
   selectId = '';
   testType = '';
+  isElectron = false;
+  leftEditor: MonacoStandaloneCodeEditor | undefined;
+  rightEditor: MonacoStandaloneCodeEditor | undefined;
   constructor(private gableBackendService: GableBackendService,
+              private electronService: ElectronService,
               private msg: NzMessageService) {
   }
 
   ngOnInit(): void {
+    this.isElectron = this.electronService.isElectron;
+
     this.height = document.documentElement.clientHeight - 56 - 46 - 16;
     this.isPublicUnit = this.uuid.startsWith('public_');
     this.uploadPath = this.gableBackendService.getServer() + 'api/case/upload?uuid=' + this.uuid + '&isPublic=' + this.isPublicUnit;
@@ -70,7 +78,6 @@ export class CaseManagerComponent implements OnInit {
   }
 
   showDetail(id) {
-    this.config.readOnly = false;
     this.canUpdate = true;
     this.isShowDetail = true;
     this.isHandlingData = true;
@@ -93,6 +100,7 @@ export class CaseManagerComponent implements OnInit {
         this.rightStr = JSON.stringify(res.data.jsonSchema, null, '\t');
       }
       this.isHandlingData = false;
+      this.makeReadOnly(false);
     });
   }
 
@@ -114,7 +122,6 @@ export class CaseManagerComponent implements OnInit {
   }
 
   runCase(id) {
-    this.config.readOnly = true;
     this.canUpdate = false;
     this.isShowDetail = true;
     this.isHandlingData = true;
@@ -135,14 +142,50 @@ export class CaseManagerComponent implements OnInit {
         this.rightStr = JSON.stringify(error, null, '\t');
         this.isHandlingData = false;
       });
+      this.makeReadOnly(true);
     });
   }
 
   gotoModify() {
-    const id = this.selectId;
-    this.handleCancel();
-    setTimeout(() => {
-      this.showDetail(id);
-    }, 350);
+    this.showDetail(this.selectId);
+  }
+
+  export() {
+    if (this.isElectron) {
+      return;
+    }
+    window.open(this.gableBackendService.getServer() + 'api/case/export?uuid=' + this.uuid + '&isPublic=' + this.isPublicUnit, '_blank');
+  }
+
+  format() {
+    if (this.leftEditor === undefined) {
+      return;
+    }else {
+      this.leftEditor.getAction('editor.action.formatDocument').run();
+    }
+    if (this.rightEditor === undefined) {
+      return;
+    }else {
+      this.rightEditor.getAction('editor.action.formatDocument').run();
+    }
+  }
+  initLeftEditor(editor: MonacoStandaloneCodeEditor): void {
+    this.leftEditor = editor;
+  }
+  initRightEditor(editor: MonacoStandaloneCodeEditor): void {
+    this.rightEditor = editor;
+  }
+
+  makeReadOnly(isReadOnly: boolean) {
+    if (this.leftEditor === undefined) {
+      return;
+    } else {
+      this.leftEditor.updateOptions({readOnly: isReadOnly});
+    }
+    if (this.rightEditor === undefined) {
+      return;
+    } else {
+      this.rightEditor.updateOptions({readOnly: isReadOnly});
+    }
   }
 }

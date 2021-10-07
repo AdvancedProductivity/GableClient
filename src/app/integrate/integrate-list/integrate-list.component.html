@@ -8,6 +8,7 @@
     <thead>
     <tr>
       <th>{{ 'TITLE' | translate }}</th>
+      <th>{{ 'TAG' | translate }}</th>
       <th>{{ 'OPERATION' | translate }}</th>
     </tr>
     </thead>
@@ -15,9 +16,28 @@
     <tr *ngFor="let data of middleTable.data">
       <td>{{data.name}}</td>
       <td>
-        <a routerLink="../integrate-run"  [queryParams]="{ uuid: data.uuid}" style="margin-right: 8px;"  nz-button nzType="link">{{ 'RUN' | translate }}</a>
+        <div *ngIf="data.tags !== undefined">
+          <nz-tag *ngFor="let tag of data.tags" [nzColor]="'magenta'">{{tag}}</nz-tag>
+        </div>
+        <div *ngIf="data.tags === undefined">
+        </div>
+      </td>
+      <td>
+        <a routerLink="../integrate-run"  [queryParams]="{ uuid: data.uuid}" style="margin-right: 8px;"
+           nz-button nzType="link">
+          {{ 'RUN' | translate }}
+        </a>
+        <a style="margin-left: 10px" nz-button nzType="link" (click)="addTag(data.uuid)">
+          {{ 'ADD_TAG' | translate }}
+        </a>
       </td>
     </tr>
     </tbody>
   </nz-table>
+
+  <nz-modal [(nzVisible)]="isAddTagModal" nzTitle="The first Modal" (nzOnCancel)="isAddTagModal = false" (nzOnOk)="doAddTag()">
+    <ng-container *nzModalContent>
+      <input nz-input placeholder="{{ 'INPUT_TAG_NAME' | translate }}" [(ngModel)]="tagName" />
+    </ng-container>
+  </nz-modal>
 </div>

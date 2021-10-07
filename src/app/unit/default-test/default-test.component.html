@@ -8,7 +8,14 @@
   <nz-resize-handle nzDirection="bottom">
     <div class="content-resize-line"></div>
   </nz-resize-handle>
-  <div>
+  <div style="padding-left: 10px;padding-bottom: 2px">
+    <nz-select style="margin-right: 10px;width: 150px" nzShowSearch nzAllowClear
+               nzPlaceHolder="{{ 'SELECT_ENV' | translate }}"
+               [(ngModel)]="selectEnvUuid"
+               (ngModelChange)="changeEnv()"
+    >
+      <nz-option *ngFor="let env of envs" nzLabel="{{env.name}}" nzValue="{{env.uuid}}"></nz-option>
+    </nz-select>
     <button nz-button nzType="primary" (click)="run()">
       {{ 'RUN' | translate }}
     </button>
@@ -18,7 +25,9 @@
   </div>
   <nz-alert nzType="info" nzMessage="{{ 'IN' | translate }}"></nz-alert>
   <div [style]="{height: (contentHeight -64) + 'px', paddingBottom: '10px'}">
-    <ngx-monaco-editor style="z-index: 2" [options]="config" [(ngModel)]="configJson" ></ngx-monaco-editor>
+    <ngx-monaco-editor (init)="initEditor($event)"
+                       style="z-index: 2"
+                       [options]="config" [(ngModel)]="configJson" ></ngx-monaco-editor>
   </div>
 </div>
 <div >

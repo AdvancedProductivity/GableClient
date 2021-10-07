@@ -36,6 +36,10 @@ export class GableBackendService {
     });
   }
 
+  public getEnvByTypeFromCache(type: string){
+    return this.envMap.get(type);
+  }
+
   public setServer(host: string): boolean{
     if (host === undefined || host === null || host.length == 0) {
       return false;
@@ -89,11 +93,12 @@ export class GableBackendService {
     });
   }
 
-  public getUnitConfig(id: string, isPub: boolean): Observable<Result<any>>  {
+  public getUnitConfig(id: string, isPub: boolean, envUuid: string = ''): Observable<Result<any>> {
     return this.httpClient.get<Result<UnitResponse>>(this.prefix + 'api/unit', {
       params: {
         uuid: id,
-        isPublic: isPub
+        isPublic: isPub,
+        env: envUuid,
       }
     });
   }
@@ -109,17 +114,19 @@ export class GableBackendService {
     });
   }
 
-  public getUnitConfigOfCase(id: string, isPub: boolean, caseID: string, version: number): Observable<Result<any>> {
+  public getUnitConfigOfCase(id: string, isPub: boolean, caseID: string, version: number, envUuid: string = ''): Observable<Result<any>> {
     let p = {};
     if (caseID === undefined || version === undefined) {
       p = {
         uuid: id,
+        env: envUuid,
         isPublic: isPub
       };
-    }else {
+    } else {
       p = {
         uuid: id,
         caseId: caseID,
+        env: envUuid,
         caseVersion: version,
         isPublic: isPub
       };
@@ -262,6 +269,15 @@ export class GableBackendService {
     return this.httpClient.post<Result<any>>(this.prefix + 'api/integrate/addHistory', record, {
       params:{
         uuid: integrateUuid
+      }
+    });
+  }
+
+  addTag(integrateUuid: string, name: string) {
+    return this.httpClient.post<Result<any>>(this.prefix + 'api/tag',null,{
+      params:{
+        uuid: integrateUuid,
+        tagName: name
       }
     });
   }
