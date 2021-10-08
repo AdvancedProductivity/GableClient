@@ -23,11 +23,11 @@
         </div>
       </td>
       <td>
-        <a routerLink="../integrate-run"  [queryParams]="{ uuid: data.uuid}" style="margin-right: 8px;"
+        <a routerLink="../integrate-run"  [queryParams]="{ uuid: data.uuid}"
            nz-button nzType="link">
           {{ 'RUN' | translate }}
         </a>
-        <a style="margin-left: 10px" nz-button nzType="link" (click)="addTag(data.uuid)">
+        <a nz-button nzType="link" (click)="addTag(data.uuid)">
           {{ 'ADD_TAG' | translate }}
         </a>
       </td>
@@ -35,7 +35,10 @@
     </tbody>
   </nz-table>
 
-  <nz-modal [(nzVisible)]="isAddTagModal" nzTitle="The first Modal" (nzOnCancel)="isAddTagModal = false" (nzOnOk)="doAddTag()">
+  <nz-modal [(nzVisible)]="isAddTagModal"
+            nzTitle="{{ 'ADD_TAG' | translate }}"
+            (nzOnCancel)="isAddTagModal = false"
+            (nzOnOk)="doAddTag()">
     <ng-container *nzModalContent>
       <input nz-input placeholder="{{ 'INPUT_TAG_NAME' | translate }}" [(ngModel)]="tagName" />
     </ng-container>

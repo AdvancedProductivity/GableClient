@@ -86,9 +86,11 @@ export class IntegrateRunComponent implements OnInit {
     const envArrays = this.gableBackendService.getEnvByTypeFromCache(envTypeName);
     const arr = [];
     arr.push(defaultConfig);
-    envArrays.forEach((value) => {
-      arr.push(value);
-    });
+    if (envArrays !== undefined) {
+      envArrays.forEach((value) => {
+        arr.push(value);
+      });
+    }
     this.envs = arr;
   }
 

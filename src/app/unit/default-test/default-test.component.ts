@@ -86,7 +86,6 @@ export class DefaultTestComponent implements OnInit {
   }
 
   changeEnv() {
-    console.log('zzq see select env', this.selectEnvUuid);
     this.getConfig(false);
   }
 
@@ -122,9 +121,11 @@ export class DefaultTestComponent implements OnInit {
     const envArrays = this.gableBackendService.getEnvByTypeFromCache(envTypeName);
     const arr = [];
     arr.push(defaultConfig);
-    envArrays.forEach((value) => {
-      arr.push(value);
-    });
+    if (envArrays !== undefined) {
+      envArrays.forEach((value) => {
+        arr.push(value);
+      });
+    }
     this.envs = arr;
   }
 
