@@ -281,4 +281,12 @@ export class GableBackendService {
       }
     });
   }
+
+  public getGlobalConfig(): Observable<any> {
+    return this.httpClient.get(this.prefix + 'api/global_config');
+  }
+
+  public updateGlobalConfig(config: any): Observable<any> {
+    return this.httpClient.post(this.prefix + 'api/global_config', config);
+  }
 }

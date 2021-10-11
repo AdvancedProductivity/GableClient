@@ -66,7 +66,8 @@ export class DefaultTestComponent implements OnInit {
     this.isRunning = true;
     this.gableBackendService.runUnit(this.configJson, this.uuid, this.type, this.isPublicUnit).subscribe((res: any) => {
       this.isRunning = false;
-      if (this.type === 'HTTP' && res.result && res.data.code === 200 && (typeof res.data.content === 'string')) {
+      if (this.type === 'HTTP' && res.result && res.data.code === 200 && (typeof res.data.content === 'string')
+        && res.data.contentType.startsWith('text/json')) {
         this.responseJson = JSON.stringify(JSON.parse(res.data.content), null, '\t');
       } else {
         this.responseJson = JSON.stringify(res.data, null, '\t');

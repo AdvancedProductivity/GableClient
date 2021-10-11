@@ -6,6 +6,7 @@ import { LanguageSettingComponent } from './language-setting/language-setting.co
 import { GableSettingComponent } from '../setting/gable-setting/gable-setting.component';
 import { HostSettingComponent } from './host-setting/host-setting.component';
 import { EnvSettingComponent } from './env-setting/env-setting.component';
+import { GlobalSettingComponent } from '../setting/global-setting/global-setting.component';
 
 @NgModule({
   declarations: [
@@ -13,7 +14,8 @@ import { EnvSettingComponent } from './env-setting/env-setting.component';
     LanguageSettingComponent,
     GableSettingComponent,
     HostSettingComponent,
-    EnvSettingComponent
+    EnvSettingComponent,
+    GlobalSettingComponent
   ],
   imports: [
     CommonModule,
