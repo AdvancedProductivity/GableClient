@@ -21,10 +21,12 @@ export class HostSettingComponent implements OnInit {
     const b = this.gableBackendService.setServer(this.host);
     if (b) {
       if (this.electronService.isElectron) {
+        console.log('is electron');
         // todo electron reload
-        location.reload();
+        // location.reload();
       } else {
-        location.reload();
+        console.log('is not electron');
+        // location.reload();
       }
     }
   }

@@ -27,7 +27,7 @@
           <ng-template #progressTemplate >
             <div (click)="showDetail(data.uuid, data.caseId, data.version,data.historyId)">
               <nz-tag *ngIf="data.tag== 'test'" [nzColor]="'#2db7f5'">test</nz-tag>
-              <nz-tag *ngIf="data.tag== 'case'" [nzColor]="'#87d068'">case</nz-tag>
+              <nz-tag *ngIf="data.tag== 'case'" [nzColor]="'#87d068'">{{data.caseId}}</nz-tag>
             </div>
           </ng-template>
         </nz-step>

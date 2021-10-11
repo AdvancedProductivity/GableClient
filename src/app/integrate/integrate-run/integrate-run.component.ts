@@ -63,7 +63,7 @@ export class IntegrateRunComponent implements OnInit {
   showDetail(uuid: any, caseId: any, version, historyId: any) {
     this.isHandlingData = true;
     if (historyId === undefined) {
-      this.gableBackendService.getUnitConfigOfCase(uuid, true, caseId, version).subscribe((res) => {
+      this.gableBackendService.getUnitConfigOfCase(uuid, true, caseId, version, this.selectEnvUuid).subscribe((res) => {
         if (res.result) {
           this.inStr = JSON.stringify(res.data, null, '\t');
           this.isHandlingData = false;
