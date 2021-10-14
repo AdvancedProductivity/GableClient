@@ -38,6 +38,8 @@ export class CaseManagerComponent implements OnInit {
   isShowAllField = false;
   inStr = undefined;
   allFieldStr = undefined;
+  jsonSchemaStr = '';
+  isShowJsonSchema = false;
   constructor(private gableBackendService: GableBackendService,
               private electronService: ElectronService,
               private msg: NzMessageService) {
@@ -214,6 +216,14 @@ export class CaseManagerComponent implements OnInit {
       this.allFieldStr = JSON.stringify(out.data.allField, null, '\t');
       this.inStr = JSON.stringify(out.data.in, null, '\t');
       this.showAllField();
+    }, error => {
+    });
+  }
+
+  generateJsonSchema() {
+    this.gableBackendService.generateJsonShema(this.rightStr, this.testType).subscribe((out: any) => {
+      this.jsonSchemaStr = JSON.stringify(out.data, null, '\t');
+      this.isShowJsonSchema = true;
     }, error => {
     });
   }

@@ -79,6 +79,10 @@
                 style="margin: 3px" nzSize="small"
                 (click)="gotoModify()"
                 nz-button nzType="primary">{{ 'MODIFY' | translate }}</button>
+        <button *ngIf="!canUpdate"
+                style="margin: 3px" nzSize="small"
+                (click)="generateJsonSchema()"
+                nz-button nzType="primary">{{ 'GENERATE_JSON_SCHEMA' | translate }}</button>
       </div>
       <div nz-row>
         <div nz-col nzSpan="12">
@@ -103,6 +107,13 @@
           </div>
         </div>
       </nz-spin>
+    </ng-container>
+  </nz-modal>
+  <nz-modal [(nzVisible)]="isShowJsonSchema"
+            nzWidth="80%"
+            nzTitle="The first Modal" (nzOnCancel)="isShowJsonSchema = false" [nzFooter]="null">
+    <ng-container *nzModalContent>
+      <textarea rows="4" style="width: 100%;height: 400px" nz-input [ngModel]="jsonSchemaStr"></textarea>
     </ng-container>
   </nz-modal>
 </div>

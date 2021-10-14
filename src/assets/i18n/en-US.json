@@ -77,6 +77,7 @@
   "ADD_INTEGRATE": "Add Integrate Test",
   "UPLOAD": "Upload Excel",
   "UPLOAD_JSON": "Export Json Case",
+  "GENERATE_JSON_SCHEMA": "Generate JsonSchema",
   "SHOW_ALL_FIELD": "All Field",
   "OPERATION": "Operation",
   "ADD_ENV": "add env"

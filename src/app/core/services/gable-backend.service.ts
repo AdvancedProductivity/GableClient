@@ -298,4 +298,15 @@ export class GableBackendService {
       }
     });
   }
+
+  generateJsonShema(jsonStr: string, testType: string) {
+    return this.httpClient.post(this.prefix + 'api/jsonSchema', jsonStr, {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      params: {
+        type: testType,
+      }
+    });
+  }
 }
