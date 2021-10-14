@@ -63,6 +63,7 @@
   "ADD_TEST": "Add Test",
   "ADD": "add",
   "EXPORT_CASE": "Export Case",
+  "EXPORT_CASE_JSON": "Export Case As Json",
   "SAVE": "save",
   "FORMAT": "Format",
   "TAG": "Tag",
@@ -75,6 +76,8 @@
   "TITLE": "Title",
   "ADD_INTEGRATE": "Add Integrate Test",
   "UPLOAD": "Upload Excel",
+  "UPLOAD_JSON": "Export Json Case",
+  "SHOW_ALL_FIELD": "All Field",
   "OPERATION": "Operation",
   "ADD_ENV": "add env"
 }

@@ -289,4 +289,13 @@ export class GableBackendService {
   public updateGlobalConfig(config: any): Observable<any> {
     return this.httpClient.post(this.prefix + 'api/global_config', config);
   }
+
+  getAllFieldInfo(id: string, isPublicUnit: boolean) {
+    return this.httpClient.get(this.prefix + 'api/unit/allField', {
+      params: {
+        uuid: id,
+        isPublic: isPublicUnit
+      }
+    });
+  }
 }

@@ -13,9 +13,28 @@
         {{ 'UPLOAD' | translate }}
       </button>
     </nz-upload>
+    <nz-upload
+      nzAction="{{uploadPath}}"
+      [nzLimit]="1"
+      style="margin-right: 8px;"
+      [nzAccept]="'.json'"
+      [nzShowUploadList]="false"
+      (nzChange)="handleChange($event)"
+    >
+      <button nz-button>
+        <i nz-icon nzType="upload"></i>
+        {{ 'UPLOAD_JSON' | translate }}
+      </button>
+    </nz-upload>
     <button [disabled]="isElectron" style="margin-right: 8px;"
             (click)="export()"
             nz-button nzType="primary">{{ 'EXPORT_CASE' | translate }}</button>
+    <button [disabled]="isElectron" style="margin-right: 8px;"
+            (click)="exportAsJson()"
+            nz-button nzType="primary">{{ 'EXPORT_CASE_JSON' | translate }}</button>
+    <button [disabled]="isElectron" style="margin-right: 8px;"
+            (click)="showAllField()"
+            nz-button nzType="primary">{{ 'SHOW_ALL_FIELD' | translate }}</button>
   </div>
   <nz-table #middleTable nzSize="middle" [nzData]="records"
             [nzScroll]="{ y: (height-120) + 'px' }"
@@ -40,22 +59,27 @@
             nzWidth="80%"
             nzTitle="The first Modal" (nzOnCancel)="handleCancel()" [nzFooter]="null">
     <ng-container *nzModalContent>
-      <button *ngIf="canUpdate"
-              style="margin: 3px" nzSize="small"
-              (click)="updateThisCase()"
-              nz-button nzType="primary">{{ 'UPDATE' | translate }}</button>
-      <button *ngIf="canUpdate"
-              style="margin: 3px" nzSize="small"
-              (click)="runCase(selectId)"
-              nz-button nzType="primary">{{ 'RUN' | translate }}</button>
-      <button *ngIf="canUpdate"
-              style="margin: 3px" nzSize="small"
-              (click)="format()"
-              nz-button nzType="primary">{{ 'FORMAT' | translate }}</button>
-      <button *ngIf="!canUpdate"
-              style="margin: 3px" nzSize="small"
-              (click)="gotoModify()"
-              nz-button nzType="primary">{{ 'MODIFY' | translate }}</button>
+      <div *ngIf="!isShowAllField">
+        <button style="margin: 3px" nzSize="small"
+                (click)="showAllField()"
+                nz-button nzType="primary">{{ 'SHOW_ALL_FIELD' | translate }}</button>
+        <button *ngIf="canUpdate"
+                style="margin: 3px" nzSize="small"
+                (click)="updateThisCase()"
+                nz-button nzType="primary">{{ 'UPDATE' | translate }}</button>
+        <button *ngIf="canUpdate"
+                style="margin: 3px" nzSize="small"
+                (click)="runCase(selectId)"
+                nz-button nzType="primary">{{ 'RUN' | translate }}</button>
+        <button *ngIf="canUpdate"
+                style="margin: 3px" nzSize="small"
+                (click)="format()"
+                nz-button nzType="primary">{{ 'FORMAT' | translate }}</button>
+        <button *ngIf="!canUpdate"
+                style="margin: 3px" nzSize="small"
+                (click)="gotoModify()"
+                nz-button nzType="primary">{{ 'MODIFY' | translate }}</button>
+      </div>
       <div nz-row>
         <div nz-col nzSpan="12">
           <nz-alert nzType="success" nzMessage="{{leftTip}}"></nz-alert>

@@ -35,6 +35,9 @@ export class CaseManagerComponent implements OnInit {
   isElectron = false;
   leftEditor: MonacoStandaloneCodeEditor | undefined;
   rightEditor: MonacoStandaloneCodeEditor | undefined;
+  isShowAllField = false;
+  inStr = undefined;
+  allFieldStr = undefined;
   constructor(private gableBackendService: GableBackendService,
               private electronService: ElectronService,
               private msg: NzMessageService) {
@@ -72,6 +75,7 @@ export class CaseManagerComponent implements OnInit {
 
   handleCancel() {
     this.isShowDetail = false;
+    this.isShowAllField = false;
     this.leftStr = '';
     this.rightStr = '';
     this.selectId = '';
@@ -157,6 +161,13 @@ export class CaseManagerComponent implements OnInit {
     window.open(this.gableBackendService.getServer() + 'api/case/export?uuid=' + this.uuid + '&isPublic=' + this.isPublicUnit, '_blank');
   }
 
+  exportAsJson() {
+    if (this.isElectron) {
+      return;
+    }
+    window.open(this.gableBackendService.getServer() + 'api/case/exportAsJson?uuid=' + this.uuid + '&isPublic=' + this.isPublicUnit, '_blank');
+  }
+
   format() {
     if (this.leftEditor === undefined) {
       return;
@@ -187,5 +198,23 @@ export class CaseManagerComponent implements OnInit {
     } else {
       this.rightEditor.updateOptions({readOnly: isReadOnly});
     }
+  }
+
+  showAllField() {
+    if (this.allFieldStr !== undefined) {
+      this.isShowAllField = true;
+      this.leftStr = this.inStr;
+      this.rightStr = this.allFieldStr;
+      this.leftTip = 'in';
+      this.rightTip = 'all fields';
+      this.isShowDetail = true;
+      return;
+    }
+    this.gableBackendService.getAllFieldInfo(this.uuid, this.isPublicUnit).subscribe((out: any) => {
+      this.allFieldStr = JSON.stringify(out.data.allField, null, '\t');
+      this.inStr = JSON.stringify(out.data.in, null, '\t');
+      this.showAllField();
+    }, error => {
+    });
   }
 }
