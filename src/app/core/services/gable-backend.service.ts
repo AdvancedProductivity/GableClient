@@ -309,4 +309,12 @@ export class GableBackendService {
       }
     });
   }
+
+  getJsonSchemaCache(): Observable<any> {
+    return this.httpClient.get(this.prefix + 'api/jsonSchema');
+  }
+
+  validateJsonSchema(param: { schema: any; json: any }): Observable<any> {
+    return this.httpClient.put(this.prefix + 'api/jsonSchema', param);
+  }
 }

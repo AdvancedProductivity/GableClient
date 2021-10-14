@@ -17,6 +17,7 @@
     },
     "PLAY_GROUND": {
       "TITLE": "演练场",
+      "JSON_SCHEMA": "JsonSchema 校验",
       "SAMPLE_GROOVY": "Groovy Demo代码"
     },
     "UNIT": {
@@ -75,6 +76,7 @@
   "UPLOAD_JSON": "上传Json用例",
   "DETAIL": "详情",
   "TITLE": "标题",
+  "VALIDATE": "校验",
   "ADD_INTEGRATE": "添加集成测试",
   "SHOW_ALL_FIELD": "所有字段",
   "GENERATE_JSON_SCHEMA": "生成 JsonSchema",

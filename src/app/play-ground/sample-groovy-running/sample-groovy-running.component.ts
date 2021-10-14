@@ -22,8 +22,7 @@ export class SampleGroovyRunningComponent implements OnInit {
   resultContent = 'have not run code';
 
   constructor(private translate: TranslateService,
-              private gableBackendService: GableBackendService,
-              private service: GableBackendService) {
+              private gableBackendService: GableBackendService) {
   }
 
   ngOnInit(): void {
@@ -41,7 +40,7 @@ export class SampleGroovyRunningComponent implements OnInit {
   }
 
   private getDemoCode() {
-    this.service.getSampleGroovyCode().subscribe((res: string) => {
+    this.gableBackendService.getSampleGroovyCode().subscribe((res: string) => {
       this.code = res;
     });
   }

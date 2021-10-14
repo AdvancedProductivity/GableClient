@@ -1,0 +1,46 @@
+<div>
+  <button nz-button nzType="primary" (click)="validate()">
+    {{ 'VALIDATE' | translate }}
+  </button>
+  <button style="margin: 3px"
+          (click)="format()"
+          nz-button nzType="primary">{{ 'FORMAT' | translate }}</button>
+</div>
+<div>
+  <div nz-row style="margin-top: 3px">
+    <div nz-col nzSpan="12" style="padding: 3px">
+      <nz-alert nzType="success" nzMessage="JsonSchema Express"></nz-alert>
+    </div>
+    <div nz-col nzSpan="12" style="padding: 3px">
+      <nz-alert nzType="info" nzMessage="Json String"></nz-alert>
+    </div>
+  </div>
+  <nz-spin [nzSpinning]="isHandlingData">
+    <div nz-row style="width: 100%" [style]="{height: height + 'px', margin: '3px'}" nz-row>
+      <div nz-col nzSpan="12" style="border:1px solid #d9d9d9;padding: 3px">
+        <ngx-monaco-editor style="z-index: 2" [options]="config"
+                           (init)="initLeftEditor($event)"
+                           [(ngModel)]="express" ></ngx-monaco-editor>
+      </div>
+      <div nz-col nzSpan="12" style="border:1px solid #d9d9d9;padding: 3px">
+        <ngx-monaco-editor style="z-index: 2" [options]="config"
+                           (init)="initRightEditor($event)"
+                           [(ngModel)]="code" ></ngx-monaco-editor>
+      </div>
+    </div>
+  </nz-spin>
+</div>
+<nz-modal [(nzVisible)]="isShowResult"
+          nzWidth="80%"
+          nzTitle="The first Modal" (nzOnCancel)="isShowResult = false" [nzFooter]="null">
+  <ng-container *nzModalContent>
+    <div style="width:100%;height: 400px;overflow-y: auto">
+      <div *ngIf="errors.length>0">
+        <nz-alert *ngFor="let e of errors" nzType="error" nzMessage="{{e}}"></nz-alert>
+      </div>
+      <div *ngIf="errors.length==0">
+        <nz-alert  nzType="success" nzMessage="{{tip}}"></nz-alert>
+      </div>
+    </div>
+  </ng-container>
+</nz-modal>
