@@ -7,14 +7,12 @@
 <!--    </div>-->
     <div style="height: 305px;overflow-y: auto">
       <ul nz-menu nzMode="inline">
-        <li *ngFor="let env of envs" (contextmenu)="contextMenu($event, menu)"
-            nz-submenu nzTitle="{{env.typeName}}" nzOpen>
-          <ul>
-            <li nz-menu-item [nzSelected]="d.uuid === selectedId" *ngFor="let d of env.configs" (click)="modify(d.uuid,d.name)">{{d.name}}</li>
-          </ul>
+        <li *ngFor="let env of envs;let i = index" (contextmenu)="contextMenu($event, menu)"
+            nz-menu-item  (click)="modify(i)">
+          {{env.name}}
           <nz-dropdown-menu #menu="nzDropdownMenu">
             <ul nz-menu>
-              <li nz-menu-item (click)="addNew(env.typeName)">{{ 'ADD_ENV' | translate }}</li>
+              <li nz-menu-item (click)="addNew()">{{ 'ADD_ENV' | translate }}</li>
             </ul>
           </nz-dropdown-menu>
         </li>

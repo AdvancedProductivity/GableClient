@@ -1,34 +1,57 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {GableBackendService} from '../../core/services/gable-backend.service';
 import {ActivatedRoute, Router} from '@angular/router';
+import {NzResizeEvent} from 'ng-zorro-antd/resizable';
 
 @Component({
   selector: 'app-integrate-run',
   templateUrl: './integrate-run.component.html',
-  styles: [
-  ]
+  styles: []
 })
 export class IntegrateRunComponent implements OnInit {
   record: any[] = [];
   height = 500;
-  config = {
-    theme: 'vs-light', language: 'json', fontSize: 12, glance: false, minimap: {enabled: false},
+  inConfig = {
+    theme: 'vs-light', language: 'json', fontSize: 12, minimap: {enabled: false},
+    lineDecorationsWidth: 1, readOnly: true
+  };
+  outConfig = {
+    theme: 'vs-light', language: 'json', fontSize: 12, minimap: {enabled: false},
+    lineDecorationsWidth: 1, readOnly: true
+  };
+  validConfig = {
+    theme: 'vs-light', language: 'text', fontSize: 12, minimap: {enabled: false},
     lineDecorationsWidth: 1, readOnly: true
   };
   isHandlingData = false;
-  isRunning = false;
-  isLoop = false;
   inStr = '';
   outStr = '';
-  runningIndex = 0;
   runner: any;
   integrateUuid = '';
   isShowHistory = false;
   selectEnvUuid = '';
   envs = [];
+  contentHeight = 350;
+  id = -1;
+  showingType = 'HTTP';
+  validteResultMsg = '';
+  originalCode = `{"a": 12}`;
+  modifiedCode = `{"a": 156}`;
+  testGroups = [];
+  runningIndex = 0;
+  runningTestIndex = -1;
+  usingTestIndex = 0;
+  isRunning = false;
+  isLoop = false;
+  lastOut = {};
+  nextIn = {};
+  instance = {};
+  canNotGoToLoop = false;
+
   constructor(private router: Router,
               private gableBackendService: GableBackendService,
-              private route: ActivatedRoute) { }
+              private route: ActivatedRoute) {
+  }
 
   ngOnInit(): void {
     this.height = document.documentElement.clientHeight - 82;
@@ -38,29 +61,157 @@ export class IntegrateRunComponent implements OnInit {
     this.integrateUuid = enterId;
     this.setEnv('HTTP');
     if (this.isShowHistory) {
-      this.gableBackendService.getIntegrateHistory(enterId,  hisId).subscribe((res) => {
+      this.gableBackendService.getIntegrateHistory(enterId, hisId).subscribe((res) => {
         if (res.result) {
           this.record = res.data.detail;
         }
       });
-    }else {
+    } else {
       this.gableBackendService.getIntegrateDetail(enterId).subscribe((res) => {
         if (res.result) {
           this.record = res.data;
           this.record.forEach((value => {
-            value.status = 'wait';
+            value.status = 0;
+            if (value.type !== 'STEP') {
+              this.testGroups.push(value);
+            }
           }));
-          console.log(this.record);
+          console.log('uuids', this.testGroups);
         }
       });
     }
+  }
+
+  onContentResize({height}: NzResizeEvent) {
+    cancelAnimationFrame(this.id);
+    this.id = requestAnimationFrame(() => {
+      this.contentHeight = height;
+    });
   }
 
   onBack() {
     this.router.navigate(['../integrate']);
   }
 
-  showDetail(uuid: any, caseId: any, version, historyId: any) {
+  showDetail(uuid: any, caseId: any, version, historyId: any, type: string, index: number) {
+    this.showingType = type;
+    this.originalCode = '';
+    this.modifiedCode = '';
+    if (type === 'STEP') {
+      this.inStr = this.record[index].code;
+      this.inConfig = {...this.inConfig, language: 'groovy'};
+      this.gableBackendService.getGroovyHistory(uuid, true, historyId).subscribe((res) => {
+        if (res.result) {
+          this.originalCode = JSON.stringify(res.data.before, null, '\t');
+          this.modifiedCode = JSON.stringify(res.data.after, null, '\t');
+          if (!res.data.validate.passed) {
+            this.validteResultMsg = res.data.validate.code;
+          }else {
+            this.validteResultMsg = '';
+          }
+          this.isHandlingData = false;
+        }
+      });
+      return;
+    }
+    this.inConfig = {...this.inConfig, language: 'json'};
+    this.handleDetailAsTest(uuid, caseId, version, historyId);
+  }
+
+  run() {
+    this.isRunning = true;
+    this.lastOut = {};
+    this.instance = {};
+    this.record.forEach((item => {
+      item.status = 0;
+      item.historyId = undefined;
+    }));
+    this.runningTestIndex = 0;
+    this.usingTestIndex = -1;
+    this.runningIndex = 0;
+    this.runner = setInterval(() => {
+      if (this.canNotGoToLoop) {
+        return;
+      }
+      if (this.runningIndex === this.record.length) {
+        if (this.runner !== undefined) {
+          clearInterval(this.runner);
+        }
+        this.gableBackendService.addIntegrateHistory(this.integrateUuid, this.record).subscribe((res) => {
+        });
+        this.isRunning = false;
+        return;
+      }
+      const nextIn = this.getNextIn();
+      if (nextIn === undefined) {
+        return;
+      }
+      const item = this.record[this.runningIndex];
+      item.status = 1;
+      if (item.type !== 'STEP') {
+        this.canNotGoToLoop = true;
+        this.gableBackendService.runUnit(nextIn, item.uuid, item.type, true, '', this.instance)
+          .subscribe((out: any) => {
+            this.lastOut = out.data;
+            if (out.data.validate.passed) {
+              item.status = 2;
+              item.historyId = out.data.historyId;
+            } else {
+              item.status = 3;
+              item.historyId = out.data.historyId;
+            }
+            this.canNotGoToLoop = false;
+          }, error => {
+            item.status = 3;
+            this.canNotGoToLoop = false;
+          });
+      } else {
+        this.canNotGoToLoop = true;
+        this.gableBackendService.runStep(nextIn, this.lastOut, this.instance, item.uuid).subscribe((out: any) => {
+          if (out.data.validate.passed) {
+            item.status = 2;
+            item.historyId = out.data.historyId;
+          } else {
+            item.status = 3;
+            item.historyId = out.data.historyId;
+          }
+          const newInstance = out.data.after.instance;
+          if (newInstance !== undefined) {
+            this.instance = newInstance;
+          }
+          this.canNotGoToLoop = false;
+        }, error => {
+          item.status = 3;
+          this.canNotGoToLoop = false;
+        });
+      }
+      this.runningIndex++;
+      if (item.type !== 'STEP') {
+        this.runningTestIndex++;
+      }
+    }, 500);
+  }
+
+  private getNextIn(): any {
+    if (this.usingTestIndex === this.runningTestIndex) {
+      return this.nextIn;
+    }
+    this.usingTestIndex++;
+    if (this.usingTestIndex === this.testGroups.length) {
+      return {};
+    }
+    const item = this.testGroups[this.usingTestIndex];
+    this.canNotGoToLoop = true;
+    this.gableBackendService.getUnitConfigOfCase(item.uuid, true, item.caseId, item.version, this.selectEnvUuid).subscribe((configRes) => {
+      const request = JSON.stringify(configRes.data.config, null, '\t');
+      this.canNotGoToLoop = false;
+      this.nextIn = request;
+      console.log('get next in from server ', this.usingTestIndex);
+    });
+    return undefined;
+  }
+
+  private handleDetailAsTest(uuid: any, caseId: any, version, historyId: any) {
     this.isHandlingData = true;
     if (historyId === undefined) {
       this.gableBackendService.getUnitConfigOfCase(uuid, true, caseId, version, this.selectEnvUuid).subscribe((res) => {
@@ -78,12 +229,11 @@ export class IntegrateRunComponent implements OnInit {
         this.isHandlingData = false;
       }
     });
-    return;
   }
 
   private setEnv(envTypeName: string) {
     const defaultConfig = {name: 'Un Select', uuid: ''};
-    const envArrays = this.gableBackendService.getEnvByTypeFromCache(envTypeName);
+    const envArrays = this.gableBackendService.getEnvs();
     const arr = [];
     arr.push(defaultConfig);
     if (envArrays !== undefined) {
@@ -92,57 +242,6 @@ export class IntegrateRunComponent implements OnInit {
       });
     }
     this.envs = arr;
-  }
-
-  run() {
-    this.isRunning = true;
-    this.runningIndex = 0;
-    this.record.forEach((item => {
-      item.status = 'wait';
-      item.historyId = undefined;
-    }));
-    this.runner = setInterval(() => {
-      this.execute();
-    }, 500);
-  }
-
-  private execute() {
-    if (this.isLoop) {
-      return;
-    }
-    if (this.runningIndex === this.record.length) {
-      if (this.runner !== undefined) {
-        clearInterval(this.runner);
-        this.gableBackendService.addIntegrateHistory(this.integrateUuid, this.record).subscribe((res) => {
-        });
-        this.isRunning = false;
-        this.isLoop = false;
-      }
-      return;
-    }
-    this.isLoop = true;
-    const item = this.record[this.runningIndex];
-    item.status = 'process';
-    this.gableBackendService.getUnitConfigOfCase(item.uuid, true, item.caseId, item.version, this.selectEnvUuid).subscribe((configRes) => {
-      const type = configRes.data.type;
-      const request = JSON.stringify(configRes.data.config, null, '\t');
-      this.gableBackendService.runUnit(request, item.uuid, type, true).subscribe((out: any) => {
-        if (out.data.validate.passed) {
-          item.status = 'finish';
-          item.historyId = out.data.historyId;
-        } else {
-          item.status = 'error';
-          item.historyId = out.data.historyId;
-        }
-        this.isLoop = false;
-        this.runningIndex++;
-      }, error => {
-        item.status = 'error';
-        this.isLoop = false;
-        this.runningIndex++;
-      });
-
-    });
   }
 
 }

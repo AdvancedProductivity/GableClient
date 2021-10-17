@@ -14,6 +14,7 @@ import {NzRadioModule} from 'ng-zorro-antd/radio';
 import {NzDropDownModule} from 'ng-zorro-antd/dropdown';
 import {NzMessageModule} from 'ng-zorro-antd/message';
 import {NzResizableModule} from 'ng-zorro-antd/resizable';
+import {NzEmptyModule} from 'ng-zorro-antd/empty';
 import {NzSpinModule} from 'ng-zorro-antd/spin';
 import {NzAlertModule} from 'ng-zorro-antd/alert';
 // import { NzCardModule } from 'ng-zorro-antd/card';
@@ -57,6 +58,7 @@ import { NzStepsModule } from 'ng-zorro-antd/steps';
     NzMessageModule,
     NzInputModule,
     MonacoEditorModule,
+    NzEmptyModule,
     NzButtonModule,
     NzPageHeaderModule,
     NzDrawerModule,
@@ -81,6 +83,7 @@ import { NzStepsModule } from 'ng-zorro-antd/steps';
     NzUploadModule,
     NzCheckboxModule,
     NzFormModule,
+    NzEmptyModule,
     NzInputModule,
     NzSelectModule,
     NzStepsModule,

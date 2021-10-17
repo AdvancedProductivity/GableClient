@@ -1,7 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {GableBackendService} from '../../core/services/gable-backend.service';
 import {NzMessageService} from 'ng-zorro-antd/message';
+import {NzContextMenuService, NzDropdownMenuComponent} from 'ng-zorro-antd/dropdown';
+import {MonacoEditorConstructionOptions, MonacoStandaloneCodeEditor} from '@materia-ui/ngx-monaco-editor';
 
 @Component({
   selector: 'app-integrate-add',
@@ -19,10 +21,11 @@ export class IntegrateAddComponent implements OnInit {
   inStr = '';
   list = [];
   waitForSave = [];
+  editingIndex = 0;
   headers = [];
   currentVersion = 0;
-  config = {
-    theme: 'vs-light', language: 'json', fontSize: 12, glance: false, minimap: {enabled: false},
+  config: MonacoEditorConstructionOptions = {
+    theme: 'vs-light', language: 'json', fontSize: 12, minimap: {enabled: false},
     lineDecorationsWidth: 1, readOnly: true
   };
   isHandlingData = false;
@@ -37,16 +40,38 @@ export class IntegrateAddComponent implements OnInit {
   selectTestType = '';
   isSave = false;
   name = '';
-  constructor(private router: Router,
+  codeEditor: MonacoStandaloneCodeEditor | undefined;
+  saveType = 0;
+  isAdded = true;
+  uuid = '';
+  constructor(private nzContextMenuService: NzContextMenuService,
+              private router: Router,
+              private route: ActivatedRoute,
               private messageService: NzMessageService,
               private gableBackendService: GableBackendService) {
   }
 
   ngOnInit(): void {
     this.height = document.documentElement.clientHeight - 82;
+    const enterUuid = this.route.snapshot.queryParams.uuid;
+    if (enterUuid !== undefined && enterUuid !== null) {
+      this.isAdded = false;
+      this.gableBackendService.getIntegrateDetail(enterUuid).subscribe((res) => {
+        if (res.result) {
+          this.waitForSave = res.data;
+        }
+      });
+      this.uuid = enterUuid;
+    }else {
+      this.isAdded = true;
+    }
     this.gableBackendService.getUnitMenu().subscribe((res) => {
       this.list = res.data.public;
     });
+  }
+
+  contextMenu($event: MouseEvent, menu: NzDropdownMenuComponent): void {
+    this.nzContextMenuService.create($event, menu);
   }
 
   onBack() {
@@ -139,15 +164,33 @@ export class IntegrateAddComponent implements OnInit {
     this.isShowCase = false;
     this.setOfCheckedId.clear();
   }
+  addStep() {
+    this.isSave = true;
+    this.saveType = 0;
+    this.name = '';
+  }
 
   showItem(i) {
+    const lastEdit = this.waitForSave[this.editingIndex];
+    if (lastEdit !== undefined) {
+      if (lastEdit.type === 'STEP') {
+        lastEdit.code = this.inStr;
+      }
+    }
+    this.editingIndex = i;
     const item = this.waitForSave[i];
     if (item === undefined) {
+      return;
+    }
+    if (item.type === 'STEP') {
+      this.inStr = item.code;
+      this.config = {...this.config, language: 'groovy', readOnly: false};
       return;
     }
     this.isHandlingData = true;
     this.gableBackendService.getUnitConfigOfCase(item.uuid, true, item.caseId, item.version).subscribe((res) => {
       if (res.result) {
+        this.config = {...this.config, language: 'json', readOnly: true};
         this.inStr = JSON.stringify(res.data, null, '\t');
         this.isHandlingData = false;
       }
@@ -159,18 +202,63 @@ export class IntegrateAddComponent implements OnInit {
       this.messageService.error('Please select test');
       return;
     }
-    this.isSave = true;
-  }
-
-  doSave() {
-    if (this.name.length < 1) {
-      this.messageService.error('Please set integrate test name');
+    if (this.isAdded) {
+      this.isSave = true;
+      this.saveType = 1;
+      this.name = '';
       return;
     }
-    this.gableBackendService.addIntegrate(this.waitForSave, this.name).subscribe((res) => {
+    const editing = this.waitForSave[this.editingIndex];
+    if (editing !== undefined && editing.type === 'STEP') {
+      editing.code = this.inStr;
+    }
+    this.gableBackendService.updateIntegrate(this.waitForSave, this.uuid).subscribe((res) => {
       if (res.result) {
         this.onBack();
       }
     });
+  }
+
+  doSave() {
+    if (this.saveType === 0) {
+      this.waitForSave.push({
+        uuid: undefined,
+        name: this.name,
+        type: 'STEP',
+        code: '',
+        tag: 'step'
+      });
+      this.isSave = false;
+      return;
+    }
+    if (this.name.length < 1) {
+      this.messageService.error('Please set integrate test name');
+      return;
+    }
+    const editing = this.waitForSave[this.editingIndex];
+    if (editing !== undefined && editing.type === 'STEP') {
+      editing.code = this.inStr;
+    }
+    if (this.isAdded) {
+      this.gableBackendService.addIntegrate(this.waitForSave, this.name).subscribe((res) => {
+        if (res.result) {
+          this.onBack();
+        }
+      });
+    }
+  }
+
+  delete(index: number) {
+    if (this.editingIndex === index) {
+      this.editingIndex = 0;
+      this.inStr = '';
+    }else if (this.editingIndex > index) {
+      this.editingIndex -= 1;
+    }
+    this.waitForSave.splice(index, 1);
+  }
+
+  initEditor(editor: MonacoStandaloneCodeEditor): void {
+    this.codeEditor = editor;
   }
 }

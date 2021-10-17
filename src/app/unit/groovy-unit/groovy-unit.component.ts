@@ -1,24 +1,17 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {NzResizeEvent} from 'ng-zorro-antd/resizable';
-import {GableBackendService} from '../../core/services/gable-backend.service';
-import {NzMessageService} from 'ng-zorro-antd/message';
 import {MonacoStandaloneCodeEditor} from '@materia-ui/ngx-monaco-editor';
-import {UpdateOrPushInfo} from '../../core/Result';
+import {NzMessageService} from 'ng-zorro-antd/message';
+import {GableBackendService} from '../../core/services/gable-backend.service';
+import {NzResizeEvent} from 'ng-zorro-antd/resizable';
+import {UpdateOrPushInfo} from "../../core/Result";
 
 @Component({
-  selector: 'app-default-test',
-  templateUrl: './default-test.component.html',
+  selector: 'app-groovy-unit',
+  templateUrl: './groovy-unit.component.html',
   styles: [
-    `
-      .content-resize-line {
-        width: 100%;
-        height: 5px;
-        border-bottom: 1px solid #e8e8e8;
-      }
-    `
   ]
 })
-export class DefaultTestComponent implements OnInit {
+export class GroovyUnitComponent implements OnInit {
   @Input() height = 500;
   @Input() uuid = '';
   @Output() updateOrPush = new EventEmitter<UpdateOrPushInfo>();
@@ -28,6 +21,10 @@ export class DefaultTestComponent implements OnInit {
   type = '';
   config = {
     theme: 'vs-light', language: 'json', fontSize: 12, glance: false, minimap: {enabled: false},
+    lineDecorationsWidth: 1, readOnly: false
+  };
+  groovyConfig = {
+    theme: 'vs-light', language: 'groovy', fontSize: 12, glance: false, minimap: {enabled: false},
     lineDecorationsWidth: 1, readOnly: false
   };
   response = {
@@ -46,6 +43,8 @@ export class DefaultTestComponent implements OnInit {
   envs = [];
   selectEnvUuid = '';
   configEditor: MonacoStandaloneCodeEditor | undefined;
+  groovyCideEditor: MonacoStandaloneCodeEditor | undefined;
+  groovyCode = '';
   canPush = false;
   fromUuid = '';
   constructor(private messageService: NzMessageService,
@@ -88,14 +87,10 @@ export class DefaultTestComponent implements OnInit {
 
   run() {
     this.isRunning = true;
-    this.gableBackendService.runUnit(this.configJson, this.uuid, this.type, this.isPublicUnit).subscribe((res: any) => {
+    this.gableBackendService.runUnit(this.configJson, this.uuid, this.type, this.isPublicUnit,
+      this.groovyCode).subscribe((res: any) => {
       this.isRunning = false;
-      if (this.type === 'HTTP' && res.result && res.data.code === 200 && (typeof res.data.content === 'string')
-        && res.data.contentType.startsWith('text/json')) {
-        this.responseJson = JSON.stringify(JSON.parse(res.data.content), null, '\t');
-      } else {
-        this.responseJson = JSON.stringify(res.data, null, '\t');
-      }
+      this.responseJson = JSON.stringify(res.data, null, '\t');
     }, error => {
       this.isRunning = false;
       this.responseJson = JSON.stringify(error, null, '\t');
@@ -105,7 +100,12 @@ export class DefaultTestComponent implements OnInit {
   update() {
     this.gableBackendService.updateConfig(this.uuid, this.configJson).subscribe((res) => {
       if (res.result) {
-        this.messageService.success('Update success');
+        this.messageService.success('Update Config success');
+      }
+    });
+    this.gableBackendService.updateGroovyCode(this.uuid, this.groovyCode).subscribe((res) => {
+      if (res.result) {
+        this.messageService.success('Update Code success');
       }
     });
   }
@@ -118,19 +118,28 @@ export class DefaultTestComponent implements OnInit {
     this.configEditor = editor;
   }
 
+  initGroovyEditor(editor: MonacoStandaloneCodeEditor): void {
+    this.groovyCideEditor = editor;
+  }
+
   setConfigReadOnly(isReadOnly) {
-    if (this.configEditor === undefined) {
-      return;
+    console.log('is read', isReadOnly);
+    if (this.configEditor !== undefined) {
+      this.configEditor.updateOptions({readOnly: isReadOnly});
     }
-    this.configEditor.updateOptions({readOnly: isReadOnly});
+    if (this.groovyCideEditor !== undefined) {
+      this.groovyCideEditor.updateOptions({readOnly: isReadOnly});
+    }
   }
 
   private getConfig(isSetEnv: boolean = true) {
     this.gableBackendService.getUnitConfig(this.uuid, this.isPublicUnit, this.selectEnvUuid).subscribe((res) => {
       if (this.isPublicUnit || res.data.isUnmodify) {
-        this.setConfigReadOnly(true);
+        this.groovyConfig = {...this.groovyConfig, readOnly: true};
+        this.config = {...this.config, readOnly: true};
       } else {
-        this.setConfigReadOnly(false);
+        this.groovyConfig = {...this.groovyConfig, readOnly: false};
+        this.config = {...this.config, readOnly: false};
       }
       this.canPush = (res.data.from === undefined);
       if (!this.canPush) {
@@ -142,6 +151,9 @@ export class DefaultTestComponent implements OnInit {
       if (isSetEnv) {
         this.setEnv(res.data.type);
       }
+    });
+    this.gableBackendService.getUnitGroovyCode(this.uuid, this.isPublicUnit).subscribe((res) => {
+      this.groovyCode = res;
     });
   }
 

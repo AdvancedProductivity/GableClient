@@ -27,6 +27,10 @@ export class CaseManagerComponent implements OnInit {
     theme: 'vs-light', language: 'json', fontSize: 12, glance: false, minimap: {enabled: false},
     lineDecorationsWidth: 1, readOnly: false
   };
+  diffConfig = {
+    theme: 'vs-light', language: 'json', fontSize: 12, glance: false, minimap: {enabled: false},
+    lineDecorationsWidth: 1, readOnly: false
+  };
   rightStr = '';
   leftStr = '';
   isHandlingData = false;
@@ -40,6 +44,9 @@ export class CaseManagerComponent implements OnInit {
   allFieldStr = undefined;
   jsonSchemaStr = '';
   isShowJsonSchema = false;
+  isShowDiff = false;
+  originalCode = '';
+  modifiedCode = '';
   constructor(private gableBackendService: GableBackendService,
               private electronService: ElectronService,
               private msg: NzMessageService) {
@@ -51,13 +58,15 @@ export class CaseManagerComponent implements OnInit {
     this.height = document.documentElement.clientHeight - 56 - 46 - 16;
     this.isPublicUnit = this.uuid.startsWith('public_');
     this.uploadPath = this.gableBackendService.getServer() + 'api/case/upload?uuid=' + this.uuid + '&isPublic=' + this.isPublicUnit;
-    this.gableBackendService.getCase(this.uuid, this.isPublicUnit).subscribe(res => {
-      if (res.result) {
-        this.headers = res.data.headers;
-        this.records = res.data.record;
-        this.currentVersion = res.data.version;
-      }
-    });
+    setTimeout(() => {
+      this.gableBackendService.getCase(this.uuid, this.isPublicUnit).subscribe(res => {
+        if (res.result) {
+          this.headers = res.data.headers;
+          this.records = res.data.record;
+          this.currentVersion = res.data.version;
+        }
+      });
+    }, 1000);
   }
 
   handleChange(info: NzUploadChangeParam) {
@@ -167,7 +176,8 @@ export class CaseManagerComponent implements OnInit {
     if (this.isElectron) {
       return;
     }
-    window.open(this.gableBackendService.getServer() + 'api/case/exportAsJson?uuid=' + this.uuid + '&isPublic=' + this.isPublicUnit, '_blank');
+    window.open(this.gableBackendService.getServer() + 'api/case/exportAsJson?uuid=' + this.uuid +
+      '&isPublic=' + this.isPublicUnit, '_blank');
   }
 
   format() {
@@ -226,5 +236,14 @@ export class CaseManagerComponent implements OnInit {
       this.isShowJsonSchema = true;
     }, error => {
     });
+  }
+
+  showDiff(id) {
+    this.gableBackendService.getDiffOfCase(this.uuid, this.isPublicUnit, id + '', this.currentVersion)
+      .subscribe((configRes) => {
+        this.originalCode = JSON.stringify(configRes.data.before, null, '\t');
+        this.modifiedCode = JSON.stringify(configRes.data.after, null, '\t');
+        this.isShowDiff = true;
+      });
   }
 }

@@ -2,10 +2,20 @@
   <nz-tabset>
     <nz-tab nzTitle="{{ 'ADD_GROUP' | translate }}">
       <form nz-form [nzLayout]="'inline'" [formGroup]="groupForm" (ngSubmit)="addGroup()">
+        <nz-form-item style="margin-bottom: 16px">
+          <nz-form-label nzFor="email">Group Type</nz-form-label>
+          <nz-form-control nzErrorTip="{{ 'TIPS.GROUP_NAME' | translate }}">
+            <nz-radio-group formControlName="type"  nzButtonStyle="solid">
+              <label nz-radio-button nzValue="user">User</label>
+              <label nz-radio-button nzValue="public">Public</label>
+            </nz-radio-group>
+          </nz-form-control>
+        </nz-form-item>
         <nz-form-item>
           <nz-form-control nzErrorTip="{{ 'TIPS.GROUP_NAME' | translate }}">
             <nz-input-group nzPrefixIcon="folder">
-              <input style="width: 300px" formControlName="groupName" nz-input placeholder="{{ 'TIPS.GROUP_NAME' | translate }}" />
+              <input style="width: 300px" formControlName="groupName" nz-input
+                     placeholder="{{ 'TIPS.GROUP_NAME' | translate }}" />
             </nz-input-group>
           </nz-form-control>
         </nz-form-item>
@@ -33,12 +43,10 @@
         <nz-form-item>
           <nz-form-label [nzSpan]="6" nzFor="type">{{ 'TIPS.TYPE' | translate }}</nz-form-label>
           <nz-form-control nzErrorTip="{{ 'TIPS.TEST_TYPE' | translate }}">
-            <nz-select style="width: 300px"  nzShowSearch nzAllowClear
-                       nzPlaceHolder="{{ 'TIPS.TEST_TYPE' | translate }}"
-                       formControlName="type">
-              <nz-option nzLabel="Http" nzValue="HTTP"></nz-option>
-              <nz-option nzLabel="Groovy Code" nzValue="GROOVY_SCRIPT"></nz-option>
-            </nz-select>
+            <nz-radio-group formControlName="type"  nzButtonStyle="solid">
+              <label nz-radio-button nzValue="HTTP">Http</label>
+              <label nz-radio-button nzValue="GROOVY_SCRIPT">Groovy Code</label>
+            </nz-radio-group>
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>

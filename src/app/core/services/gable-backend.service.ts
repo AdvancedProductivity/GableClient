@@ -9,7 +9,8 @@ import {UnitResponse} from '../UnitMenu';
 })
 export class GableBackendService {
   private prefix = '/';
-  private envMap = new Map();
+  private envMap = [];
+
   constructor(private httpClient: HttpClient) {
     let s = localStorage.getItem('host');
     if (s === null || s === undefined || s.length === 0) {
@@ -29,18 +30,16 @@ export class GableBackendService {
     return this.prefix;
   }
 
-  public setEnv(envs: any){
-    this.envMap.clear();
-    envs.forEach(value => {
-      this.envMap.set(value.typeName, value.configs);
-    });
+  public setEnv(envs: any) {
+    this.envMap = envs;
+    localStorage.setItem('env', JSON.stringify(this.envMap));
   }
 
-  public getEnvByTypeFromCache(type: string){
-    return this.envMap.get(type);
+  public getEnvs() {
+    return this.envMap;
   }
 
-  public setServer(host: string): boolean{
+  public setServer(host: string): boolean {
     if (host === undefined || host === null || host.length == 0) {
       return false;
     }
@@ -80,8 +79,12 @@ export class GableBackendService {
     return this.httpClient.get<Result<UnitResponse>>(this.prefix + 'api/menu');
   }
 
-  public addGroup(value: string): Observable<Result<UnitResponse>>  {
-    return this.httpClient.post<Result<UnitResponse>>(this.prefix + 'api/menu/group', value);
+  public addGroup(value: string, typeName: string): Observable<Result<UnitResponse>> {
+    return this.httpClient.post<Result<UnitResponse>>(this.prefix + 'api/menu/group', value, {
+      params: {
+        type: typeName
+      }
+    });
   }
 
   public addTest(group: string, t: string, name: string): Observable<Result<UnitResponse>> {
@@ -103,7 +106,7 @@ export class GableBackendService {
     });
   }
 
-  public updateConfig(id: string, body: string): Observable<Result<any>>  {
+  public updateConfig(id: string, body: string): Observable<Result<any>> {
     return this.httpClient.put<Result<any>>(this.prefix + 'api/unit', body, {
       headers: {
         'Content-Type': 'application/json'
@@ -136,8 +139,40 @@ export class GableBackendService {
     });
   }
 
+  public getDiffOfCase(id: string, isPub: boolean, caseID: string, version: number, envUuid: string = ''): Observable<Result<any>> {
+    let p = {};
+    if (caseID === undefined || version === undefined) {
+      p = {
+        uuid: id,
+        env: envUuid,
+        isPublic: isPub
+      };
+    } else {
+      p = {
+        uuid: id,
+        caseId: caseID,
+        env: envUuid,
+        caseVersion: version,
+        isPublic: isPub
+      };
+    }
+    return this.httpClient.get<Result<UnitResponse>>(this.prefix + 'api/unit/diff', {
+      params: p
+    });
+  }
+
   public getUnitHistory(id: string, isPub: boolean, history: number): Observable<Result<any>> {
     return this.httpClient.get<Result<UnitResponse>>(this.prefix + 'api/unit/history', {
+      params: {
+        uuid: id,
+        isPublic: isPub,
+        historyId: history
+      }
+    });
+  }
+
+  public getGroovyHistory(id: string, isPub: boolean, history: number): Observable<Result<any>> {
+    return this.httpClient.get<Result<UnitResponse>>(this.prefix + 'api/groovyCode/history', {
       params: {
         uuid: id,
         isPublic: isPub,
@@ -155,15 +190,21 @@ export class GableBackendService {
     });
   }
 
-  public runUnit(config: string, id: string, testType: string, isPub: boolean): Observable<Result<any>> {
+  public runUnit(config: string, id: string, testType: string, isPub: boolean, groovyCode: string = '',
+                 insVar: any = {}): Observable<Result<any>> {
     const data = {
       config: undefined,
       instance: undefined
     };
+    console.log('test type', testType);
     try {
       data.config = JSON.parse(config);
-      data.instance = {};
-    } catch (e){
+      if (testType === 'GROOVY_SCRIPT') {
+        data.config.groovyCode = groovyCode;
+        data.config.groovyTestUuid = id;
+      }
+      data.instance = insVar;
+    } catch (e) {
       console.log(e);
     }
     return this.httpClient.post<Result<UnitResponse>>(this.prefix + 'api/unit/run', data, {
@@ -178,7 +219,28 @@ export class GableBackendService {
     });
   }
 
-  public getEnv(): Observable<any>  {
+  public runStep(nIn: any, lOut: any, ins: any, id: string): Observable<Result<any>> {
+    const data = {
+      lastOut: lOut,
+      instance: ins,
+      nextIn: nIn
+    };
+    try {
+      data.nextIn = JSON.parse(nIn);
+    } catch (e) {
+      console.log(e);
+    }
+    return this.httpClient.post<Result<UnitResponse>>(this.prefix + 'api/groovyCode', data, {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      params: {
+        uuid: id
+      }
+    });
+  }
+
+  public getEnv(): Observable<any> {
     return this.httpClient.get<any>(this.prefix + 'api/env');
   }
 
@@ -206,7 +268,7 @@ export class GableBackendService {
     });
   }
 
-  public getEnvDetail(id: string): Observable<any>  {
+  public getEnvDetail(id: string): Observable<any> {
     return this.httpClient.get<any>(this.prefix + 'api/env/detail', {
       params: {
         uuid: id
@@ -235,7 +297,7 @@ export class GableBackendService {
   }
 
   updateCase(id: string, isPub: boolean, currentVersion: number, caseID: string, diffStr: any, jsonSchemaStr: any) {
-    return this.httpClient.put<Result<any>>(this.prefix + 'api/case', {diff:diffStr, jsonSchema: jsonSchemaStr}, {
+    return this.httpClient.put<Result<any>>(this.prefix + 'api/case', {diff: diffStr, jsonSchema: jsonSchemaStr}, {
       params: {
         uuid: id,
         caseId: caseID,
@@ -251,8 +313,16 @@ export class GableBackendService {
 
   addIntegrate(waitForSave: any[], testName: string) {
     return this.httpClient.put<Result<any>>(this.prefix + 'api/integrate', waitForSave, {
-      params:{
+      params: {
         name: testName
+      }
+    });
+  }
+
+  updateIntegrate(waitForSave: any[], id: string) {
+    return this.httpClient.post<Result<any>>(this.prefix + 'api/integrate', waitForSave, {
+      params: {
+        uuid: id
       }
     });
   }
@@ -267,15 +337,15 @@ export class GableBackendService {
 
   addIntegrateHistory(integrateUuid: string, record: any[]) {
     return this.httpClient.post<Result<any>>(this.prefix + 'api/integrate/addHistory', record, {
-      params:{
+      params: {
         uuid: integrateUuid
       }
     });
   }
 
   addTag(integrateUuid: string, name: string) {
-    return this.httpClient.post<Result<any>>(this.prefix + 'api/tag',null,{
-      params:{
+    return this.httpClient.post<Result<any>>(this.prefix + 'api/tag', null, {
+      params: {
         uuid: integrateUuid,
         tagName: name
       }
@@ -317,4 +387,31 @@ export class GableBackendService {
   validateJsonSchema(param: { schema: any; json: any }): Observable<any> {
     return this.httpClient.put(this.prefix + 'api/jsonSchema', param);
   }
+
+  public updateGroovyCode(id: string, body: string): Observable<Result<any>> {
+    return this.httpClient.put<Result<any>>(this.prefix + 'api/groovyCode', body, {
+      params: {
+        uuid: id
+      }
+    });
+  }
+
+  public getUnitGroovyCode(id: string, isPub: boolean): Observable<string> {
+    return this.httpClient.get(this.prefix + 'api/groovyCode', {
+      params: {
+        uuid: id,
+        isPublic: isPub
+      },
+      responseType: 'text'
+    });
+  }
+
+  public pushUnit(param: { from: any; toGroup: string; testName: string}): Observable<any> {
+    return this.httpClient.post(this.prefix + 'api/unit/push', param);
+  }
+
+  public updateUnit(param: { from: string; to: string}): Observable<any> {
+    return this.httpClient.post(this.prefix + 'api/unit/update', param);
+  }
+
 }

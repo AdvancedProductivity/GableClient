@@ -28,36 +28,37 @@ export class EnvSettingComponent implements OnInit {
     this.getEnv();
   }
 
-  addNew(typeName) {
-    console.log('add Type Name', typeName);
-    this.envs.forEach(value => {
-      if (value.typeName === typeName) {
-        const newId = 'addNew_' + new Date().getTime();
-        const newConfig = {
-          uuid: newId,
-          name: 'New Config',
-          config: '{}'
-        };
-        this.selectedId = newId;
-        this.name = newConfig.name;
-        this.type = typeName;
-        this.configStr = newConfig.config;
-        value.configs.push(newConfig);
-      }
-    });
+  addNew() {
+    const newId = 'addNew_' + new Date().getTime();
+    const newConfig = {
+      uuid: newId,
+      name: 'New Config',
+      config: `
+{
+  "replace": {},
+  "add": {},
+  "remove": {}
+}
+      `
+    };
+    this.envs.push(newConfig);
   }
 
   contextMenu($event: MouseEvent, menu: NzDropdownMenuComponent): void {
     this.nzContextMenuService.create($event, menu);
   }
 
-  modify(uuid: string, name: string) {
-    this.isGettingData = true;
+  modify(index: number) {
+    const uuid = this.envs[index].uuid;
+    const name = this.envs[index].name;
     if (!uuid.startsWith('addNew_')) {
+      this.isGettingData = true;
       this.gableBackendService.getEnvDetail(uuid).subscribe((res) => {
         this.configStr = JSON.stringify(res, null, '\t');
         this.isGettingData = false;
       });
+    } else {
+      this.configStr = this.envs[index].config;
     }
     this.name = name;
     this.selectedId = uuid;

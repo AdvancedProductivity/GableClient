@@ -51,6 +51,7 @@
       <td>
         <button style="margin: 3px" nzSize="small" (click)="runCase(data.id)" nz-button nzType="primary">{{ 'RUN' | translate }}</button>
         <button style="margin: 3px" nzSize="small" (click)="showDetail(data.id)" nz-button nzType="primary">{{ 'DETAIL' | translate }}</button>
+        <button style="margin: 3px" nzSize="small" (click)="showDiff(data.id)" nz-button nzType="primary">{{ 'DIFF' | translate }}</button>
       </td>
     </tr>
     </tbody>
@@ -114,6 +115,16 @@
             nzTitle="The first Modal" (nzOnCancel)="isShowJsonSchema = false" [nzFooter]="null">
     <ng-container *nzModalContent>
       <textarea rows="4" style="width: 100%;height: 400px" nz-input [ngModel]="jsonSchemaStr"></textarea>
+    </ng-container>
+  </nz-modal>
+  <nz-modal [(nzVisible)]="isShowDiff"
+            nzWidth="80%"
+            nzTitle="The first Modal" (nzOnCancel)="isShowDiff = false" [nzFooter]="null">
+    <ng-container *nzModalContent>
+      <div style="height: 400px">
+        <ngx-monaco-diff-editor [options]="diffConfig" [original]="originalCode" [modified]="modifiedCode">
+        </ngx-monaco-diff-editor>
+      </div>
     </ng-container>
   </nz-modal>
 </div>

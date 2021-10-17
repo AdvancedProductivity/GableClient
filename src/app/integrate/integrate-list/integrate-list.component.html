@@ -27,6 +27,9 @@
            nz-button nzType="link">
           {{ 'RUN' | translate }}
         </a>
+        <a nz-button nzType="link" routerLink="../integrate-add" [queryParams]="{ uuid: data.uuid}">
+          {{ 'EDIT' | translate }}
+        </a>
         <a nz-button nzType="link" (click)="addTag(data.uuid)">
           {{ 'ADD_TAG' | translate }}
         </a>

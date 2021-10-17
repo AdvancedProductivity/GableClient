@@ -34,11 +34,23 @@
       </button>
     </div>
   </div>
-  <nz-alert nzType="info" nzMessage="{{ 'IN' | translate }}"></nz-alert>
-  <div [style]="{height: (contentHeight -64) + 'px', paddingBottom: '10px'}">
-    <ngx-monaco-editor (init)="initEditor($event)"
-                       style="z-index: 2"
-                       [options]="config" [(ngModel)]="configJson" ></ngx-monaco-editor>
+  <div nz-row [style]="{height: (contentHeight -24) + 'px', paddingBottom: '10px'}">
+    <div nz-col nzSpan="18" style="border:1px solid #d9d9d9">
+      <nz-alert nzType="info" nzMessage="{{ 'GROOVY_CODE' | translate }}"></nz-alert>
+      <div [style]="{height: (contentHeight -64) + 'px', paddingBottom: '10px'}">
+        <ngx-monaco-editor (init)="initGroovyEditor($event)"
+                           style="z-index: 2"
+                           [options]="groovyConfig" [(ngModel)]="groovyCode" ></ngx-monaco-editor>
+      </div>
+    </div>
+    <div nz-col nzSpan="6" style="border:1px solid #d9d9d9">
+      <nz-alert nzType="info" nzMessage="{{ 'IN' | translate }}"></nz-alert>
+      <div [style]="{height: (contentHeight -64) + 'px', paddingBottom: '10px'}">
+        <ngx-monaco-editor (init)="initEditor($event)"
+                           style="z-index: 2"
+                           [options]="config" [(ngModel)]="configJson" ></ngx-monaco-editor>
+      </div>
+    </div>
   </div>
 </div>
 <div >

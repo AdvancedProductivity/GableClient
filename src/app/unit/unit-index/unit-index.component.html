@@ -9,7 +9,7 @@
                 <ul>
                   <li *ngFor="let item of m.units" (contextmenu)="contextMenu($event, menu)"
                       [nzSelected]="urls.length> 0 && item.uuid === urls[index].uuid"
-                      (click)="addUrl(item.uuid, item.unitName, m.uuid, m.groupName)"
+                      (click)="addUrl(item.uuid, item.unitName, m.uuid, m.groupName, item.type)"
                       nz-menu-item
                       [routerLink]="['.']"
                       [queryParams]="{ tab: item.uuid}">
@@ -30,7 +30,7 @@
             <ul>
               <li *ngFor="let item of m.units" (contextmenu)="contextMenu($event, menu)"
                   [nzSelected]="urls.length> 0 && item.uuid === urls[index].uuid"
-                  (click)="addUrl(item.uuid, item.unitName, m.uuid, m.groupName)"
+                  (click)="addUrl(item.uuid, item.unitName, m.uuid, m.groupName, item.type)"
                   nz-menu-item
                   [routerLink]="['.']"
                   [queryParams]="{ tab: item.uuid}">
@@ -64,10 +64,11 @@
              queryParamsHandling="merge">
             {{url.name}}
           </a>
-          <app-unit-dashboard [id]="url.uuid"></app-unit-dashboard>
+          <app-unit-dashboard (updateOrPush)="doUpdateOrPush($event)" [id]="url.uuid" [type]="url.type"></app-unit-dashboard>
           <nz-dropdown-menu #menu="nzDropdownMenu">
             <ul nz-menu>
-              <li nz-menu-item (click)="deleteTab(i)">close</li>
+              <li nz-menu-item (click)="deleteTab(i)">Close</li>
+              <li nz-menu-item (click)="deleteAllTab()">Close All</li>
             </ul>
           </nz-dropdown-menu>
         </nz-tab>
@@ -78,6 +79,31 @@
                 [nzFooter]="null">
         <ng-container *nzModalContent>
           <app-add-group-or-unit-test (menuEvent)="updateUserMenu($event)" [groups]="groups"></app-add-group-or-unit-test>
+        </ng-container>
+      </nz-modal>
+      <nz-modal [(nzVisible)]="isShowPush"
+                nzTitle="{{ 'SELECT_GROUP' | translate }}"
+                (nzOnCancel)="isShowPush = false"
+                [nzFooter]="null">
+        <ng-container *nzModalContent>
+          <div>
+            <nz-select style="width: 300px"
+                       nzShowSearch
+                       nzAllowClear
+                       [(ngModel)]="selectGroupUuid"
+                       nzPlaceHolder="{{ 'TIPS.GROUP_TYPE' | translate }}">
+              <nz-option *ngFor="let g of publicGroups" nzLabel="{{g.name}}" nzValue="{{g.id}}"></nz-option>
+            </nz-select>
+          </div>
+          <div style="margin-top: 16px;margin-bottom: 16px">
+            <input  style="width: 300px"
+                    nz-input
+                    [(ngModel)]="pushedName"
+                    placeholder="{{ 'TIPS.TEST_NAME' | translate }}"/>
+          </div>
+          <button style="margin-left: 10px" nz-button nzType="primary" (click)="pushOrUpdate()">
+            {{ 'CONFIRM' | translate }}
+          </button>
         </ng-container>
       </nz-modal>
     </nz-content>

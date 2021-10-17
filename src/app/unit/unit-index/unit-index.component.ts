@@ -2,9 +2,10 @@ import {AfterViewChecked, AfterViewInit, Component, OnInit, Output} from '@angul
 import {NzContextMenuService, NzDropdownMenuComponent} from 'ng-zorro-antd/dropdown';
 import {ActivatedRoute} from '@angular/router';
 import {GableBackendService} from '../../core/services/gable-backend.service';
-import {Result} from '../../core/Result';
+import {Result, UpdateOrPushInfo} from '../../core/Result';
 import {GroupInfo, UnitMenuGroup, UnitResponse} from '../../core/UnitMenu';
 import {TabInfo} from '../../core/TabInfo';
+import {NzMessageService} from "ng-zorro-antd/message";
 @Component({
   selector: 'app-unit-index',
   templateUrl: './unit-index.component.html',
@@ -26,8 +27,14 @@ export class UnitIndexComponent implements OnInit {
   publicMenu: UnitMenuGroup[];
   userMenu: UnitMenuGroup[];
   groups: GroupInfo[] = [];
+  publicGroups: GroupInfo[] = [];
+  isShowPush = false;
+  selectGroupUuid = '';
+  pushedName = '';
+  pushInfo = undefined;
   constructor(private nzContextMenuService: NzContextMenuService,
               private gableBackendService: GableBackendService,
+              private messageService: NzMessageService,
               private route: ActivatedRoute) {}
 
   ngOnInit(): void {
@@ -47,7 +54,8 @@ export class UnitIndexComponent implements OnInit {
     this.getMenu();
   }
 
-  addUrl(_uuid: string, _name: string, _groupName: string, _groupUuid: string): void {
+  addUrl(_uuid: string, _name: string, _groupName: string, _groupUuid: string, _type: string): void {
+    console.log('zzq see added test type', _type);
     let isFound = false;
     let index = 0;
     this.urls.forEach((value, i) => {
@@ -61,7 +69,7 @@ export class UnitIndexComponent implements OnInit {
       localStorage.setItem('selectTabIndex', this.urls[index].uuid);
       return;
     }
-    this.urls.push({uuid: _uuid, name: _name, groupName: _groupName, groupUuid: _groupUuid});
+    this.urls.push({uuid: _uuid, name: _name, groupName: _groupName, groupUuid: _groupUuid, type: _type});
     this.index = this.urls.length - 1;
     localStorage.setItem('openTabs', JSON.stringify(this.urls));
     localStorage.setItem('selectTabIndex', this.urls[index].uuid);
@@ -92,17 +100,74 @@ export class UnitIndexComponent implements OnInit {
     }
   }
 
-  changeSelectTabs(no: any) {
-    localStorage.setItem('selectTabIndex', this.urls[no].uuid);
+  deleteAllTab() {
+    this.urls = [];
+    this.index = -1;
+    localStorage.removeItem('openTabs');
+    localStorage.removeItem('selectTabIndex');
   }
 
-  updateUserMenu(newMenu: UnitMenuGroup[]) {
-    this.userMenu = newMenu;
-    this.groups = [];
-    this.userMenu.forEach(value => {
-      this.groups.push({name: value.groupName, id: value.uuid});
-    });
+  changeSelectTabs(no: any) {
+    if (undefined !== this.urls[no]) {
+      localStorage.setItem('selectTabIndex', this.urls[no].uuid);
+    }
+  }
+
+  updateUserMenu(newMenu: UnitResponse) {
+    if (newMenu.user !== undefined) {
+      this.userMenu = newMenu.user;
+      this.groups = [];
+      this.userMenu.forEach(value => {
+        this.groups.push({name: value.groupName, id: value.uuid});
+      });
+    }
+    if (newMenu.public !== undefined) {
+      this.publicMenu = newMenu.public;
+      this.groups = [];
+      this.publicMenu.forEach(value => {
+        this.publicGroups.push({name: value.groupName, id: value.uuid});
+      });
+    }
     this.isShowAddDialog = false;
+  }
+
+  doUpdateOrPush(info: UpdateOrPushInfo) {
+    this.pushInfo = info;
+    if (info.type === 'UPDATE') {
+      this.gableBackendService.updateUnit({
+        from: this.pushInfo.from,
+        to: this.pushInfo.to
+      }).subscribe(res => {
+        this.isShowPush = false;
+        this.messageService.success('Update success');
+      });
+      return;
+    }
+    this.selectGroupUuid = '';
+    this.pushedName = '';
+    this.isShowPush = true;
+  }
+
+  pushOrUpdate(){
+    if (this.selectGroupUuid === '') {
+      this.messageService.error('Please select group');
+      return;
+    }
+    if (this.pushedName === '') {
+      this.messageService.error('Please enter pushed name');
+      return;
+    }
+    this.gableBackendService.pushUnit({
+      from: this.pushInfo.from,
+      toGroup: this.selectGroupUuid,
+      testName: this.pushedName
+    }).subscribe(res => {
+      this.isShowPush = false;
+      this.messageService.success('Push success');
+      if (res.result) {
+        this.getMenu();
+      }
+    });
   }
 
   private getMenu() {
@@ -111,6 +176,9 @@ export class UnitIndexComponent implements OnInit {
       this.userMenu = menu.data.user;
       this.userMenu.forEach(value => {
         this.groups.push({name: value.groupName, id: value.uuid});
+      });
+      this.publicMenu.forEach(value => {
+        this.publicGroups.push({name: value.groupName, id: value.uuid});
       });
     });
   }

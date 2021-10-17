@@ -5,71 +5,146 @@
   nzTitle="{{ 'ADD_INTEGRATE' | translate }}"
 >
   <nz-page-header-extra>
-    <button (click)="saveIntegrateTest()" nz-button nzType="primary">{{ 'SAVE' | translate }}</button>
+    <button (click)="addStep()" nz-button nzType="primary">{{ 'ADD_STEP' | translate }}</button>
+    <button style="margin-left: 12px" (click)="saveIntegrateTest()" nz-button nzType="primary">
+      {{ isAdded ? 'SAVE' : 'UPDATE' | translate }}
+    </button>
   </nz-page-header-extra>
 </nz-page-header>
-<div [style]="{height: height + 'px'}" style="width: 100%;;overflow-y: auto">
-  <div nz-row style="margin-top: 10px">
-    <div nz-col nzSpan="8" style="padding: 20px">
-      <nz-collapse>
-        <nz-collapse-panel
-          [nzExtra]="extraTpl"
-          *ngFor="let unit of list;let i = index" [nzHeader]="unit.groupName" [nzActive]="i == 0">
-          <nz-table #middleTable nzSize="small" [nzData]="unit.units"
-                    [nzScroll]="{ x: '500px' }"
-                    [nzFrontPagination]="false" nzBordered nzOuterBordered>
-            <tbody>
-            <tr *ngFor="let data of middleTable.data">
-              <td>{{data.unitName}}</td>
-              <td style="width: 70px">{{data.type}}</td>
-              <td>
-                <button style="margin: 3px" nzSize="small" (click)="addUnit(data.uuid, data.unitName, data.type)"
-                        nz-button nzType="primary">{{ 'ADD' | translate }}</button>
-                <button style="margin: 3px" nzSize="small"
-                        (click)="selectCase(data.uuid, data.unitName, data.type)"
-                        nz-button nzType="primary">{{ 'CASE' | translate }}</button>
-              </td>
-            </tr>
-            </tbody>
-          </nz-table>
-          <ng-template #extraTpl>
-            <i nz-icon nzType="file-add" nzTheme="outline" (click)="$event.stopPropagation();batchAdd(i)"></i>
-          </ng-template>
-        </nz-collapse-panel>
-      </nz-collapse>
-    </div>
-    <div nz-col nzSpan="8" style="padding: 20px">
-      <nz-table #middleTable nzSize="small"
-                [nzData]="waitForSave.length == 0?[]:waitForSave"
-                [nzScroll]="{ x: '500px',y: (height-200) + 'px' }"
-                [nzFrontPagination]="false" nzBordered nzOuterBordered>
-        <thead>
-        <tr>
-          <th>Tag</th>
-          <th>Type</th>
-          <th>Name</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let data of waitForSave;let i = index" (click)="showItem(i)">
-          <td>
-            <nz-tag *ngIf="data.tag== 'test'" [nzColor]="'#2db7f5'">test</nz-tag>
-            <nz-tag *ngIf="data.tag== 'case'" [nzColor]="'#87d068'">case</nz-tag>
-          </td>
-          <td>{{data.type}}</td>
-          <td>{{data.name}}</td>
-        </tr>
-        </tbody>
-      </nz-table>
-    </div>
-    <div nz-col nzSpan="8" style="padding: 20px">
-      <nz-spin [nzSpinning]="isHandlingData">
-        <div style="height: 500px">
-          <ngx-monaco-editor style="z-index: 2" [options]="config" [(ngModel)]="inStr" ></ngx-monaco-editor>
-        </div>
-      </nz-spin>
-    </div>
-  </div>
+<div [style]="{height: height + 'px'}" style="width: 100%;;overflow-y: auto;background-color: #638">
+
+  <nz-layout>
+    <nz-sider [nzWidth]="240" nzTheme="light" >
+      <div [style]="{height: height + 'px', overflowY: 'auto'}">
+        <ul nz-menu nzMode="inline" nzTheme="light">
+          <li nz-submenu nzTitle="Public" nzIcon="laptop">
+            <ul>
+              <li *ngFor="let m of list;let i = index" nz-submenu nzTitle="{{m.groupName}}" >
+                <ul>
+                  <li *ngFor="let item of m.units"
+                      (contextmenu)="contextMenu($event, menu)"
+                      (click)="addUnit(item.uuid, item.unitName, item.type)"
+                      nz-menu-item>
+                    {{item.unitName}}
+                    <nz-dropdown-menu #menu="nzDropdownMenu">
+                      <ul nz-menu>
+                        <li nz-menu-item (click)="selectCase(item.uuid, item.unitName, item.type)">
+                          {{ 'ADD_CASE' | translate }}
+                        </li>
+                      </ul>
+                    </nz-dropdown-menu>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </nz-sider>
+    <nz-content>
+      <nz-layout>
+        <nz-sider [nzWidth]="300" nzTheme="light" style="marginLeft: 10px">
+          <div [style]="{height: height + 'px', overflowY: 'auto'}">
+            <div *ngIf="waitForSave.length == 0">
+              <nz-empty></nz-empty>
+            </div>
+            <div *ngIf="waitForSave.length != 0">
+              <ul nz-menu nzMode="inline" nzTheme="light">
+                <ul>
+                  <li *ngFor="let data of waitForSave;let i = index" nz-menu-item
+                      (contextmenu)="contextMenu($event, deleteMenu)"
+                      (click)="showItem(i)" >
+                    <nz-tag [nzColor]="'#2db7f5'">{{data.type}}</nz-tag>
+                    {{data.name}}
+                    <p *ngIf="data.tag== 'case'">({{data.caseId}})</p>
+
+                    <nz-dropdown-menu #deleteMenu="nzDropdownMenu">
+                      <ul nz-menu>
+                        <li nz-menu-item (click)="delete(i)">
+                          {{ 'DELETE' | translate }}
+                        </li>
+                      </ul>
+                    </nz-dropdown-menu>
+                  </li>
+                </ul>
+              </ul>
+            </div>
+          </div>
+        </nz-sider>
+        <nz-content>
+          <nz-spin [nzSpinning]="isHandlingData">
+            <div  style="border:1px solid #d9d9d9;padding: 3px"
+                  [style]="{height: height + 'px', overflowY: 'auto'}">
+              <ngx-monaco-editor
+                (init)="initEditor($event)"
+                style="z-index: 2" [options]="config" [(ngModel)]="inStr" ></ngx-monaco-editor>
+            </div>
+          </nz-spin>
+        </nz-content>
+      </nz-layout>
+    </nz-content>
+  </nz-layout>
+<!--  <div nz-row style="margin-top: 10px">-->
+<!--    <div nz-col nzSpan="8" style="padding: 20px">-->
+<!--      <nz-collapse>-->
+<!--        <nz-collapse-panel-->
+<!--          [nzExtra]="extraTpl"-->
+<!--          *ngFor="let unit of list;let i = index" [nzHeader]="unit.groupName" [nzActive]="i == 0">-->
+<!--          <nz-table #middleTable nzSize="small" [nzData]="unit.units"-->
+<!--                    [nzScroll]="{ x: '500px' }"-->
+<!--                    [nzFrontPagination]="false" nzBordered nzOuterBordered>-->
+<!--            <tbody>-->
+<!--            <tr *ngFor="let data of middleTable.data">-->
+<!--              <td>{{data.unitName}}</td>-->
+<!--              <td style="width: 70px">{{data.type}}</td>-->
+<!--              <td>-->
+<!--                <button style="margin: 3px" nzSize="small" (click)="addUnit(data.uuid, data.unitName, data.type)"-->
+<!--                        nz-button nzType="primary">{{ 'ADD' | translate }}</button>-->
+<!--                <button style="margin: 3px" nzSize="small"-->
+<!--                        (click)="selectCase(data.uuid, data.unitName, data.type)"-->
+<!--                        nz-button nzType="primary">{{ 'CASE' | translate }}</button>-->
+<!--              </td>-->
+<!--            </tr>-->
+<!--            </tbody>-->
+<!--          </nz-table>-->
+<!--          <ng-template #extraTpl>-->
+<!--            <i nz-icon nzType="file-add" nzTheme="outline" (click)="$event.stopPropagation();batchAdd(i)"></i>-->
+<!--          </ng-template>-->
+<!--        </nz-collapse-panel>-->
+<!--      </nz-collapse>-->
+<!--    </div>-->
+<!--    <div nz-col nzSpan="8" style="padding: 20px">-->
+<!--      <nz-table #middleTable nzSize="small"-->
+<!--                [nzData]="waitForSave.length == 0?[]:waitForSave"-->
+<!--                [nzScroll]="{ x: '500px',y: (height-200) + 'px' }"-->
+<!--                [nzFrontPagination]="false" nzBordered nzOuterBordered>-->
+<!--        <thead>-->
+<!--        <tr>-->
+<!--          <th>Tag</th>-->
+<!--          <th>Type</th>-->
+<!--          <th>Name</th>-->
+<!--        </tr>-->
+<!--        </thead>-->
+<!--        <tbody>-->
+<!--        <tr *ngFor="let data of waitForSave;let i = index" (click)="showItem(i)">-->
+<!--          <td>-->
+<!--            <nz-tag *ngIf="data.tag== 'test'" [nzColor]="'#2db7f5'">test</nz-tag>-->
+<!--            <nz-tag *ngIf="data.tag== 'case'" [nzColor]="'#87d068'">case</nz-tag>-->
+<!--          </td>-->
+<!--          <td>{{data.type}}</td>-->
+<!--          <td>{{data.name}}</td>-->
+<!--        </tr>-->
+<!--        </tbody>-->
+<!--      </nz-table>-->
+<!--    </div>-->
+<!--    <div nz-col nzSpan="8" style="padding: 20px">-->
+<!--      <nz-spin [nzSpinning]="isHandlingData">-->
+<!--        <div style="height: 500px">-->
+<!--          <ngx-monaco-editor style="z-index: 2" [options]="config" [(ngModel)]="inStr" ></ngx-monaco-editor>-->
+<!--        </div>-->
+<!--      </nz-spin>-->
+<!--    </div>-->
+<!--  </div>-->
   <nz-modal [(nzVisible)]="isShowCase"
             nzWidth="80%"
             nzTitle="The first Modal" (nzOnCancel)="handleCancel()" [nzFooter]="null">

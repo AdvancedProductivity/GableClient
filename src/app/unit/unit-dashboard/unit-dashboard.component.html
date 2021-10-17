@@ -2,10 +2,29 @@
      [style]="{height: height + 'px'}">
   <nz-tabset>
     <nz-tab nzTitle="{{ 'RUN_TYPE' | translate }}">
-      <app-default-test
-        [height]="height - 72"
-        [uuid]="id"
-      ></app-default-test>
+      <div [ngSwitch]="type">
+        <div *ngSwitchCase="'HTTP'">
+          <app-default-test
+            [height]="height - 72"
+            [uuid]="id"
+            (updateOrPush)="doUpdateOrPush($event)"
+          ></app-default-test>
+        </div>
+        <div *ngSwitchCase="'GROOVY_SCRIPT'">
+          <app-groovy-unit
+            [height]="height - 72"
+            [uuid]="id"
+            (updateOrPush)="doUpdateOrPush($event)"
+          ></app-groovy-unit>
+        </div>
+        <div *ngSwitchDefault>
+          <app-default-test
+            [height]="height - 72"
+            [uuid]="id"
+            (updateOrPush)="doUpdateOrPush($event)"
+          ></app-default-test>
+        </div>
+      </div>
     </nz-tab>
     <nz-tab nzTitle="{{ 'CASE' | translate }}">
       <ng-template nz-tab>
