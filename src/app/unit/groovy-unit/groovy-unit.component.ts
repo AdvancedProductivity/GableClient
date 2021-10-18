@@ -3,7 +3,7 @@ import {MonacoStandaloneCodeEditor} from '@materia-ui/ngx-monaco-editor';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {GableBackendService} from '../../core/services/gable-backend.service';
 import {NzResizeEvent} from 'ng-zorro-antd/resizable';
-import {UpdateOrPushInfo} from "../../core/Result";
+import {UpdateOrPushInfo} from '../../core/Result';
 
 @Component({
   selector: 'app-groovy-unit',
@@ -132,7 +132,7 @@ export class GroovyUnitComponent implements OnInit {
     }
   }
 
-  private getConfig(isSetEnv: boolean = true) {
+  getConfig(isSetEnv: boolean = true) {
     this.gableBackendService.getUnitConfig(this.uuid, this.isPublicUnit, this.selectEnvUuid).subscribe((res) => {
       if (this.isPublicUnit || res.data.isUnmodify) {
         this.groovyConfig = {...this.groovyConfig, readOnly: true};

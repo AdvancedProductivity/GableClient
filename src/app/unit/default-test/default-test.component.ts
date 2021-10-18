@@ -125,7 +125,7 @@ export class DefaultTestComponent implements OnInit {
     this.configEditor.updateOptions({readOnly: isReadOnly});
   }
 
-  private getConfig(isSetEnv: boolean = true) {
+  getConfig(isSetEnv: boolean = true) {
     this.gableBackendService.getUnitConfig(this.uuid, this.isPublicUnit, this.selectEnvUuid).subscribe((res) => {
       if (this.isPublicUnit || res.data.isUnmodify) {
         this.setConfigReadOnly(true);
