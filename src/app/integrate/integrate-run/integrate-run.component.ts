@@ -176,8 +176,12 @@ export class IntegrateRunComponent implements OnInit {
             item.historyId = out.data.historyId;
           }
           const newInstance = out.data.after.instance;
+          const newNextIn = out.data.after.nextIn;
           if (newInstance !== undefined) {
             this.instance = newInstance;
+          }
+          if (newNextIn !== undefined) {
+            this.nextIn = JSON.stringify(newNextIn, null, '\t');
           }
           this.canNotGoToLoop = false;
         }, error => {
