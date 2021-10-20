@@ -30,6 +30,8 @@
       <ul nz-menu nzMode="inline" nzTheme="light">
         <ul>
           <li *ngFor="let data of record;let i = index" nz-menu-item
+              nzTooltipTitle="{{data.name}}{{data.tag== 'case'? '(' + data.caseId + ')' : ''}}"
+              nzTooltipPlacement="bottomCenter" nz-tooltip
               (click)="showDetail(data.uuid, data.caseId, data.version,data.historyId, data.type,i)" >
             <div style="display: inline;padding-right: 12px;">
               <i style="font-size: 20px" *ngIf="data.status == 0"
@@ -42,12 +44,8 @@
                  nz-icon [nzType]="'check-circle'" [nzTheme]="'twotone'" [nzTwotoneColor]="'#52c41a'"></i>
             </div>
             <nz-tag [nzColor]="(data.type == 'STEP')? '#87d068' :'#2db7f5'">{{data.type}}</nz-tag>
-            <span
-              nzTooltipTitle="{{data.name}}{{data.tag== 'case'? data.caseId : ''}}"
-              nzTooltipPlacement="right" nz-tooltip>
-              {{data.name}}
-              <p *ngIf="data.tag== 'case'">({{data.caseId}})</p>
-            </span>
+            {{data.name}}
+            <p *ngIf="data.tag== 'case'">({{data.caseId}})</p>
           </li>
         </ul>
       </ul>
