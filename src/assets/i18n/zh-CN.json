@@ -88,6 +88,8 @@
   "CONFIRM": "确认",
   "SELECT_GROUP": "选择分组推送",
   "DELETE": "删除",
+  "PAUSE": "暂停",
+  "GOON": "继续",
   "DELETE_SELECT": "删除选中",
   "DELETE_ALL": "删除全部",
   "GOTO_EDIT": "去编辑",

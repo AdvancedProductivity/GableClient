@@ -18,6 +18,7 @@ import {NzEmptyModule} from 'ng-zorro-antd/empty';
 import {NzSpinModule} from 'ng-zorro-antd/spin';
 import {NzAlertModule} from 'ng-zorro-antd/alert';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 // import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import {NzGridModule} from 'ng-zorro-antd/grid';
@@ -58,6 +59,7 @@ import { NzStepsModule } from 'ng-zorro-antd/steps';
     NzGridModule,
     NzMessageModule,
     NzInputModule,
+    NzToolTipModule,
     NzPopconfirmModule,
     MonacoEditorModule,
     NzEmptyModule,
@@ -82,6 +84,7 @@ import { NzStepsModule } from 'ng-zorro-antd/steps';
     NzIconModule,
     NzCollapseModule,
     NzAlertModule,
+    NzToolTipModule,
     NzPopconfirmModule,
     NzUploadModule,
     NzCheckboxModule,

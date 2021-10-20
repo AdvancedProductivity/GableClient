@@ -87,6 +87,8 @@
   "TITLE": "Title",
   "DELETE_SELECT": "Delete Selected",
   "REFRESH": "Refresh",
+  "PAUSE": "Pause",
+  "GOON": "Go On",
   "DELETE_ALL": "Delete All",
   "DIFF": "diff",
   "CONFIRM": "Confirm",

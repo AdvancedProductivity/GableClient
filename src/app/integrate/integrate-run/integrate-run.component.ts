@@ -47,6 +47,7 @@ export class IntegrateRunComponent implements OnInit {
   nextIn = {};
   instance = {};
   canNotGoToLoop = false;
+  isPausing = false;
 
   constructor(private router: Router,
               private gableBackendService: GableBackendService,
@@ -121,6 +122,10 @@ export class IntegrateRunComponent implements OnInit {
     this.handleDetailAsTest(uuid, caseId, version, historyId);
   }
 
+  pause() {
+    this.isPausing = !this.isPausing;
+  }
+
   run() {
     this.isRunning = true;
     this.lastOut = {};
@@ -143,6 +148,9 @@ export class IntegrateRunComponent implements OnInit {
         this.gableBackendService.addIntegrateHistory(this.integrateUuid, this.record).subscribe((res) => {
         });
         this.isRunning = false;
+        return;
+      }
+      if (this.isPausing) {
         return;
       }
       const nextIn = this.getNextIn();
