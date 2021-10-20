@@ -100,6 +100,9 @@ export class IntegrateRunComponent implements OnInit {
     if (type === 'STEP') {
       this.inStr = this.record[index].code;
       this.inConfig = {...this.inConfig, language: 'groovy'};
+      if (historyId === undefined) {
+        return;
+      }
       this.gableBackendService.getGroovyHistory(uuid, true, historyId).subscribe((res) => {
         if (res.result) {
           this.originalCode = JSON.stringify(res.data.before, null, '\t');

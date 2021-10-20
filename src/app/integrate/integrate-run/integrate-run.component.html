@@ -14,6 +14,8 @@
     </nz-select>
     <button *ngIf="!isShowHistory" [disabled]="isRunning" (click)="run()"
             nz-button nzType="primary">{{ 'RUN' | translate }}</button>
+    <button *ngIf= "!isAdded" routerLink="/integrate/add" [queryParams]="{ uuid: integrateUuid}"
+            nz-button nzType="primary">{{ 'GOTO_EDIT' | translate }}</button>
   </nz-page-header-extra>
 </nz-page-header>
 <nz-layout>

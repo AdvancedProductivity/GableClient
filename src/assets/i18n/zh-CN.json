@@ -88,6 +88,8 @@
   "CONFIRM": "确认",
   "SELECT_GROUP": "选择分组推送",
   "DELETE": "删除",
+  "GOTO_EDIT": "去编辑",
+  "GOTO_RUN": "去运行",
   "YES": "是",
   "NO": "否",
   "DELETE_CONFIRM": "真的要删除吗",

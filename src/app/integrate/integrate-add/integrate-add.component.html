@@ -7,8 +7,10 @@
   <nz-page-header-extra>
     <button (click)="addStep()" nz-button nzType="primary">{{ 'ADD_STEP' | translate }}</button>
     <button style="margin-left: 12px" (click)="saveIntegrateTest()" nz-button nzType="primary">
-      {{ isAdded ? 'SAVE' : 'UPDATE' | translate }}
+      {{ (isAdded ? 'SAVE' : 'UPDATE') | translate }}
     </button>
+    <button *ngIf= "!isAdded" routerLink="/integrate/run" [queryParams]="{ uuid: uuid}"
+      nz-button nzType="primary">{{ 'GOTO_RUN' | translate }}</button>
   </nz-page-header-extra>
 </nz-page-header>
 <div [style]="{height: height + 'px'}" style="width: 100%;;overflow-y: auto;background-color: #638">
@@ -17,24 +19,20 @@
     <nz-sider [nzWidth]="240" nzTheme="light" >
       <div [style]="{height: height + 'px', overflowY: 'auto'}">
         <ul nz-menu nzMode="inline" nzTheme="light">
-          <li nz-submenu nzTitle="Public" nzIcon="laptop">
+          <li *ngFor="let m of list;let i = index" nz-submenu nzTitle="{{m.groupName}}" >
             <ul>
-              <li *ngFor="let m of list;let i = index" nz-submenu nzTitle="{{m.groupName}}" >
-                <ul>
-                  <li *ngFor="let item of m.units"
-                      (contextmenu)="contextMenu($event, menu)"
-                      (click)="addUnit(item.uuid, item.unitName, item.type)"
-                      nz-menu-item>
-                    {{item.unitName}}
-                    <nz-dropdown-menu #menu="nzDropdownMenu">
-                      <ul nz-menu>
-                        <li nz-menu-item (click)="selectCase(item.uuid, item.unitName, item.type)">
-                          {{ 'ADD_CASE' | translate }}
-                        </li>
-                      </ul>
-                    </nz-dropdown-menu>
-                  </li>
-                </ul>
+              <li *ngFor="let item of m.units"
+                  (contextmenu)="contextMenu($event, menu)"
+                  (click)="addUnit(item.uuid, item.unitName, item.type)"
+                  nz-menu-item>
+                {{item.unitName}}
+                <nz-dropdown-menu #menu="nzDropdownMenu">
+                  <ul nz-menu>
+                    <li nz-menu-item (click)="selectCase(item.uuid, item.unitName, item.type)">
+                      {{ 'ADD_CASE' | translate }}
+                    </li>
+                  </ul>
+                </nz-dropdown-menu>
               </li>
             </ul>
           </li>
