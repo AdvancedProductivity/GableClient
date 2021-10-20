@@ -81,6 +81,7 @@
   "ADD_STEP": "Add Step",
   "YES": "yes",
   "NO": "no",
+  "STEP_DELAY": "Step Delay",
   "GOTO_EDIT": "Go To Edit",
   "GOTO_RUN": "Go To Run",
   "UPDATE": "Update",

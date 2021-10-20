@@ -48,6 +48,8 @@ export class IntegrateRunComponent implements OnInit {
   instance = {};
   canNotGoToLoop = false;
   isPausing = false;
+  isDelaying = false;
+  delayTime = 0;
 
   constructor(private router: Router,
               private gableBackendService: GableBackendService,
@@ -153,6 +155,9 @@ export class IntegrateRunComponent implements OnInit {
       if (this.isPausing) {
         return;
       }
+      if (this.isDelaying) {
+        return;
+      }
       const nextIn = this.getNextIn();
       if (nextIn === undefined) {
         return;
@@ -204,7 +209,19 @@ export class IntegrateRunComponent implements OnInit {
       if (item.type !== 'STEP') {
         this.runningTestIndex++;
       }
+      this.runDelay();
     }, 500);
+  }
+
+  private runDelay() {
+    if (this.delayTime !== undefined && this.delayTime > 0) {
+      console.log('start delay');
+      this.isDelaying = true;
+      setTimeout(() => {
+        console.log('stop delay');
+        this.isDelaying = false;
+      }, (this.delayTime * 1000));
+    }
   }
 
   private getNextIn(): any {

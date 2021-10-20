@@ -225,10 +225,12 @@ export class GableBackendService {
       instance: ins,
       nextIn: nIn
     };
-    try {
-      data.nextIn = JSON.parse(nIn);
-    } catch (e) {
-      console.log(e);
+    if (typeof(nIn) == 'string'){
+      try {
+        data.nextIn = JSON.parse(nIn);
+      } catch (e) {
+        console.log(e);
+      }
     }
     return this.httpClient.post<Result<UnitResponse>>(this.prefix + 'api/groovyCode', data, {
       headers: {
