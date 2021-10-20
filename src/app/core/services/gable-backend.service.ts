@@ -414,4 +414,11 @@ export class GableBackendService {
     return this.httpClient.post(this.prefix + 'api/unit/update', param);
   }
 
+  public deleteIntegrate(id: string): Observable<any> {
+    return this.httpClient.delete(this.prefix + 'api/integrate', {
+      params: {
+        uuid: id
+      }
+    });
+  }
 }

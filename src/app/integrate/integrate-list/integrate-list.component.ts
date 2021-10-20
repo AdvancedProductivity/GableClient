@@ -13,12 +13,15 @@ export class IntegrateListComponent implements OnInit {
   isAddTagModal = false;
   tagName = '';
   uuidWaitForAddUnit = '';
+  isHandlingData = false;
+  height = 500;
   constructor(private gableBackendService: GableBackendService,
               private message: NzMessageService) {
   }
 
   ngOnInit(): void {
     this.getList();
+    this.height = document.documentElement.clientHeight - 82;
   }
 
   addTag(uuid: string) {
@@ -38,6 +41,28 @@ export class IntegrateListComponent implements OnInit {
       if (res.result) {
         this.getList();
       }
+    });
+  }
+
+  confirmDelete(i) {
+    if (this.list[i] === undefined) {
+      this.message.info('not find ' + i);
+      return;
+    }
+    this.isHandlingData = true;
+    this.gableBackendService.deleteIntegrate(this.list[i].uuid).subscribe((res) => {
+      if (res.result) {
+        const tmpList = [];
+        this.list.forEach(((value, index) => {
+          if (i !== index) {
+            tmpList.push(value);
+          }
+        }));
+        this.list = tmpList;
+      }
+      this.isHandlingData = false;
+    },error => {
+      this.isHandlingData = false;
     });
   }
 
