@@ -10,6 +10,7 @@ export class AppRoutingCache implements RouteReuseStrategy {
 
   public shouldDetach(route: ActivatedRouteSnapshot): boolean {
     if (route.routeConfig.path === 'unit') {
+      return true;
     }
     return false;
   }
