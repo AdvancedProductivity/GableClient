@@ -4,17 +4,16 @@ import { PageNotFoundComponent } from './shared/components';
 
 import {IntegrateRoutingModule} from './integrate/integrate-routing.module';
 import {UnitRoutingModule} from './unit/unit-routing.module';
+import {AppComponent} from './app.component';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'unit',
-    pathMatch: 'full'
-  },
-  {
-    path: 'integrate',
-    redirectTo: 'integrate',
-    pathMatch: 'full'
+    component: AppComponent,
+    children: [
+      { path: '', loadChildren: () => import('./unit/unit.module').then((m) => m.UnitModule) },
+      { path: 'integrate', loadChildren: () => import('./integrate/integrate.module').then((m) => m.IntegrateModule) }
+    ],
   },
   {
     path: '**',

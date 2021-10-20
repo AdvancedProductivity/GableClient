@@ -4,20 +4,26 @@ import { Routes, RouterModule } from '@angular/router';
 import {IntegrateListComponent} from './integrate-list/integrate-list.component';
 import {IntegrateAddComponent} from './integrate-add/integrate-add.component';
 import {IntegrateRunComponent} from './integrate-run/integrate-run.component';
+import {IntegrateIndexComponent} from './integrate-index/integrate-index.component';
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: './integrate' },
-  {
-    path: 'integrate',
-    component: IntegrateListComponent
-  },
-  {
-    path: 'integrate-add',
-    component: IntegrateAddComponent
-  },
-  {
-    path: 'integrate-run',
-    component: IntegrateRunComponent
+  { path: 'integrate',
+    component: IntegrateIndexComponent,
+    children: [
+      { path: '', redirectTo: 'list', pathMatch: 'full' },
+      {
+        path: 'list',
+        component: IntegrateListComponent
+      },
+      {
+        path: 'add',
+        component: IntegrateAddComponent
+      },
+      {
+        path: 'run',
+        component: IntegrateRunComponent
+      }
+    ],
   }
 ];
 

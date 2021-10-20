@@ -1,6 +1,6 @@
 <div style="overflow-y:auto;padding-top: 20px;padding-left: 10px">
   <div style="padding-bottom: 8px">
-        <a routerLink="../integrate-add" style="margin-right: 8px;"
+        <a routerLink="/integrate/add" style="margin-right: 8px;"
            nz-button nzType="link">{{ 'ADD_TEST' | translate }}</a>
   </div>
   <nz-spin [nzSpinning]="isHandlingData">
@@ -26,12 +26,15 @@
             </div>
           </td>
           <td>
-            <a routerLink="../integrate-run"  [queryParams]="{ uuid: data.uuid}"
+            <a routerLink="/integrate/run"  [queryParams]="{ uuid: data.uuid}"
                nz-button nzType="link">
               {{ 'RUN' | translate }}
             </a>
-            <a nz-button nzType="link" routerLink="../integrate-add" [queryParams]="{ uuid: data.uuid}">
+            <a nz-button nzType="link" routerLink="/integrate/add" [queryParams]="{ uuid: data.uuid}">
               {{ 'EDIT' | translate }}
+            </a>
+            <a nz-button nzType="link" (click)="addTag(data.uuid)">
+              {{ 'ADD_TAG' | translate }}
             </a>
             <button nz-button nzType="primary" nzDanger nzSize="small"
                     nz-popconfirm
@@ -42,9 +45,6 @@
             >
               {{ 'DELETE' | translate }}
             </button>
-            <a nz-button nzType="link" (click)="addTag(data.uuid)">
-              {{ 'ADD_TAG' | translate }}
-            </a>
           </td>
         </tr>
         </tbody>
