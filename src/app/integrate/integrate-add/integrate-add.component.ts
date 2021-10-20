@@ -44,6 +44,7 @@ export class IntegrateAddComponent implements OnInit {
   saveType = 0;
   isAdded = true;
   uuid = '';
+  isEditingList = false;
   constructor(private nzContextMenuService: NzContextMenuService,
               private router: Router,
               private route: ActivatedRoute,
@@ -83,7 +84,8 @@ export class IntegrateAddComponent implements OnInit {
       uuid: id,
       name: unitName,
       type: testType,
-      tag: 'test'
+      tag: 'test',
+      ignore: false
     });
   }
 
@@ -260,5 +262,28 @@ export class IntegrateAddComponent implements OnInit {
 
   initEditor(editor: MonacoStandaloneCodeEditor): void {
     this.codeEditor = editor;
+  }
+
+  batchDelete() {
+    if (this.waitForSave === undefined || this.waitForSave.length === 0) {
+      return;
+    }
+    this.isEditingList = true;
+    const newList = [];
+    this.waitForSave.forEach(value => {
+      if (!value.ignore) {
+        newList.push(value);
+      }
+    });
+    this.waitForSave = newList;
+    this.isEditingList = false;
+  }
+
+  deleteAll() {
+    this.isEditingList = true;
+    this.waitForSave = [];
+    setTimeout(() => {
+      this.isEditingList = false;
+    }, 500);
   }
 }

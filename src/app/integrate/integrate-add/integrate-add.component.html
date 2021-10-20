@@ -5,6 +5,8 @@
   nzTitle="{{ 'ADD_INTEGRATE' | translate }}"
 >
   <nz-page-header-extra>
+    <button (click)="batchDelete()"
+            nz-button nzType="primary">{{ 'DELETE_SELECT' | translate }}</button>
     <button (click)="addStep()" nz-button nzType="primary">{{ 'ADD_STEP' | translate }}</button>
     <button style="margin-left: 12px" (click)="saveIntegrateTest()" nz-button nzType="primary">
       {{ (isAdded ? 'SAVE' : 'UPDATE') | translate }}
@@ -42,32 +44,38 @@
     <nz-content>
       <nz-layout>
         <nz-sider [nzWidth]="300" nzTheme="light" style="marginLeft: 10px">
-          <div [style]="{height: height + 'px', overflowY: 'auto'}">
-            <div *ngIf="waitForSave.length == 0">
-              <nz-empty></nz-empty>
-            </div>
-            <div *ngIf="waitForSave.length != 0">
-              <ul nz-menu nzMode="inline" nzTheme="light">
-                <ul>
-                  <li *ngFor="let data of waitForSave;let i = index" nz-menu-item
-                      (contextmenu)="contextMenu($event, deleteMenu)"
-                      (click)="showItem(i)" >
-                    <nz-tag [nzColor]="'#2db7f5'">{{data.type}}</nz-tag>
-                    {{data.name}}
-                    <p *ngIf="data.tag== 'case'">({{data.caseId}})</p>
+          <nz-spin [nzSpinning]="isEditingList">
+            <div [style]="{height: height + 'px', overflowY: 'auto'}">
+              <div *ngIf="waitForSave.length == 0">
+                <nz-empty></nz-empty>
+              </div>
+              <div *ngIf="waitForSave.length != 0">
+                <ul nz-menu nzMode="inline" nzTheme="light">
+                  <ul>
+                    <li *ngFor="let data of waitForSave;let i = index" nz-menu-item
+                        (contextmenu)="contextMenu($event, deleteMenu)"
+                        (click)="showItem(i)" >
+                      <label style="margin-right: 5px" nz-checkbox [(ngModel)]="data.ignore"></label>
+                      <nz-tag [nzColor]="'#2db7f5'">{{data.type}}</nz-tag>
+                      {{data.name}}
+                      <p *ngIf="data.tag== 'case'">({{data.caseId}})</p>
 
-                    <nz-dropdown-menu #deleteMenu="nzDropdownMenu">
-                      <ul nz-menu>
-                        <li nz-menu-item (click)="delete(i)">
-                          {{ 'DELETE' | translate }}
-                        </li>
-                      </ul>
-                    </nz-dropdown-menu>
-                  </li>
+                      <nz-dropdown-menu #deleteMenu="nzDropdownMenu">
+                        <ul nz-menu>
+                          <li nz-menu-item (click)="delete(i)">
+                            {{ 'DELETE' | translate }}
+                          </li>
+                          <li nz-menu-item (click)="deleteAll()">
+                            {{ 'DELETE_ALL' | translate }}
+                          </li>
+                        </ul>
+                      </nz-dropdown-menu>
+                    </li>
+                  </ul>
                 </ul>
-              </ul>
+              </div>
             </div>
-          </div>
+          </nz-spin>
         </nz-sider>
         <nz-content>
           <nz-spin [nzSpinning]="isHandlingData">
