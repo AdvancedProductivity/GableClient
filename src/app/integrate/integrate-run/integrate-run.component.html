@@ -21,7 +21,8 @@
     <button *ngIf="!isShowHistory" [disabled]="isRunning" (click)="run()"
             nz-button nzType="primary">{{ 'RUN' | translate }}</button>
     <button routerLink="/integrate/add" [queryParams]="{ uuid: integrateUuid}"
-            nz-button nzType="primary">{{ 'GOTO_EDIT' | translate }}</button>
+            nz-button nzType="primary">{{ 'GOTO_EDIT' | translate }
+      }</button>
   </nz-page-header-extra>
 </nz-page-header>
 <nz-layout>
@@ -33,7 +34,8 @@
               nzTooltipTitle="{{data.name}}{{data.tag== 'case'? '(' + data.caseId + ')' : ''}}"
               nzTooltipPlacement="bottomCenter" nz-tooltip
               (click)="showDetail(data.uuid, data.caseId, data.version,data.historyId, data.type,i)" >
-            <div style="display: inline;padding-right: 12px;">
+            <nz-tag>{{i+1}}</nz-tag>
+            <div style="display: inline;padding-right: 8px;width: 28px;height: 35px">
               <i style="font-size: 20px" *ngIf="data.status == 0"
                  nz-icon [nzType]="'smile'" [nzTheme]="'twotone'"></i>
               <i style="font-size: 20px" *ngIf="data.status == 1"

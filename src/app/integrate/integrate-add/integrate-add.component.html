@@ -55,11 +55,11 @@
                     <li *ngFor="let data of waitForSave;let i = index" nz-menu-item
                         (contextmenu)="contextMenu($event, deleteMenu)"
                         (click)="showItem(i)" >
+                      <nz-tag>{{i+1}}</nz-tag>
                       <label style="margin-right: 5px" nz-checkbox [(ngModel)]="data.ignore"></label>
                       <nz-tag [nzColor]="'#2db7f5'">{{data.type}}</nz-tag>
                       {{data.name}}
                       <p *ngIf="data.tag== 'case'">({{data.caseId}})</p>
-
                       <nz-dropdown-menu #deleteMenu="nzDropdownMenu">
                         <ul nz-menu>
                           <li nz-menu-item (click)="delete(i)">
