@@ -31,7 +31,7 @@
       <td>{{data.name}}</td>
       <td>{{data.tag}}</td>
       <td>
-        <p nz-typography nzCopyable nzCopyTooltips="{{ 'COPY' | translate }}" nzContent="{{data.path}}"></p>
+        <p nz-typography nzCopyable [nzCopyTooltips]="'COPY' | translate" nzContent="{{data.path}}"></p>
         </td>
       <td>
         <button nz-button nzType="primary" nzDanger nzSize="small"
