@@ -20,6 +20,7 @@ import {NzAlertModule} from 'ng-zorro-antd/alert';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 // import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import {NzGridModule} from 'ng-zorro-antd/grid';
@@ -44,6 +45,7 @@ import { NzStepsModule } from 'ng-zorro-antd/steps';
     // NzCardModule,
     NzModalModule,
     NzResizableModule,
+    DragDropModule,
     NzTabsModule,
     NzSpinModule,
     NzIconModule,
@@ -97,6 +99,7 @@ import { NzStepsModule } from 'ng-zorro-antd/steps';
     NzStepsModule,
     NzInputNumberModule,
     NzMessageModule,
+    DragDropModule,
     MonacoEditorModule,
     NzResizableModule,
     NzTabsModule,

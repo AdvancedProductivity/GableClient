@@ -51,9 +51,10 @@
               </div>
               <div *ngIf="waitForSave.length != 0">
                 <ul nz-menu nzMode="inline" nzTheme="light">
-                  <ul>
+                  <ul cdkDropList (cdkDropListDropped)="drop($event)">
                     <li *ngFor="let data of waitForSave;let i = index" nz-menu-item
                         (contextmenu)="contextMenu($event, deleteMenu)"
+                        cdkDrag
                         (click)="showItem(i)" >
                       <nz-tag>{{i+1}}</nz-tag>
                       <label style="margin-right: 5px" nz-checkbox [(ngModel)]="data.ignore"></label>

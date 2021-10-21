@@ -4,6 +4,7 @@ import {GableBackendService} from '../../core/services/gable-backend.service';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {NzContextMenuService, NzDropdownMenuComponent} from 'ng-zorro-antd/dropdown';
 import {MonacoEditorConstructionOptions, MonacoStandaloneCodeEditor} from '@materia-ui/ngx-monaco-editor';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-integrate-add',
@@ -285,5 +286,9 @@ export class IntegrateAddComponent implements OnInit {
     setTimeout(() => {
       this.isEditingList = false;
     }, 500);
+  }
+
+  drop(event: CdkDragDrop<string[]>): void {
+    moveItemInArray(this.waitForSave, event.previousIndex, event.currentIndex);
   }
 }
