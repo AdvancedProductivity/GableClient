@@ -128,6 +128,16 @@ export class IntegrateRunComponent implements OnInit {
     this.isPausing = !this.isPausing;
   }
 
+  stop() {
+    if (this.runner !== undefined) {
+      clearInterval(this.runner);
+    }
+    this.isRunning = false;
+    if (this.isPausing) {
+      this.isPausing = false;
+    }
+  }
+
   run() {
     this.isRunning = true;
     this.lastOut = {};

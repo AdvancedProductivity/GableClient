@@ -18,6 +18,8 @@
     </nz-select>
     <button *ngIf="isRunning" (click)="pause()"
             nz-button nzType="primary">{{ (isPausing ? 'GOON' : 'PAUSE') | translate }}</button>
+    <button *ngIf="isRunning" (click)="stop()"
+            nz-button nzType="primary">{{ 'STOP' | translate }}</button>
     <button *ngIf="!isShowHistory" [disabled]="isRunning" (click)="run()"
             nz-button nzType="primary">{{ 'RUN' | translate }}</button>
     <button routerLink="/integrate/add" [queryParams]="{ uuid: integrateUuid}"
