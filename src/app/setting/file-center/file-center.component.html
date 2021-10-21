@@ -1,0 +1,55 @@
+<div>
+  <input [(ngModel)]="tag" style="width: 200px;margin-right: 15px"
+         nz-input placeholder="{{ 'FILE_TAG' | translate }}" nzSize="default" />
+  <input [(ngModel)]="name" style="width: 200px;margin-right: 15px"
+         nz-input placeholder="{{ 'FILE_NAME' | translate }}" nzSize="default" />
+  <nz-upload
+    [nzAction]="getUploadPath()"
+    [nzLimit]="1"
+    style="margin-right: 8px;"
+    [nzShowUploadList]="false"
+    (nzChange)="handleChange($event)"
+  >
+    <button nz-button>
+      <i nz-icon nzType="upload"></i>
+      {{ 'UPLOAD_FILE' | translate }}
+    </button>
+  </nz-upload>
+</div>
+<div style="height: 259px;width: 100%;margin-top: 20px;overflow-y:auto">
+  <nz-table [nzFrontPagination]="false"  #middleTable nzSize="small" [nzData]="fileList" nzBordered nzOuterBordered>
+    <thead>
+    <tr>
+      <th>{{ 'FILE_NAME' | translate }}</th>
+      <th>{{ 'FILE_TAG' | translate }}</th>
+      <th>{{ 'FILE_PATH' | translate }}</th>
+      <th>{{ 'OPERATION' | translate }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of middleTable.data;let i = index">
+      <td>{{data.name}}</td>
+      <td>{{data.tag}}</td>
+      <td>
+        <p nz-typography nzCopyable nzCopyTooltips="{{ 'COPY' | translate }}" nzContent="{{data.path}}"></p>
+        </td>
+      <td>
+        <button nz-button nzType="primary" nzDanger nzSize="small"
+                nz-popconfirm
+                nzPopconfirmTitle="{{ 'DELETE_CONFIRM' | translate }}"
+                nzOkText="{{ 'YES' | translate }}"
+                nzCancelText="{{ 'NO' | translate }}"
+                (nzOnConfirm)="confirmDelete(i,data.uuid)"
+        >
+          {{ 'DELETE' | translate }}
+        </button>
+        <button style="margin-left: 15px" nz-button nzType="primary" nzSize="small"
+                (click)="download(i,data.uuid)"
+        >
+          {{ 'DOWNLOAD' | translate }}
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </nz-table>
+</div>

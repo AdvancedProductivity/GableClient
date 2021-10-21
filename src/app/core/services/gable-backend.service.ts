@@ -423,4 +423,16 @@ export class GableBackendService {
       }
     });
   }
+
+  getFileList(): Observable<any>{
+    return this.httpClient.get(this.prefix + 'api/fileCenter');
+  }
+
+  removeFile(id: string): Observable<any> {
+    return this.httpClient.delete(this.prefix + 'api/fileCenter', {
+      params:{
+        uuid: id
+      }
+    });
+  }
 }

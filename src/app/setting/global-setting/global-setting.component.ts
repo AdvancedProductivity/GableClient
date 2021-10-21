@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {GableBackendService} from "../../core/services/gable-backend.service";
-import {TranslateService} from "@ngx-translate/core";
-import {NzMessageService} from "ng-zorro-antd/message";
+import {GableBackendService} from '../../core/services/gable-backend.service';
+import {TranslateService} from '@ngx-translate/core';
+import {NzMessageService} from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-global-setting',

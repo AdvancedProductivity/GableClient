@@ -7,6 +7,7 @@ import { GableSettingComponent } from '../setting/gable-setting/gable-setting.co
 import { HostSettingComponent } from './host-setting/host-setting.component';
 import { EnvSettingComponent } from './env-setting/env-setting.component';
 import { GlobalSettingComponent } from '../setting/global-setting/global-setting.component';
+import { FileCenterComponent } from '../setting/file-center/file-center.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { GlobalSettingComponent } from '../setting/global-setting/global-setting
     GableSettingComponent,
     HostSettingComponent,
     EnvSettingComponent,
-    GlobalSettingComponent
+    GlobalSettingComponent,
+    FileCenterComponent
   ],
   imports: [
     CommonModule,

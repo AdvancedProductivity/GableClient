@@ -21,6 +21,7 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import { NzTypographyModule } from 'ng-zorro-antd/typography';
 // import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import {NzGridModule} from 'ng-zorro-antd/grid';
@@ -58,6 +59,7 @@ import { NzStepsModule } from 'ng-zorro-antd/steps';
     NzLayoutModule,
     NzInputNumberModule,
     NzCheckboxModule,
+    NzTypographyModule,
     NzSelectModule,
     NzCollapseModule,
     NzGridModule,
@@ -95,6 +97,7 @@ import { NzStepsModule } from 'ng-zorro-antd/steps';
     NzFormModule,
     NzEmptyModule,
     NzInputModule,
+    NzTypographyModule,
     NzSelectModule,
     NzStepsModule,
     NzInputNumberModule,
