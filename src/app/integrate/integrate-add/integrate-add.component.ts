@@ -151,14 +151,18 @@ export class IntegrateAddComponent implements OnInit {
   sendRequest() {
     const requestData = this.listOfData.filter(data => this.setOfCheckedId.has(data.id));
     requestData.forEach((v)=>{
-      this.waitForSave.push({
+      const item = {
         uuid: this.selectCaseUuid,
-        name: this.selectCaseName,
+        name: v.id + '(' + this.selectCaseName + ')',
         type: this.selectTestType,
         tag: 'case',
         caseId: v.id,
         version: this.currentVersion
-      });
+      };
+      if (v.gable_title !== undefined) {
+        item.name = v.gable_title + '(' + this.selectCaseName + ')';
+      }
+      this.waitForSave.push(item);
     });
     this.headers = [];
     this.selectCaseUuid = '';

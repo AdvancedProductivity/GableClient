@@ -21,8 +21,7 @@
     <button *ngIf="!isShowHistory" [disabled]="isRunning" (click)="run()"
             nz-button nzType="primary">{{ 'RUN' | translate }}</button>
     <button routerLink="/integrate/add" [queryParams]="{ uuid: integrateUuid}"
-            nz-button nzType="primary">{{ 'GOTO_EDIT' | translate }
-      }</button>
+            nz-button nzType="primary">{{ 'GOTO_EDIT' | translate }}</button>
   </nz-page-header-extra>
 </nz-page-header>
 <nz-layout>
@@ -31,7 +30,7 @@
       <ul nz-menu nzMode="inline" nzTheme="light">
         <ul>
           <li *ngFor="let data of record;let i = index" nz-menu-item
-              nzTooltipTitle="{{data.name}}{{data.tag== 'case'? '(' + data.caseId + ')' : ''}}"
+              nzTooltipTitle="{{data.name}}"
               nzTooltipPlacement="bottomCenter" nz-tooltip
               (click)="showDetail(data.uuid, data.caseId, data.version,data.historyId, data.type,i)" >
             <nz-tag>{{i+1}}</nz-tag>
@@ -47,8 +46,8 @@
             </div>
             <nz-tag [nzColor]="(data.type == 'STEP')? '#87d068' :'#2db7f5'">{{data.type}}</nz-tag>
             {{data.name}}
-            <p *ngIf="data.tag== 'case'">({{data.caseId}})</p>
           </li>
+          <div style="height: 100px;width: 100%;"></div>
         </ul>
       </ul>
     </div>
