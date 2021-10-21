@@ -176,6 +176,7 @@ export class IntegrateRunComponent implements OnInit {
       item.status = 1;
       if (item.type !== 'STEP') {
         this.canNotGoToLoop = true;
+        item.startTime = new Date().getTime();
         this.gableBackendService.runUnit(nextIn, item.uuid, item.type, true, '', this.instance)
           .subscribe((out: any) => {
             this.lastOut = out.data;
@@ -187,12 +188,15 @@ export class IntegrateRunComponent implements OnInit {
               item.historyId = out.data.historyId;
             }
             this.canNotGoToLoop = false;
+            item.endTime = new Date().getTime();
           }, error => {
             item.status = 3;
             this.canNotGoToLoop = false;
+            item.endTime = new Date().getTime();
           });
       } else {
         this.canNotGoToLoop = true;
+        item.startTime = new Date().getTime();
         this.gableBackendService.runStep(nextIn, this.lastOut, this.instance, item.uuid).subscribe((out: any) => {
           if (out.data.validate.passed) {
             item.status = 2;
@@ -210,9 +214,11 @@ export class IntegrateRunComponent implements OnInit {
             this.nextIn = JSON.stringify(newNextIn, null, '\t');
           }
           this.canNotGoToLoop = false;
+          item.endTime = new Date().getTime();
         }, error => {
           item.status = 3;
           this.canNotGoToLoop = false;
+          item.endTime = new Date().getTime();
         });
       }
       this.runningIndex++;
