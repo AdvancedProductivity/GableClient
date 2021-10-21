@@ -104,6 +104,9 @@ export class IntegrateRunComponent implements OnInit {
       this.inStr = this.record[index].code;
       this.inConfig = {...this.inConfig, language: 'groovy'};
       if (historyId === undefined) {
+        this.originalCode = '';
+        this.modifiedCode = '';
+        this.validteResultMsg = '';
         return;
       }
       this.gableBackendService.getGroovyHistory(uuid, true, historyId).subscribe((res) => {
@@ -265,6 +268,7 @@ export class IntegrateRunComponent implements OnInit {
       this.gableBackendService.getUnitConfigOfCase(uuid, true, caseId, version, this.selectEnvUuid).subscribe((res) => {
         if (res.result) {
           this.inStr = JSON.stringify(res.data, null, '\t');
+          this.outStr = '';
           this.isHandlingData = false;
         }
       });
