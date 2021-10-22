@@ -435,4 +435,12 @@ export class GableBackendService {
       }
     });
   }
+
+  deleteUnitTest(id: string): Observable<any> {
+    return this.httpClient.delete(this.prefix + 'api/menu', {
+      params:{
+        uuid: id
+      }
+    });
+  }
 }

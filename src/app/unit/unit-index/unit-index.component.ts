@@ -6,6 +6,7 @@ import {Result, UpdateOrPushInfo} from '../../core/Result';
 import {GroupInfo, UnitMenuGroup, UnitResponse} from '../../core/UnitMenu';
 import {TabInfo} from '../../core/TabInfo';
 import {NzMessageService} from "ng-zorro-antd/message";
+import {NzModalService} from "ng-zorro-antd/modal";
 @Component({
   selector: 'app-unit-index',
   templateUrl: './unit-index.component.html',
@@ -35,6 +36,7 @@ export class UnitIndexComponent implements OnInit {
   constructor(private nzContextMenuService: NzContextMenuService,
               private gableBackendService: GableBackendService,
               private messageService: NzMessageService,
+              private modal: NzModalService,
               private route: ActivatedRoute) {}
 
   ngOnInit(): void {
@@ -52,6 +54,18 @@ export class UnitIndexComponent implements OnInit {
       });
     }
     this.getMenu();
+  }
+
+  delete(uuid: any) {
+    this.modal.confirm({
+      nzTitle: 'Are you sure delete this unit?',
+      nzOkText: 'Yes',
+      nzOkType: 'primary',
+      nzOkDanger: true,
+      nzOnOk: () => this.doDeleteUnit(uuid),
+      nzCancelText: 'No',
+      nzOnCancel: () => console.log('Cancel')
+    });
   }
 
   addUrl(_uuid: string, _name: string, _groupName: string, _groupUuid: string, _type: string): void {
@@ -180,6 +194,23 @@ export class UnitIndexComponent implements OnInit {
       this.publicMenu.forEach(value => {
         this.publicGroups.push({name: value.groupName, id: value.uuid});
       });
+    });
+  }
+
+  private doDeleteUnit(uuid: string) {
+    let i = -1;
+    this.urls.forEach((value, index) => {
+      if (value.uuid === uuid) {
+        i = index;
+      }
+    });
+    this.gableBackendService.deleteUnitTest(uuid).subscribe((res) => {
+      if (res.result) {
+        this.userMenu = res.data.user;
+      }
+      if (i !== -1) {
+        this.deleteTab(i);
+      }
     });
   }
 }

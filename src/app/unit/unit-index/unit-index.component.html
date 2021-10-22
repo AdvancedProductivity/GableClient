@@ -35,14 +35,15 @@
                   [routerLink]="['.']"
                   [queryParams]="{ tab: item.uuid}">
                 {{item.unitName}}
+                <nz-dropdown-menu #menu="nzDropdownMenu">
+                  <ul nz-menu>
+                    <li nz-menu-item >{{ 'COPY' | translate }}</li>
+                    <li nz-menu-item >{{ 'COPY_TO_OTHER' | translate }}</li>
+                    <li nz-menu-item (click)="delete(item.uuid)">{{ 'DELETE' | translate }}</li>
+                  </ul>
+                </nz-dropdown-menu>
               </li>
             </ul>
-            <nz-dropdown-menu #menu="nzDropdownMenu">
-              <ul nz-menu>
-                <li nz-menu-item >{{ 'COPY' | translate }}</li>
-                <li nz-menu-item >{{ 'COPY_TO_OTHER' | translate }}</li>
-              </ul>
-            </nz-dropdown-menu>
           </li>
         </ul>
       </div>
