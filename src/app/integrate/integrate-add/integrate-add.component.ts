@@ -39,9 +39,10 @@ export class IntegrateAddComponent implements OnInit {
   selectCaseUuid = '';
   selectCaseName = '';
   selectTestType = '';
-  isSave = false;
+  isShowStepNameDialog = false;
   name = '';
   codeEditor: MonacoStandaloneCodeEditor | undefined;
+  // the type of dialog's ok btn clicked,0 is step.1 is save integrate.2 is add json schema
   saveType = 0;
   isAdded = true;
   uuid = '';
@@ -148,7 +149,7 @@ export class IntegrateAddComponent implements OnInit {
     this.refreshCheckedStatus();
   }
 
-  sendRequest() {
+  addCase() {
     const requestData = this.listOfData.filter(data => this.setOfCheckedId.has(data.id));
     requestData.forEach((v)=>{
       const item = {
@@ -172,15 +173,21 @@ export class IntegrateAddComponent implements OnInit {
     this.setOfCheckedId.clear();
   }
   addStep() {
-    this.isSave = true;
+    this.isShowStepNameDialog = true;
     this.saveType = 0;
+    this.name = '';
+  }
+
+  addJsonSchemaStep() {
+    this.isShowStepNameDialog = true;
+    this.saveType = 2;
     this.name = '';
   }
 
   showItem(i) {
     const lastEdit = this.waitForSave[this.editingIndex];
     if (lastEdit !== undefined) {
-      if (lastEdit.type === 'STEP') {
+      if (lastEdit.type === 'STEP' || lastEdit.type === 'JSON_SCHEMA') {
         lastEdit.code = this.inStr;
       }
     }
@@ -190,18 +197,14 @@ export class IntegrateAddComponent implements OnInit {
       return;
     }
     if (item.type === 'STEP') {
-      this.inStr = item.code;
-      this.config = {...this.config, language: 'groovy', readOnly: false};
+      this.showStepInfo(item);
       return;
     }
-    this.isHandlingData = true;
-    this.gableBackendService.getUnitConfigOfCase(item.uuid, true, item.caseId, item.version).subscribe((res) => {
-      if (res.result) {
-        this.config = {...this.config, language: 'json', readOnly: true};
-        this.inStr = JSON.stringify(res.data, null, '\t');
-        this.isHandlingData = false;
-      }
-    });
+    if (item.type === 'JSON_SCHEMA') {
+      this.showJsonSchemaInfo(item);
+      return;
+    }
+    this.showTestInfo(item);
   }
 
   saveIntegrateTest() {
@@ -210,49 +213,22 @@ export class IntegrateAddComponent implements OnInit {
       return;
     }
     if (this.isAdded) {
-      this.isSave = true;
-      this.saveType = 1;
-      this.name = '';
+      this.addNewIntegrate();
       return;
     }
-    const editing = this.waitForSave[this.editingIndex];
-    if (editing !== undefined && editing.type === 'STEP') {
-      editing.code = this.inStr;
-    }
-    this.gableBackendService.updateIntegrate(this.waitForSave, this.uuid).subscribe((res) => {
-      if (res.result) {
-        this.onBack();
-      }
-    });
+    this.updateIntegrateInfo();
   }
 
   doSave() {
     if (this.saveType === 0) {
-      this.waitForSave.push({
-        uuid: undefined,
-        name: this.name,
-        type: 'STEP',
-        code: '',
-        tag: 'step'
-      });
-      this.isSave = false;
+      this.doAddStep();
       return;
     }
-    if (this.name.length < 1) {
-      this.messageService.error('Please set integrate test name');
+    if (this.saveType === 2) {
+      this.doAddJsonSchema();
       return;
     }
-    const editing = this.waitForSave[this.editingIndex];
-    if (editing !== undefined && editing.type === 'STEP') {
-      editing.code = this.inStr;
-    }
-    if (this.isAdded) {
-      this.gableBackendService.addIntegrate(this.waitForSave, this.name).subscribe((res) => {
-        if (res.result) {
-          this.onBack();
-        }
-      });
-    }
+    this.doSaveIntegrate();
   }
 
   delete(index: number) {
@@ -294,5 +270,84 @@ export class IntegrateAddComponent implements OnInit {
 
   drop(event: CdkDragDrop<string[]>): void {
     moveItemInArray(this.waitForSave, event.previousIndex, event.currentIndex);
+  }
+
+  private doAddStep() {
+    this.waitForSave.push({
+      uuid: undefined,
+      name: this.name,
+      type: 'STEP',
+      code: '',
+      tag: 'step'
+    });
+    this.isShowStepNameDialog = false;
+  }
+
+  private doAddJsonSchema() {
+    this.waitForSave.push({
+      uuid: undefined,
+      name: this.name,
+      type: 'JSON_SCHEMA',
+      code: '',
+      tag: 'JsonSchema'
+    });
+    this.isShowStepNameDialog = false;
+  }
+
+  private doSaveIntegrate() {
+    if (this.name.length < 1) {
+      this.messageService.error('Please set integrate test name');
+      return;
+    }
+    const editing = this.waitForSave[this.editingIndex];
+    if (editing !== undefined && editing.type === 'STEP') {
+      editing.code = this.inStr;
+    }
+    if (this.isAdded) {
+      this.gableBackendService.addIntegrate(this.waitForSave, this.name).subscribe((res) => {
+        if (res.result) {
+          this.onBack();
+        }
+      });
+    }
+  }
+
+  private addNewIntegrate() {
+    this.isShowStepNameDialog = true;
+    this.saveType = 1;
+    this.name = '';
+  }
+
+  private updateIntegrateInfo() {
+    const editing = this.waitForSave[this.editingIndex];
+    if (editing !== undefined && editing.type === 'STEP') {
+      editing.code = this.inStr;
+    }
+    this.gableBackendService.updateIntegrate(this.waitForSave, this.uuid).subscribe((res) => {
+      if (res.result) {
+        this.onBack();
+      }
+    });
+  }
+
+  private showStepInfo(item: any) {
+    this.inStr = item.code;
+    this.config = {...this.config, language: 'groovy', readOnly: false};
+  }
+
+  private showJsonSchemaInfo(item: any) {
+    this.inStr = item.code;
+    this.config = {...this.config, language: 'json', readOnly: false};
+  }
+
+  private showTestInfo(item: any) {
+    this.isHandlingData = true;
+    this.gableBackendService.getUnitConfigOfCase(item.uuid, true, item.caseId, item.version).subscribe((res) => {
+      if (res.result) {
+        this.config = {...this.config, language: 'json', readOnly: true};
+        this.inStr = JSON.stringify(res.data, null, '\t');
+        this.isHandlingData = false;
+      }
+    });
   }
 }

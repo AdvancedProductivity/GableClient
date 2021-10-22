@@ -8,6 +8,7 @@
     <button (click)="batchDelete()"
             nz-button nzType="primary">{{ 'DELETE_SELECT' | translate }}</button>
     <button (click)="addStep()" nz-button nzType="primary">{{ 'ADD_STEP' | translate }}</button>
+    <button (click)="addJsonSchemaStep()" nz-button nzType="primary">{{ 'ADD_JSON_SCHEMA' | translate }}</button>
     <button style="margin-left: 12px" (click)="saveIntegrateTest()" nz-button nzType="primary">
       {{ (isAdded ? 'SAVE' : 'UPDATE') | translate }}
     </button>
@@ -164,7 +165,7 @@
         nzType="primary"
         [disabled]="setOfCheckedId.size === 0"
         [nzLoading]="loading"
-        (click)="sendRequest()"
+        (click)="addCase()"
       >
         {{'ADD_CASE' | translate}}
       </button>
@@ -192,7 +193,8 @@
       </nz-table>
     </ng-container>
   </nz-modal>
-  <nz-modal [(nzVisible)]="isSave" nzTitle="The first Modal" (nzOnCancel)="isSave = false" (nzOnOk)="doSave()">
+  <nz-modal [(nzVisible)]="isShowStepNameDialog" nzTitle="The first Modal" (nzOnCancel)="isShowStepNameDialog = false"
+            (nzOnOk)="doSave()">
     <ng-container *nzModalContent>
       <input nz-input placeholder="Basic usage" [(ngModel)]="name" />
     </ng-container>
