@@ -22,7 +22,7 @@ export class IntegrateAddComponent implements OnInit {
   inStr = '';
   list = [];
   waitForSave = [];
-  editingIndex = 0;
+  editingIndex = -1;
   headers = [];
   currentVersion = 0;
   config: MonacoEditorConstructionOptions = {
