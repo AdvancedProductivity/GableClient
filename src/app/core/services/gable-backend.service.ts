@@ -381,7 +381,7 @@ export class GableBackendService {
     });
   }
 
-  generateJsonShema(jsonStr: string, testType: string) {
+  generateJsonSchema(jsonStr: string, testType: string) {
     return this.httpClient.post(this.prefix + 'api/jsonSchema', jsonStr, {
       headers: {
         'Content-Type': 'application/json'
@@ -390,6 +390,10 @@ export class GableBackendService {
         type: testType,
       }
     });
+  }
+
+  justGenerateJsonSchema(jsonStr: any): Observable<any> {
+    return this.httpClient.post(this.prefix + 'api/jsonSchema/just', jsonStr);
   }
 
   getJsonSchemaCache(): Observable<any> {

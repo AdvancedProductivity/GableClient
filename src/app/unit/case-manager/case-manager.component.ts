@@ -231,7 +231,7 @@ export class CaseManagerComponent implements OnInit {
   }
 
   generateJsonSchema() {
-    this.gableBackendService.generateJsonShema(this.rightStr, this.testType).subscribe((out: any) => {
+    this.gableBackendService.generateJsonSchema(this.rightStr, this.testType).subscribe((out: any) => {
       this.jsonSchemaStr = JSON.stringify(out.data, null, '\t');
       this.isShowJsonSchema = true;
     }, error => {

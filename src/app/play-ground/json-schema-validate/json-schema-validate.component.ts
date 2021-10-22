@@ -105,6 +105,19 @@ export class JsonSchemaValidateComponent implements OnInit {
     }
   }
 
+  generateForRightJson() {
+    try {
+      const data = JSON.parse(this.code);
+      this.gableBackendService.justGenerateJsonSchema(data).subscribe((res) => {
+        if (res.result) {
+          this.express = JSON.stringify(res.data, null, '\t');
+        }
+      });
+    } catch (e){
+      this.messageService.error('the json format error', {nzDuration: 3500})
+    }
+  }
+
   private getLastRunData() {
     this.gableBackendService.getJsonSchemaCache().subscribe((res) => {
       if (res.result) {
