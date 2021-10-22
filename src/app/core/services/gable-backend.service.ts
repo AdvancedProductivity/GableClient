@@ -181,6 +181,16 @@ export class GableBackendService {
     });
   }
 
+  public getJsonSchemaHistory(id: string, isPub: boolean, history: number): Observable<Result<any>> {
+    return this.httpClient.get<Result<UnitResponse>>(this.prefix + 'api/jsonSchema/history', {
+      params: {
+        uuid: id,
+        isPublic: isPub,
+        historyId: history
+      }
+    });
+  }
+
   getIntegrateHistory(id: any, hisId: any) {
     return this.httpClient.get<Result<any>>(this.prefix + 'api/integrate/history', {
       params: {
@@ -439,6 +449,26 @@ export class GableBackendService {
   deleteUnitTest(id: string): Observable<any> {
     return this.httpClient.delete(this.prefix + 'api/menu', {
       params:{
+        uuid: id
+      }
+    });
+  }
+
+  runJsonSchemaStep(lastOut: any, code: string, id: string, lastType: string) {
+    const body = {
+      json: lastOut,
+      schema: undefined
+    };
+    if (lastType === 'HTTP') {
+      body.json = lastOut.content;
+    }
+    try {
+      body.schema = JSON.parse(code);
+    } catch (e){
+      console.error(e);
+    }
+    return this.httpClient.post(this.prefix + 'api/jsonSchema/run', body, {
+      params: {
         uuid: id
       }
     });

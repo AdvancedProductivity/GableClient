@@ -44,6 +44,7 @@ export class IntegrateRunComponent implements OnInit {
   isRunning = false;
   isLoop = false;
   lastOut = {};
+  lastType = '';
   nextIn = {};
   instance = {};
   canNotGoToLoop = false;
@@ -75,7 +76,8 @@ export class IntegrateRunComponent implements OnInit {
           this.record = res.data;
           this.record.forEach((value => {
             value.status = 0;
-            if (value.type !== 'STEP') {
+            if (value.type !== 'STEP' && value.type !== 'JSON_SCHEMA') {
+              console.log('zzq see add ', value);
               this.testGroups.push(value);
             }
           }));
@@ -101,29 +103,14 @@ export class IntegrateRunComponent implements OnInit {
     this.originalCode = '';
     this.modifiedCode = '';
     if (type === 'STEP') {
-      this.inStr = this.record[index].code;
-      this.inConfig = {...this.inConfig, language: 'groovy'};
-      if (historyId === undefined) {
-        this.originalCode = '';
-        this.modifiedCode = '';
-        this.validteResultMsg = '';
-        return;
-      }
-      this.gableBackendService.getGroovyHistory(uuid, true, historyId).subscribe((res) => {
-        if (res.result) {
-          this.originalCode = JSON.stringify(res.data.before, null, '\t');
-          this.modifiedCode = JSON.stringify(res.data.after, null, '\t');
-          if (!res.data.validate.passed) {
-            this.validteResultMsg = res.data.validate.code;
-          }else {
-            this.validteResultMsg = '';
-          }
-          this.isHandlingData = false;
-        }
-      });
+      this.handleDetailAsStep(uuid, caseId, version, historyId, index);
       return;
     }
     this.inConfig = {...this.inConfig, language: 'json'};
+    if (type === 'JSON_SCHEMA') {
+      this.handleDetailAsJsonSchema(uuid, caseId, version, historyId, index);
+      return;
+    }
     this.handleDetailAsTest(uuid, caseId, version, historyId);
   }
 
@@ -172,32 +159,13 @@ export class IntegrateRunComponent implements OnInit {
         return;
       }
       const nextIn = this.getNextIn();
+      console.log('get next in from server ', this.usingTestIndex, nextIn);
       if (nextIn === undefined) {
         return;
       }
       const item = this.record[this.runningIndex];
       item.status = 1;
-      if (item.type !== 'STEP') {
-        this.canNotGoToLoop = true;
-        item.startTime = new Date().getTime();
-        this.gableBackendService.runUnit(nextIn, item.uuid, item.type, true, '', this.instance)
-          .subscribe((out: any) => {
-            this.lastOut = out.data;
-            if (out.data.validate.passed) {
-              item.status = 2;
-              item.historyId = out.data.historyId;
-            } else {
-              item.status = 3;
-              item.historyId = out.data.historyId;
-            }
-            this.canNotGoToLoop = false;
-            item.endTime = new Date().getTime();
-          }, error => {
-            item.status = 3;
-            this.canNotGoToLoop = false;
-            item.endTime = new Date().getTime();
-          });
-      } else {
+      if (item.type === 'STEP') {
         this.canNotGoToLoop = true;
         item.startTime = new Date().getTime();
         this.gableBackendService.runStep(nextIn, this.lastOut, this.instance, item.uuid).subscribe((out: any) => {
@@ -223,9 +191,49 @@ export class IntegrateRunComponent implements OnInit {
           this.canNotGoToLoop = false;
           item.endTime = new Date().getTime();
         });
+      }else if (item.type === 'JSON_SCHEMA') {
+        console.log('zzq see run json Schema', this.lastOut, item);
+        this.canNotGoToLoop = true;
+        item.startTime = new Date().getTime();
+        this.gableBackendService.runJsonSchemaStep(this.lastOut, item.code, item.uuid, this.lastType).subscribe((out: any) => {
+          if (out.data.validate.passed) {
+            item.status = 2;
+            item.historyId = out.data.historyId;
+          } else {
+            item.status = 3;
+            item.historyId = out.data.historyId;
+          }
+          this.canNotGoToLoop = false;
+          item.endTime = new Date().getTime();
+        }, error => {
+          item.status = 3;
+          this.canNotGoToLoop = false;
+          item.endTime = new Date().getTime();
+        });
+      } else {
+        this.canNotGoToLoop = true;
+        item.startTime = new Date().getTime();
+        this.gableBackendService.runUnit(nextIn, item.uuid, item.type, true, '', this.instance)
+          .subscribe((out: any) => {
+            this.lastOut = out.data;
+            this.lastType = item.type;
+            if (out.data.validate.passed) {
+              item.status = 2;
+              item.historyId = out.data.historyId;
+            } else {
+              item.status = 3;
+              item.historyId = out.data.historyId;
+            }
+            this.canNotGoToLoop = false;
+            item.endTime = new Date().getTime();
+          }, error => {
+            item.status = 3;
+            this.canNotGoToLoop = false;
+            item.endTime = new Date().getTime();
+          });
       }
       this.runningIndex++;
-      if (item.type !== 'STEP') {
+      if (item.type !== 'STEP' && item.type !== 'JSON_SCHEMA') {
         this.runningTestIndex++;
       }
       this.runDelay();
@@ -253,13 +261,58 @@ export class IntegrateRunComponent implements OnInit {
     }
     const item = this.testGroups[this.usingTestIndex];
     this.canNotGoToLoop = true;
-    this.gableBackendService.getUnitConfigOfCase(item.uuid, true, item.caseId, item.version, this.selectEnvUuid).subscribe((configRes) => {
+    this.gableBackendService.getUnitConfigOfCase(item.uuid, true, item.caseId, item.version, this.selectEnvUuid)
+      .subscribe((configRes) => {
       const request = JSON.stringify(configRes.data.config, null, '\t');
       this.canNotGoToLoop = false;
       this.nextIn = request;
-      console.log('get next in from server ', this.usingTestIndex);
     });
     return undefined;
+  }
+
+  private handleDetailAsStep(uuid: any, caseId: any, version, historyId: any, index: number) {
+    this.inStr = this.record[index].code;
+    this.inConfig = {...this.inConfig, language: 'groovy'};
+    if (historyId === undefined) {
+      this.originalCode = '';
+      this.modifiedCode = '';
+      this.validteResultMsg = '';
+      return;
+    }
+    this.gableBackendService.getGroovyHistory(uuid, true, historyId).subscribe((res) => {
+      if (res.result) {
+        this.originalCode = JSON.stringify(res.data.before, null, '\t');
+        this.modifiedCode = JSON.stringify(res.data.after, null, '\t');
+        if (!res.data.validate.passed) {
+          this.validteResultMsg = res.data.validate.code;
+        } else {
+          this.validteResultMsg = '';
+        }
+        this.isHandlingData = false;
+      }
+    });
+  }
+
+  private handleDetailAsJsonSchema(uuid: any, caseId: any, version, historyId: any, index: number) {
+    this.inStr = this.record[index].code;
+    if (historyId === undefined) {
+      this.outStr = '';
+      return;
+    }
+    this.gableBackendService.getJsonSchemaHistory(uuid, true, historyId).subscribe((res) => {
+      if (res.result) {
+        const inData = {
+          in: res.data.json,
+          schema: res.data.schema,
+        };
+        delete res.data.json;
+        delete res.data.schema;
+        const outData = res.data;
+        this.inStr = JSON.stringify(inData, null, '\t');
+        this.outStr = JSON.stringify(outData, null, '\t');
+        this.isHandlingData = false;
+      }
+    });
   }
 
   private handleDetailAsTest(uuid: any, caseId: any, version, historyId: any) {
