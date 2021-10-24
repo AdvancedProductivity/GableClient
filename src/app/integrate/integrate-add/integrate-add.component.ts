@@ -300,7 +300,7 @@ export class IntegrateAddComponent implements OnInit {
       return;
     }
     const editing = this.waitForSave[this.editingIndex];
-    if (editing !== undefined && editing.type === 'STEP') {
+    if (editing !== undefined && (editing.type === 'STEP' || editing.type === 'JSON_SCHEMA')) {
       editing.code = this.inStr;
     }
     if (this.isAdded) {
@@ -320,7 +320,7 @@ export class IntegrateAddComponent implements OnInit {
 
   private updateIntegrateInfo() {
     const editing = this.waitForSave[this.editingIndex];
-    if (editing !== undefined && editing.type === 'STEP') {
+    if (editing !== undefined && (editing.type === 'STEP' || editing.type === 'JSON_SCHEMA')) {
       editing.code = this.inStr;
     }
     this.gableBackendService.updateIntegrate(this.waitForSave, this.uuid).subscribe((res) => {
