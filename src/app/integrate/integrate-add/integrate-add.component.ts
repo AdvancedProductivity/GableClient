@@ -269,6 +269,9 @@ export class IntegrateAddComponent implements OnInit {
   }
 
   drop(event: CdkDragDrop<string[]>): void {
+    if (this.editingIndex === event.previousIndex) {
+      this.editingIndex = event.currentIndex;
+    }
     moveItemInArray(this.waitForSave, event.previousIndex, event.currentIndex);
   }
 

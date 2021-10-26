@@ -77,7 +77,6 @@ export class IntegrateRunComponent implements OnInit {
           this.record.forEach((value => {
             value.status = 0;
             if (value.type !== 'STEP' && value.type !== 'JSON_SCHEMA') {
-              console.log('zzq see add ', value);
               this.testGroups.push(value);
             }
           }));
