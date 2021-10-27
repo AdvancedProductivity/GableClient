@@ -51,6 +51,8 @@ export class IntegrateRunComponent implements OnInit {
   isPausing = false;
   isDelaying = false;
   delayTime = 0;
+  haveReport = false;
+  reportId = false;
 
   constructor(private router: Router,
               private gableBackendService: GableBackendService,
@@ -65,6 +67,8 @@ export class IntegrateRunComponent implements OnInit {
     this.integrateUuid = enterId;
     this.setEnv('HTTP');
     if (this.isShowHistory) {
+      this.haveReport = true;
+      this.reportId = hisId;
       this.gableBackendService.getIntegrateHistory(enterId, hisId).subscribe((res) => {
         if (res.result) {
           this.record = res.data.detail;
@@ -127,7 +131,13 @@ export class IntegrateRunComponent implements OnInit {
     }
   }
 
+  showReport() {
+    window.open(this.gableBackendService.getServer() + 'api/report/preview?uuid=' + this.integrateUuid +
+      '&hisId=' + this.reportId + '&server=' + encodeURI(this.gableBackendService.getServer()), '_blank');
+  }
+
   run() {
+    this.haveReport = false;
     this.isRunning = true;
     this.lastOut = {};
     this.instance = {};
@@ -147,6 +157,8 @@ export class IntegrateRunComponent implements OnInit {
           clearInterval(this.runner);
         }
         this.gableBackendService.addIntegrateHistory(this.integrateUuid, this.record).subscribe((res) => {
+          this.haveReport = true;
+          this.reportId = res.data.hisId;
         });
         this.isRunning = false;
         return;
@@ -347,5 +359,4 @@ export class IntegrateRunComponent implements OnInit {
     }
     this.envs = arr;
   }
-
 }
