@@ -66,6 +66,10 @@ export class IntegrateListComponent implements OnInit {
     });
   }
 
+  refresh() {
+    this.getList();
+  }
+
   private getList() {
     this.gableBackendService.getIntegrate().subscribe((res) => {
       if (res.result) {

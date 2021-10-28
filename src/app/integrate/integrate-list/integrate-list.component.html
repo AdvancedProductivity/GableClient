@@ -1,7 +1,9 @@
 <div style="overflow-y:auto;padding-top: 20px;padding-left: 10px">
   <div style="padding-bottom: 8px">
-        <a routerLink="/integrate/add" style="margin-right: 8px;"
-           nz-button nzType="link">{{ 'ADD_TEST' | translate }}</a>
+    <button (click)="refresh()"
+            nz-button nzType="primary">{{ 'REFRESH' | translate }}</button>
+    <a routerLink="/integrate/add" style="margin-right: 8px;"
+       nz-button nzType="link">{{ 'ADD_TEST' | translate }}</a>
   </div>
   <nz-spin [nzSpinning]="isHandlingData">
     <div  style="border:1px solid #d9d9d9;padding: 3px"
@@ -10,13 +12,17 @@
                 [nzFrontPagination]="false" nzBordered nzOuterBordered>
         <thead>
         <tr>
-          <th>{{ 'TITLE' | translate }}</th>
-          <th>{{ 'TAG' | translate }}</th>
-          <th>{{ 'OPERATION' | translate }}</th>
+          <th style="text-align: center">{{ 'STATUS' | translate }}</th>
+          <th style="text-align: center">{{ 'TITLE' | translate }}</th>
+          <th style="text-align: center">{{ 'TAG' | translate }}</th>
+          <th style="text-align: center">{{ 'OPERATION' | translate }}</th>
         </tr>
         </thead>
         <tbody>
         <tr *ngFor="let data of middleTable.data;let i = index">
+          <td style="text-align: center">
+            <i style="font-size: 24px" nz-icon [nzType]="'smile'" [nzTheme]="'twotone'"></i>
+          </td>
           <td>{{data.name}}</td>
           <td>
             <div *ngIf="data.tags !== undefined">
@@ -26,16 +32,27 @@
             </div>
           </td>
           <td>
-            <a routerLink="/integrate/run"  [queryParams]="{ uuid: data.uuid}"
+            <a routerLink="/integrate/run"  [queryParams]="{ uuid: data.uuid}" nzSize="small"
                nz-button nzType="link">
               {{ 'RUN' | translate }}
             </a>
-            <a nz-button nzType="link" routerLink="/integrate/add" [queryParams]="{ uuid: data.uuid}">
+            <a nz-button nzType="link" nzSize="small" routerLink="/integrate/add" [queryParams]="{ uuid: data.uuid}">
               {{ 'EDIT' | translate }}
             </a>
-            <a nz-button nzType="link" (click)="addTag(data.uuid)">
+            <a nz-button nzType="link" nzSize="small" (click)="addTag(data.uuid)">
               {{ 'ADD_TAG' | translate }}
             </a>
+            <a nz-button nzType="link"  nzSize="small" (click)="addTag(data.uuid)">
+              {{ 'SHOW_HISTORY' | translate }}
+            </a>
+            <div style="display: inline">
+              <a nz-button nzType="link"  nzSize="small" nzDanger (click)="addTag(data.uuid)">
+                {{ 'ENTRUST_RUN_STOP' | translate }}
+              </a>
+              <a nz-button nzType="link"  nzSize="small" (click)="addTag(data.uuid)">
+                {{ 'ENTRUST_RUN' | translate }}
+              </a>
+            </div>
             <button nz-button nzType="primary" nzDanger nzSize="small"
                     nz-popconfirm
                     nzPopconfirmTitle="{{ 'DELETE_CONFIRM' | translate }}"
