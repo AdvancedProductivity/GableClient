@@ -59,6 +59,9 @@ export class IntegrateListComponent implements OnInit {
           }
         }));
         this.list = tmpList;
+        this.message.success('delete success');
+      }else {
+        this.message.error(res.message + ' can not delete');
       }
       this.isHandlingData = false;
     },error => {
