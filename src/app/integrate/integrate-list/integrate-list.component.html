@@ -21,7 +21,16 @@
         <tbody>
         <tr *ngFor="let data of middleTable.data;let i = index">
           <td style="text-align: center">
-            <i style="font-size: 24px" nz-icon [nzType]="'smile'" [nzTheme]="'twotone'"></i>
+            <div style="display: inline;padding-right: 8px;width: 28px;height: 35px">
+              <i style="font-size: 24px" *ngIf="data.status == 0"
+                 nz-icon [nzType]="'smile'" [nzTheme]="'twotone'"></i>
+              <i style="font-size: 24px" *ngIf="data.status == 1"
+                 nz-icon [nzType]="'sync'" [nzSpin]="true"></i>
+              <i style="font-size: 24px" *ngIf="data.status == 3"
+                 nz-icon [nzType]="'heart'" [nzTheme]="'twotone'" [nzTwotoneColor]="'#eb2f96'"></i>
+              <i style="font-size: 24px" *ngIf="data.status == 2"
+                 nz-icon [nzType]="'check-circle'" [nzTheme]="'twotone'" [nzTwotoneColor]="'#52c41a'"></i>
+            </div>
           </td>
           <td>{{data.name}}</td>
           <td>
@@ -46,10 +55,10 @@
               {{ 'SHOW_HISTORY' | translate }}
             </a>
             <div style="display: inline">
-              <a nz-button nzType="link"  nzSize="small" nzDanger (click)="addTag(data.uuid)">
+              <a *ngIf="data.status == 1" nz-button nzType="link"  nzSize="small" nzDanger (click)="addTag(data.uuid)">
                 {{ 'ENTRUST_RUN_STOP' | translate }}
               </a>
-              <a nz-button nzType="link"  nzSize="small" (click)="addTag(data.uuid)">
+              <a *ngIf="data.status != 1"  nz-button nzType="link"  nzSize="small" (click)="entrustRun(data.uuid, i)">
                 {{ 'ENTRUST_RUN' | translate }}
               </a>
             </div>
