@@ -439,10 +439,12 @@ export class GableBackendService {
     });
   }
 
-  public entrustRun(id: string): Observable<any> {
+  public entrustRun(id: string, selectEnv: string): Observable<any> {
     return this.httpClient.get(this.prefix + 'api/integrate/entrust', {
       params: {
-        uuid: id
+        uuid: id,
+        env: selectEnv,
+        server: this.getServer()
       }
     });
   }

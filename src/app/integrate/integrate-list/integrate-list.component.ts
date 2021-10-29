@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {GableBackendService} from '../../core/services/gable-backend.service';
 import {NzMessageService} from 'ng-zorro-antd/message';
 
@@ -8,20 +8,34 @@ import {NzMessageService} from 'ng-zorro-antd/message';
   styles: [
   ]
 })
-export class IntegrateListComponent implements OnInit {
+export class IntegrateListComponent implements OnInit,OnDestroy {
   list = [];
   isAddTagModal = false;
+  selectEnv = '';
   tagName = '';
   uuidWaitForAddUnit = '';
   isHandlingData = false;
   height = 500;
+  isNeedLoop = false;
+  loopGet = undefined;
   constructor(private gableBackendService: GableBackendService,
               private message: NzMessageService) {
   }
 
   ngOnInit(): void {
     this.getList();
+    this.loopGet = setInterval(() => {
+      if (this.isNeedLoop) {
+        this.getList();
+      }
+    }, 3000);
     this.height = document.documentElement.clientHeight - 82;
+  }
+
+  ngOnDestroy(): void {
+    if (this.loopGet !== undefined) {
+      clearInterval(this.loopGet);
+    }
   }
 
   addTag(uuid: string) {
@@ -45,10 +59,11 @@ export class IntegrateListComponent implements OnInit {
   }
 
   entrustRun(uuid: any, index: number) {
-    this.gableBackendService.entrustRun(uuid).subscribe((res) => {
+    this.gableBackendService.entrustRun(uuid, this.selectEnv).subscribe((res) => {
       if (res.result) {
         this.list[index].status = 1;
         this.message.success('start running');
+        this.isNeedLoop = true;
       } else {
         this.message.error(res.message, {nzDuration: 3500});
       }
@@ -92,6 +107,13 @@ export class IntegrateListComponent implements OnInit {
     this.gableBackendService.getIntegrate().subscribe((res) => {
       if (res.result) {
         this.list = res.data;
+        let status = false;
+        this.list.forEach(value => {
+          if (value.status === 1) {
+            status = true;
+          }
+        });
+        this.isNeedLoop = status;
       }
     });
   }
