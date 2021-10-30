@@ -457,6 +457,14 @@ export class GableBackendService {
     });
   }
 
+  public stopEntrustRun(id: string): Observable<any> {
+    return this.httpClient.delete(this.prefix + 'api/integrate/entrust', {
+      params: {
+        uuid: id
+      }
+    });
+  }
+
   getFileList(): Observable<any>{
     return this.httpClient.get(this.prefix + 'api/fileCenter');
   }

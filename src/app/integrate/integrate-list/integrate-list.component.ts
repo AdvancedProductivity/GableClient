@@ -77,6 +77,22 @@ export class IntegrateListComponent implements OnInit,OnDestroy {
     });
   }
 
+  stopEntrustRun(uuid: any, index: number) {
+    this.gableBackendService.stopEntrustRun(uuid).subscribe((res) => {
+      if (res.result) {
+        this.list[index].status = 2;
+        this.message.success('have stop');
+        this.isNeedLoop = true;
+      } else {
+        this.message.error(res.message, {nzDuration: 3500});
+      }
+      this.isHandlingData = false;
+    }, error => {
+      this.isHandlingData = false;
+      this.message.error('system error ' + error.message, {nzDuration: 3500});
+    });
+  }
+
   confirmDelete(i) {
     if (this.list[i] === undefined) {
       this.message.info('not find ' + i);

@@ -55,7 +55,8 @@
               {{ 'SHOW_HISTORY' | translate }}
             </a>
             <div style="display: inline">
-              <a *ngIf="data.status == 1" nz-button nzType="link"  nzSize="small" nzDanger (click)="addTag(data.uuid)">
+              <a *ngIf="data.status == 1" nz-button nzType="link"  nzSize="small"  nzDanger
+                 (click)="stopEntrustRun(data.uuid, i)">
                 {{ 'ENTRUST_RUN_STOP' | translate }}
               </a>
               <a *ngIf="data.status != 1"  nz-button nzType="link"  nzSize="small" (click)="entrustRun(data.uuid, i)">
