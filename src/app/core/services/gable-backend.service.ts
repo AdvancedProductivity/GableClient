@@ -323,6 +323,14 @@ export class GableBackendService {
     return this.httpClient.get<Result<any>>(this.prefix + 'api/integrate');
   }
 
+  getIntegrateRunHistory(id: string) {
+    return this.httpClient.get<Result<any>>(this.prefix + 'api/integrate/historyList', {
+      params:{
+        uuid: id
+      }
+    });
+  }
+
   addIntegrate(waitForSave: any[], testName: string) {
     return this.httpClient.put<Result<any>>(this.prefix + 'api/integrate', waitForSave, {
       params: {

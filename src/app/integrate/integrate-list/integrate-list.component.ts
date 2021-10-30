@@ -18,6 +18,9 @@ export class IntegrateListComponent implements OnInit,OnDestroy {
   height = 500;
   isNeedLoop = false;
   loopGet = undefined;
+  isShowHistory = false;
+  historyData = [];
+  isGettingHistory = false;
   constructor(private gableBackendService: GableBackendService,
               private message: NzMessageService) {
   }
@@ -101,6 +104,26 @@ export class IntegrateListComponent implements OnInit,OnDestroy {
 
   refresh() {
     this.getList();
+  }
+  closeHistory(){
+    this.isShowHistory = false;
+    this.isGettingHistory = false;
+  }
+
+  showHistory(uuid: string) {
+    this.isShowHistory = true;
+    this.isGettingHistory = true;
+    this.gableBackendService.getIntegrateRunHistory(uuid).subscribe((res) => {
+      if (res.result) {
+        this.isGettingHistory = false;
+        this.historyData = res.data;
+      }
+    });
+  }
+
+  openReport(id, uuid: string) {
+    window.open(this.gableBackendService.getServer() + 'api/report/preview?uuid=' + uuid +
+      '&hisId=' + id + '&server=' + encodeURI(this.gableBackendService.getServer()), '_blank');
   }
 
   private getList() {

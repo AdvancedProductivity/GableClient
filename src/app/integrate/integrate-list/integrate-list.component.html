@@ -51,7 +51,7 @@
             <a nz-button nzType="link" nzSize="small" (click)="addTag(data.uuid)">
               {{ 'ADD_TAG' | translate }}
             </a>
-            <a nz-button nzType="link"  nzSize="small" (click)="addTag(data.uuid)">
+            <a nz-button nzType="link"  nzSize="small" (click)="showHistory(data.uuid)">
               {{ 'SHOW_HISTORY' | translate }}
             </a>
             <div style="display: inline">
@@ -84,6 +84,49 @@
             (nzOnOk)="doAddTag()">
     <ng-container *nzModalContent>
       <input nz-input placeholder="{{ 'INPUT_TAG_NAME' | translate }}" [(ngModel)]="tagName" />
+    </ng-container>
+  </nz-modal>
+  <nz-modal [(nzVisible)]="isShowHistory"
+            nzWidth="80%"
+            nzTitle="The first Modal" (nzOnCancel)="closeHistory()" [nzFooter]="null">
+    <ng-container *nzModalContent>
+
+      <nz-spin [nzSpinning]="isGettingHistory">
+        <nz-table #middleTable nzSize="middle"
+                  [nzScroll]="{ y: (height-87) + 'px' }"
+                  [nzData]="historyData"
+                  [nzFrontPagination]="false" nzBordered nzOuterBordered>
+          <thead>
+          <tr>
+            <th style="text-align: center">{{ 'RESULT' | translate }}</th>
+            <th style="text-align: center">{{ 'START_TIME' | translate }}</th>
+            <th style="text-align: center">{{ 'STATUS' | translate }}</th>
+            <th style="text-align: center">{{ 'END_TIME' | translate }}</th>
+            <th style="text-align: center">{{ 'ORIGIN' | translate }}</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let data of middleTable.data">
+            <td style="text-align: center">
+              <div style="display: inline;padding-right: 8px;width: 28px;height: 35px">
+                <i style="font-size: 24px" *ngIf="!data.noError"
+                   nz-icon [nzType]="'heart'" [nzTheme]="'twotone'" [nzTwotoneColor]="'#eb2f96'"></i>
+                <i style="font-size: 24px" *ngIf="data.noError"
+                   nz-icon [nzType]="'check-circle'" [nzTheme]="'twotone'" [nzTwotoneColor]="'#52c41a'"></i>
+              </div>
+            </td>
+            <td style="text-align: center">{{data.startAt}}</td>
+            <td style="text-align: center">{{data.endAt}}</td>
+            <td style="text-align: center">
+              <nz-tag [nzColor]="'cyan'">{{data.origin}}</nz-tag>
+            </td>
+            <td style="text-align: center">
+              <a nz-button nzType="link" nzSize="small"  (click)="openReport(data.id, data.uuid)">#{{data.id}}</a>
+            </td>
+          </tr>
+          </tbody>
+        </nz-table>
+      </nz-spin>
     </ng-container>
   </nz-modal>
 </div>
