@@ -221,6 +221,7 @@ export class UnitIndexComponent implements OnInit {
       this.userMenu.forEach(value => {
         this.groups.push({name: value.groupName, id: value.uuid});
       });
+      this.publicGroups = [];
       this.publicMenu.forEach(value => {
         this.publicGroups.push({name: value.groupName, id: value.uuid});
       });
