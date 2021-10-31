@@ -218,6 +218,7 @@ export class UnitIndexComponent implements OnInit {
     this.gableBackendService.getUnitMenu().subscribe((menu: Result<UnitResponse>) => {
       this.publicMenu = menu.data.public;
       this.userMenu = menu.data.user;
+      this.groups = [];
       this.userMenu.forEach(value => {
         this.groups.push({name: value.groupName, id: value.uuid});
       });
