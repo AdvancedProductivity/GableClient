@@ -66,6 +66,12 @@
 <!--                      <p *ngIf="data.tag== 'case'">({{data.caseId}})</p>-->
                       <nz-dropdown-menu #deleteMenu="nzDropdownMenu">
                         <ul nz-menu>
+                          <li nz-menu-item (click)="appendStep(i)">
+                            {{ 'APPEND_STEP' | translate }}
+                          </li>
+                          <li nz-menu-item (click)="appendJsonSchema(i)">
+                            {{ 'APPEND_JSONSCHEMA' | translate }}
+                          </li>
                           <li nz-menu-item (click)="delete(i)">
                             {{ 'DELETE' | translate }}
                           </li>

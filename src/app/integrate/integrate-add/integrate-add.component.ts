@@ -43,10 +43,12 @@ export class IntegrateAddComponent implements OnInit {
   name = '';
   codeEditor: MonacoStandaloneCodeEditor | undefined;
   // the type of dialog's ok btn clicked,0 is step.1 is save integrate.2 is add json schema
+  // 3 is append step 4 is append jsonSchema
   saveType = 0;
   isAdded = true;
   uuid = '';
   isEditingList = false;
+  appendIndex = 0;
   constructor(private nzContextMenuService: NzContextMenuService,
               private router: Router,
               private route: ActivatedRoute,
@@ -178,10 +180,44 @@ export class IntegrateAddComponent implements OnInit {
     this.name = '';
   }
 
+  appendStep(index: number) {
+    this.isShowStepNameDialog = true;
+    this.saveType = 3;
+    this.name = '';
+    this.appendIndex = index;
+  }
+
   addJsonSchemaStep() {
     this.isShowStepNameDialog = true;
     this.saveType = 2;
     this.name = '';
+  }
+
+  appendJsonSchema(index: number) {
+    this.isShowStepNameDialog = true;
+    this.saveType = 4;
+    this.name = '';
+    this.appendIndex = index;
+  }
+
+  doSave() {
+    if (this.saveType === 0) {
+      this.doAddStep();
+      return;
+    }
+    if (this.saveType === 2) {
+      this.doAddJsonSchema();
+      return;
+    }
+    if (this.saveType === 3) {
+      this.doAppendStep(this.appendIndex);
+      return;
+    }
+    if (this.saveType === 4) {
+      this.dAppendJsonSchema(this.appendIndex);
+      return;
+    }
+    this.doSaveIntegrate();
   }
 
   showItem(i) {
@@ -217,18 +253,6 @@ export class IntegrateAddComponent implements OnInit {
       return;
     }
     this.updateIntegrateInfo();
-  }
-
-  doSave() {
-    if (this.saveType === 0) {
-      this.doAddStep();
-      return;
-    }
-    if (this.saveType === 2) {
-      this.doAddJsonSchema();
-      return;
-    }
-    this.doSaveIntegrate();
   }
 
   delete(index: number) {
@@ -286,8 +310,30 @@ export class IntegrateAddComponent implements OnInit {
     this.isShowStepNameDialog = false;
   }
 
+  private doAppendStep(index: number) {
+    this.waitForSave.splice(index + 1,0,{
+      uuid: undefined,
+      name: this.name,
+      type: 'STEP',
+      code: '',
+      tag: 'step'
+    });
+    this.isShowStepNameDialog = false;
+  }
+
   private doAddJsonSchema() {
     this.waitForSave.push({
+      uuid: undefined,
+      name: this.name,
+      type: 'JSON_SCHEMA',
+      code: '',
+      tag: 'JsonSchema'
+    });
+    this.isShowStepNameDialog = false;
+  }
+
+  private dAppendJsonSchema(index: number) {
+    this.waitForSave.splice(index + 1, 0, {
       uuid: undefined,
       name: this.name,
       type: 'JSON_SCHEMA',

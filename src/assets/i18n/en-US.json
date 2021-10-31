@@ -98,6 +98,8 @@
   "UPDATE": "Update",
   "STATUS": "Status",
   "RESULT": "Result",
+  "APPEND_STEP": "Append Step",
+  "APPEND_JSONSCHEMA": "Append JsonSchema",
   "START_TIME": "Start Time",
   "END_TIME": "End Time",
   "ORIGIN": "Test Origin",
