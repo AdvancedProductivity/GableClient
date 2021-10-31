@@ -33,6 +33,9 @@ export class UnitIndexComponent implements OnInit {
   selectGroupUuid = '';
   pushedName = '';
   pushInfo = undefined;
+  // 0 is push to public 1 is clone to user
+  dialogType = 0;
+  cloneUuid = '';
   constructor(private nzContextMenuService: NzContextMenuService,
               private gableBackendService: GableBackendService,
               private messageService: NzMessageService,
@@ -137,7 +140,7 @@ export class UnitIndexComponent implements OnInit {
     }
     if (newMenu.public !== undefined) {
       this.publicMenu = newMenu.public;
-      this.groups = [];
+      this.publicGroups = [];
       this.publicMenu.forEach(value => {
         this.publicGroups.push({name: value.groupName, id: value.uuid});
       });
@@ -160,6 +163,15 @@ export class UnitIndexComponent implements OnInit {
     this.selectGroupUuid = '';
     this.pushedName = '';
     this.isShowPush = true;
+    this.dialogType = 0;
+  }
+
+  clone(uuid: string, originName: string) {
+    this.selectGroupUuid = '';
+    this.pushedName = originName;
+    this.isShowPush = true;
+    this.dialogType = 1;
+    this.cloneUuid = uuid;
   }
 
   pushOrUpdate(){
@@ -171,17 +183,35 @@ export class UnitIndexComponent implements OnInit {
       this.messageService.error('Please enter pushed name');
       return;
     }
-    this.gableBackendService.pushUnit({
-      from: this.pushInfo.from,
-      toGroup: this.selectGroupUuid,
-      testName: this.pushedName
-    }).subscribe(res => {
-      this.isShowPush = false;
-      this.messageService.success('Push success');
-      if (res.result) {
-        this.getMenu();
-      }
-    });
+    if (this.dialogType === 0) {
+      this.gableBackendService.pushUnit({
+        from: this.pushInfo.from,
+        toGroup: this.selectGroupUuid,
+        testName: this.pushedName
+      }).subscribe(res => {
+        this.isShowPush = false;
+        if (res.result) {
+          this.getMenu();
+          this.messageService.success('Push Success');
+        }else {
+          this.messageService.error('Push Failed');
+        }
+      });
+    }else {
+      this.gableBackendService.clone({
+        uuid: this.cloneUuid,
+        toGroup: this.selectGroupUuid,
+        testName: this.pushedName
+      }).subscribe(res => {
+        this.isShowPush = false;
+        if (res.result) {
+          this.getMenu();
+          this.messageService.success('Clone Success');
+        }else {
+          this.messageService.error('Clone Failed');
+        }
+      });
+    }
   }
 
   private getMenu() {

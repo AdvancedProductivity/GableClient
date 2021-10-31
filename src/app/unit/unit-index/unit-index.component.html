@@ -14,13 +14,13 @@
                       [routerLink]="['.']"
                       [queryParams]="{ tab: item.uuid}">
                     {{item.unitName}}
+                    <nz-dropdown-menu #menu="nzDropdownMenu">
+                      <ul nz-menu>
+                        <li nz-menu-item (click)="clone(item.uuid, item.unitName)">{{ 'CLONE' | translate }}</li>
+                      </ul>
+                    </nz-dropdown-menu>
                   </li>
                 </ul>
-                <nz-dropdown-menu #menu="nzDropdownMenu">
-                  <ul nz-menu>
-                    <li nz-menu-item >{{ 'COPY_TO_OTHER' | translate }}</li>
-                  </ul>
-                </nz-dropdown-menu>
               </li>
             </ul>
           </li>
@@ -93,7 +93,12 @@
                        nzAllowClear
                        [(ngModel)]="selectGroupUuid"
                        nzPlaceHolder="{{ 'TIPS.GROUP_TYPE' | translate }}">
-              <nz-option *ngFor="let g of publicGroups" nzLabel="{{g.name}}" nzValue="{{g.id}}"></nz-option>
+              <div *ngIf="dialogType == 0">
+                <nz-option *ngFor="let g of publicGroups" nzLabel="{{g.name}}" nzValue="{{g.id}}"></nz-option>
+              </div>
+              <div *ngIf="dialogType == 1">
+                <nz-option *ngFor="let g of groups" nzLabel="{{g.name}}" nzValue="{{g.id}}"></nz-option>
+              </div>
             </nz-select>
           </div>
           <div style="margin-top: 16px;margin-bottom: 16px">

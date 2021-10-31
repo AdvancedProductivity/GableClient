@@ -435,6 +435,10 @@ export class GableBackendService {
     return this.httpClient.post(this.prefix + 'api/unit/push', param);
   }
 
+  public clone(param: { uuid: any; toGroup: string; testName: string}): Observable<any> {
+    return this.httpClient.post(this.prefix + 'api/unit/clone', param);
+  }
+
   public updateUnit(param: { from: string; to: string}): Observable<any> {
     return this.httpClient.post(this.prefix + 'api/unit/update', param);
   }

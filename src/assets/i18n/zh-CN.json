@@ -68,6 +68,7 @@
   "INVALID_JSON_STR": "json字符串不合法",
   "ADD_GROUP_OR_UNIT": "添加分组或者添加单元测试",
   "COPY": "复制一份",
+  "CLONE": "克隆",
   "COPY_TO_OTHER": "复制到其它组",
   "ADD_GROUP": "添加组",
   "ADD_TEST": "添加测试",

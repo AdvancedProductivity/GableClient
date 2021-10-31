@@ -99,6 +99,7 @@
   "STATUS": "Status",
   "RESULT": "Result",
   "APPEND_STEP": "Append Step",
+  "CLONE": "Clone",
   "APPEND_JSONSCHEMA": "Append JsonSchema",
   "START_TIME": "Start Time",
   "END_TIME": "End Time",
