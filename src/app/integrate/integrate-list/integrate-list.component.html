@@ -4,6 +4,7 @@
             nz-button nzType="primary">{{ 'REFRESH' | translate }}</button>
     <a routerLink="/integrate/add" style="margin-right: 8px;"
        nz-button nzType="link">{{ 'ADD_TEST' | translate }}</a>
+    <nz-tag [nzColor]="'green'">{{nodeTotalCount}}</nz-tag>
   </div>
   <nz-spin [nzSpinning]="isHandlingData">
     <div  style="border:1px solid #d9d9d9;padding: 3px"
@@ -14,6 +15,7 @@
         <tr>
           <th style="text-align: center">{{ 'STATUS' | translate }}</th>
           <th style="text-align: center">{{ 'TITLE' | translate }}</th>
+          <th style="text-align: center">{{ 'NODE_COUNT' | translate }}</th>
           <th style="text-align: center">{{ 'TAG' | translate }}</th>
           <th style="text-align: center">{{ 'OPERATION' | translate }}</th>
         </tr>
@@ -33,6 +35,7 @@
             </div>
           </td>
           <td>{{data.name}}</td>
+          <td>{{data.nodeCount}}</td>
           <td>
             <div *ngIf="data.tags !== undefined">
               <nz-tag *ngFor="let tag of data.tags" [nzColor]="'magenta'">{{tag}}</nz-tag>

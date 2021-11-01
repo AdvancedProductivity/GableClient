@@ -21,6 +21,7 @@ export class IntegrateListComponent implements OnInit,OnDestroy {
   isShowHistory = false;
   historyData = [];
   isGettingHistory = false;
+  nodeTotalCount = 0;
   constructor(private gableBackendService: GableBackendService,
               private message: NzMessageService) {
   }
@@ -147,12 +148,17 @@ export class IntegrateListComponent implements OnInit,OnDestroy {
       if (res.result) {
         this.list = res.data;
         let status = false;
+        let total = 0;
         this.list.forEach(value => {
+          if (value.nodeCount !== undefined) {
+            total += value.nodeCount;
+          }
           if (value.status === 1) {
             status = true;
           }
         });
         this.isNeedLoop = status;
+        this.nodeTotalCount = total;
       }
     });
   }
