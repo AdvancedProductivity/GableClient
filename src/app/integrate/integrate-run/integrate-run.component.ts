@@ -53,6 +53,7 @@ export class IntegrateRunComponent implements OnInit {
   delayTime = 0;
   haveReport = false;
   reportId = false;
+  percent = 0;
 
   constructor(private router: Router,
               private gableBackendService: GableBackendService,
@@ -137,6 +138,7 @@ export class IntegrateRunComponent implements OnInit {
   }
 
   run() {
+    this.percent = 0;
     this.haveReport = false;
     this.isRunning = true;
     this.lastOut = {};
@@ -148,11 +150,13 @@ export class IntegrateRunComponent implements OnInit {
     this.runningTestIndex = 0;
     this.usingTestIndex = -1;
     this.runningIndex = 0;
+    const totalCount = this.record.length;
     this.runner = setInterval(() => {
       if (this.canNotGoToLoop) {
         return;
       }
       if (this.runningIndex === this.record.length) {
+        this.percent = parseFloat((this.runningIndex / totalCount * 100).toFixed(2));
         if (this.runner !== undefined) {
           clearInterval(this.runner);
         }
@@ -174,6 +178,7 @@ export class IntegrateRunComponent implements OnInit {
       if (nextIn === undefined) {
         return;
       }
+      this.percent = parseFloat((this.runningIndex / totalCount * 100).toFixed(2));
       const item = this.record[this.runningIndex];
       item.status = 1;
       if (item.type === 'STEP') {

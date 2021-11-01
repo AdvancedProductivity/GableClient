@@ -5,6 +5,12 @@
   nzTitle="{{ 'RUN' | translate }}"
 >
   <nz-page-header-extra>
+    <div>
+      <div style="width: 170px;display: inline">
+        <nz-progress [nzStrokeColor]="{ '0%': '#108ee9', '100%': '#87d068' }"
+                     [nzPercent]="percent" nzSize="small"></nz-progress>
+      </div>
+    </div>
     <button *ngIf="haveReport" (click)="showReport()"
             nz-button nzType="primary">{{ 'SHOW_REPORT' | translate }}</button>
     <span>{{ 'STEP_DELAY' | translate }}</span>
