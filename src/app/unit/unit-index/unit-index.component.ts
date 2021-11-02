@@ -5,8 +5,8 @@ import {GableBackendService} from '../../core/services/gable-backend.service';
 import {Result, UpdateOrPushInfo} from '../../core/Result';
 import {GroupInfo, UnitMenuGroup, UnitResponse} from '../../core/UnitMenu';
 import {TabInfo} from '../../core/TabInfo';
-import {NzMessageService} from "ng-zorro-antd/message";
-import {NzModalService} from "ng-zorro-antd/modal";
+import {NzMessageService} from 'ng-zorro-antd/message';
+import {NzModalService} from 'ng-zorro-antd/modal';
 @Component({
   selector: 'app-unit-index',
   templateUrl: './unit-index.component.html',

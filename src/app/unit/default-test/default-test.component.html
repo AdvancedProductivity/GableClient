@@ -23,7 +23,7 @@
       {{ 'REFRESH' | translate }}
     </button>
     <div *ngIf="!isPublicUnit" style="display: inline">
-      <button [disabled]="isRunning" style="margin-left: 10px" nz-button nzType="primary" (click)="update()">
+      <button *ngIf="selectEnvUuid == ''" [disabled]="isRunning" style="margin-left: 10px" nz-button nzType="primary" (click)="update()">
         {{ 'UPDATE' | translate }}
       </button>
       <button [disabled]="isRunning" *ngIf="canPush" style="margin-left: 10px" nz-button nzType="primary" (click)="pushToPublic()">
