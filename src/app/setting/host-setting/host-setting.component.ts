@@ -28,6 +28,7 @@ export class HostSettingComponent implements OnInit {
         console.log('is not electron');
         // location.reload();
       }
+      location.reload();
     }
   }
 }

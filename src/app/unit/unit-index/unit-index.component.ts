@@ -189,13 +189,14 @@ export class UnitIndexComponent implements OnInit {
         toGroup: this.selectGroupUuid,
         testName: this.pushedName
       }).subscribe(res => {
-        this.isShowPush = false;
-        if (res.result) {
-          this.getMenu();
-          this.messageService.success('Push Success');
-        }else {
-          this.messageService.error('Push Failed');
-        }
+        // this.isShowPush = false;
+        // if (res.result) {
+        //   this.getMenu();
+        //   this.messageService.success('Push Success');
+        // }else {
+        //   this.messageService.error('Push Failed');
+        // }
+        location.reload();
       });
     }else {
       this.gableBackendService.clone({
