@@ -40,6 +40,8 @@ import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzStepsModule } from 'ng-zorro-antd/steps';
 import { NzProgressModule } from 'ng-zorro-antd/progress';
+import {NgTerminalModule} from 'ng-terminal';
+
 @NgModule({
   declarations: [PageNotFoundComponent, WebviewDirective, AddGroupOrUnitTestComponent],
   imports: [CommonModule,
@@ -58,6 +60,7 @@ import { NzProgressModule } from 'ng-zorro-antd/progress';
     NzFormModule,
     NzProgressModule,
     NzUploadModule,
+    NgTerminalModule,
     NzLayoutModule,
     NzInputNumberModule,
     NzCheckboxModule,
@@ -95,6 +98,7 @@ import { NzProgressModule } from 'ng-zorro-antd/progress';
     NzAlertModule,
     NzToolTipModule,
     NzPopconfirmModule,
+    NgTerminalModule,
     NzUploadModule,
     NzCheckboxModule,
     NzFormModule,

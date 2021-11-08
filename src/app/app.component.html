@@ -9,8 +9,12 @@
         <i style="font-size: 22px" nz-icon nzType="experiment" nzTheme="twotone" [nzTwotoneColor]="'#ff9900'"></i>
         <h4 style="margin-top: 5px">{{ 'PAGES.INTEGRATE.TITLE' | translate }}</h4>
       </div>
-      <div style="text-align: center;margin-bottom:  45px;cursor: pointer" (click)="openPlayGround()">
+      <div style="text-align: center;margin-bottom:  45px;cursor: pointer" (click)="isOnUnit =false"  routerLink="/cli" routerLinkActive="active">
         <i style="font-size: 22px" nz-icon nzType="code" nzTheme="twotone" [nzTwotoneColor]="'#ff9900'"></i>
+        <h4 style="margin-top: 5px">{{ 'PAGES.CLI.TITLE' | translate }}</h4>
+      </div>
+      <div style="text-align: center;margin-bottom:  45px;cursor: pointer" (click)="openPlayGround()">
+        <i style="font-size: 22px" nz-icon nzType="rocket" nzTheme="twotone" [nzTwotoneColor]="'#ff9900'"></i>
         <h4 style="margin-top: 5px">{{ 'PAGES.PLAY_GROUND.TITLE' | translate }}</h4>
       </div>
       <div style="text-align: center;margin-bottom:  45px;cursor: pointer" (click)="openSetting()">

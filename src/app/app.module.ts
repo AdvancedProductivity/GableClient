@@ -21,6 +21,7 @@ import {RouteReuseStrategy} from '@angular/router';
 import {AppRoutingCache} from './core/AppRoutingCache';
 import {MONACO_PATH} from '@materia-ui/ngx-monaco-editor';
 import {HttpI18nInterceptor} from './core/HttpI18nInterceptor';
+import {CliModule} from './cli/cli.module';
 
 // AoT requires an exported function for factories
 const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader => new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -35,6 +36,7 @@ const httpLoaderFactory = (http: HttpClient): TranslateHttpLoader => new Transla
     SharedModule,
     UnitModule,
     IntegrateModule,
+    CliModule,
     SettingModule,
     PlayGroundModule,
     AppRoutingModule,
