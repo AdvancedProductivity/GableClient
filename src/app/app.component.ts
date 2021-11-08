@@ -7,6 +7,7 @@ import {SettingModalIndexComponent} from './setting/setting-modal-index/setting-
 import {NzDrawerService} from 'ng-zorro-antd/drawer';
 import {PlayGroundDrawerIndexComponent} from './play-ground/play-ground-drawer-index/play-ground-drawer-index.component';
 import {ActivatedRoute, Router} from '@angular/router';
+import {GableBackendService} from "./core/services/gable-backend.service";
 
 @Component({
   selector: 'app-root',
@@ -18,6 +19,7 @@ export class AppComponent implements OnInit{
   constructor(
     private modal: NzModalService,
     private drawerService: NzDrawerService,
+    private gableBackendService: GableBackendService,
     private viewContainerRef: ViewContainerRef,
     private electronService: ElectronService,
     private route: ActivatedRoute,
@@ -50,6 +52,9 @@ export class AppComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    this.gableBackendService.getEnv().subscribe(res => {
+      this.gableBackendService.setEnv(res);
+    });
   }
 
   async openSetting() {
