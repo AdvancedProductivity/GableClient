@@ -115,6 +115,7 @@
   "ENTRUST_RUN_STOP": "停止运行",
   "PAUSE": "暂停",
   "GOON": "继续",
+  "DOWNLOAD_PATH": "下载地址",
   "DELETE_SELECT": "删除选中",
   "DELETE_ALL": "删除全部",
   "GOTO_EDIT": "去编辑",
