@@ -48,7 +48,8 @@
     "GROUP": "组",
     "TYPE": "测试类型",
     "UNIT_NAME": "测试名称",
-    "ENV_NAME": "请输入环境名称"
+    "ENV_NAME": "请输入环境名称",
+    "RELOAD_EXPRESS": "重新加载默认的插值表达式,将会丢弃编辑区的变更"
   },
   "RUN": "运行",
   "CASE": "测试用例",
@@ -134,6 +135,7 @@
   "GENERATE_JSON_SCHEMA": "生成 JsonSchema",
   "UPDATE": "更新",
   "OPERATION": "操作",
+  "RELOAD": "重新加载",
   "CLI_DESIGN": "关于Cli功能的设计，可以在这里参与讨论",
   "ADD_ENV": "添加环境"
 }

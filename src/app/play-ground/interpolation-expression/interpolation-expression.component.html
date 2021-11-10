@@ -10,6 +10,11 @@
           nzTooltipTitle="{{ 'FORMAT_JSON' | translate }}"
           nzTooltipPlacement="bottomLeft" nz-tooltip
           nz-button nzType="primary">{{ 'FORMAT' | translate }}</button>
+  <button style="margin: 3px"
+          (click)="reload()"
+          nzTooltipTitle="{{ 'TIPS.RELOAD_EXPRESS' | translate }}"
+          nzTooltipPlacement="bottomLeft" nz-tooltip
+          nz-button nzType="primary">{{ 'RELOAD' | translate }}</button>
 </div>
 <div>
   <div nz-row style="margin-top: 3px">
