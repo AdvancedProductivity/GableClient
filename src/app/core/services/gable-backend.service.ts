@@ -413,6 +413,10 @@ export class GableBackendService {
     return this.httpClient.put(this.prefix + 'api/jsonSchema', param);
   }
 
+  preHandle(data: any): Observable<any> {
+    return this.httpClient.post(this.prefix + 'api/jsonSchema/preHandle', data);
+  }
+
   public updateGroovyCode(id: string, body: string): Observable<Result<any>> {
     return this.httpClient.put<Result<any>>(this.prefix + 'api/groovyCode', body, {
       params: {

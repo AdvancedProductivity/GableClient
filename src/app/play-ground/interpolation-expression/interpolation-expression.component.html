@@ -1,0 +1,37 @@
+<div>
+  <button nz-button nzType="primary" (click)="preHandle()"
+          nzTooltipTitle="{{ 'INTERPOLATION_EXPRESS_TIP' | translate }}"
+          nzTooltipPlacement="bottomLeft" nz-tooltip
+  >
+    {{ 'CALCULATION' | translate }}
+  </button>
+  <button style="margin: 3px"
+          (click)="format()"
+          nzTooltipTitle="{{ 'FORMAT_JSON' | translate }}"
+          nzTooltipPlacement="bottomLeft" nz-tooltip
+          nz-button nzType="primary">{{ 'FORMAT' | translate }}</button>
+</div>
+<div>
+  <div nz-row style="margin-top: 3px">
+    <div nz-col nzSpan="12" style="padding: 3px">
+      <nz-alert nzType="success" nzMessage="{{ 'INTERPOLATION_EXPRESS_INFO' | translate }}"></nz-alert>
+    </div>
+    <div nz-col nzSpan="12" style="padding: 3px">
+      <nz-alert nzType="info" nzMessage="{{ 'AFTER_CALCULATION' | translate }}"></nz-alert>
+    </div>
+  </div>
+  <nz-spin [nzSpinning]="isHandlingData">
+    <div nz-row style="width: 100%" [style]="{height: height + 'px', margin: '3px'}" nz-row>
+      <div nz-col nzSpan="12" style="border:1px solid #d9d9d9;padding: 3px">
+        <ngx-monaco-editor style="z-index: 2" [options]="config"
+                           (init)="initLeftEditor($event)"
+                           [(ngModel)]="express" ></ngx-monaco-editor>
+      </div>
+      <div nz-col nzSpan="12" style="border:1px solid #d9d9d9;padding: 3px">
+        <ngx-monaco-editor style="z-index: 2" [options]="config"
+                           (init)="initRightEditor($event)"
+                           [(ngModel)]="code" ></ngx-monaco-editor>
+      </div>
+    </div>
+  </nz-spin>
+</div>

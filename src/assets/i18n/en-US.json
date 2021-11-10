@@ -19,6 +19,7 @@
     "PLAY_GROUND": {
       "TITLE": "Play Ground",
       "JSON_SCHEMA": "JsonSchema Validate",
+      "INTERPOLATION_EXPRESS": "Interpolation Express",
       "SAMPLE_GROOVY": "Groovy Demo Code"
     },
     "UNIT": {
@@ -126,8 +127,13 @@
   "VALIDATE": "Validate",
   "UPLOAD_JSON": "Export Json Case",
   "GENERATE_JSON_SCHEMA": "Generate JsonSchema",
+  "FORMAT_JSON": "Format The Json Text In Editor",
   "SHOW_ALL_FIELD": "All Field",
   "OPERATION": "Operation",
+  "CALCULATION": "Calculation",
+  "AFTER_CALCULATION": "Result Of After Calculation",
+  "INTERPOLATION_EXPRESS_INFO": "Express Instance And Global",
+  "INTERPOLATION_EXPRESS_TIP": "Get The Result After Calculation By Click The Calculation Button",
   "CLI_DESIGN": "The design of CLI function can be discussed here",
   "ADD_ENV": "add env"
 }
