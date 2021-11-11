@@ -1,0 +1,117 @@
+<div>
+  <button style="margin: 3px"
+          (click)="addGroup()"
+          nz-button nzType="primary">{{ 'ADD_GROUP' | translate }}</button>
+  <button style="margin: 3px"
+          (click)="addScriptDialog()"
+          nz-button nzType="primary">{{ 'ADD_SCRIPT' | translate }}</button>
+  <button nz-button nzType="primary" [disabled]="handlingUuid.length == 0" (click)="execute()"
+          nzTooltipTitle="{{ 'TIPS.EXECUTE_INFO' | translate }}"
+          nzTooltipPlacement="bottomLeft" nz-tooltip
+  >
+    {{ 'EXECUTE' | translate }}
+  </button>
+  <button style="margin: 3px"
+          (click)="format()"
+          nzTooltipTitle="{{ 'FORMAT_JSON' | translate }}"
+          nzTooltipPlacement="bottomLeft" nz-tooltip
+          nz-button nzType="primary">{{ 'FORMAT' | translate }}</button>
+  <button style="margin: 3px"
+          (click)="update()"
+          [disabled]="handlingUuid.length == 0"
+          nzTooltipTitle="{{ 'TIPS.SCRIPT_INFO' | translate }}"
+          nzTooltipPlacement="bottomLeft" nz-tooltip
+          nz-button nzType="primary">{{ 'SAVE' | translate }}</button>
+  <button style="margin: 3px"
+          (click)="isShowDiff = true"
+          [disabled]="originalCode.length == 0 || modifiedCode.length == 0"
+          nz-button nzType="primary">{{ 'SHOW_EXECUTE_RESULT' | translate }}</button>
+</div>
+<div>
+  <div nz-row style="margin-top: 3px">
+    <div nz-col nzSpan="4" style="padding: 3px">
+      <div [style]="{height: height + 'px', margin: '3px', overflowY: 'auto'}" >
+        <ul nz-menu nzMode="inline" nzTheme="light">
+          <li *ngFor="let m of menu" nz-submenu
+              nzTitle="{{m.groupName}}" >
+            <ul>
+              <li *ngFor="let i of m.item"
+                  (click)="showDetail(i.uuid, i.name)"
+                  nz-menu-item>
+                {{i.name}}
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div nz-col nzSpan="20" style="padding: 3px">
+      <div nz-row style="margin-top: 3px">
+        <div nz-col nzSpan="16" style="padding: 3px">
+          <nz-alert nzType="success" [nzMessage]="leftTip"></nz-alert>
+        </div>
+        <div nz-col nzSpan="8" style="padding: 3px">
+          <nz-alert nzType="info" [nzMessage]="rightTip"></nz-alert>
+        </div>
+      </div>
+      <nz-spin [nzSpinning]="isHandlingData">
+        <div nz-row style="width: 100%" [style]="{height: height + 'px', margin: '3px'}" nz-row>
+          <div nz-col nzSpan="16" style="border:1px solid #d9d9d9;padding: 3px">
+            <ngx-monaco-editor style="z-index: 2" [options]="leftConfig"
+                               (init)="initLeftEditor($event)"
+                               [(ngModel)]="groovyCode" ></ngx-monaco-editor>
+          </div>
+          <div nz-col nzSpan="8" style="border:1px solid #d9d9d9;padding: 3px">
+            <ngx-monaco-editor style="z-index: 2" [options]="rightConfig"
+                               (init)="initRightEditor($event)"
+                               [(ngModel)]="param" ></ngx-monaco-editor>
+          </div>
+        </div>
+      </nz-spin>
+    </div>
+  </div>
+</div>
+<nz-modal [(nzVisible)]="isShowAddGroup"
+          nzTitle="{{ 'ADD_SCRIPT_GROUP' | translate }}"
+          (nzOnCancel)="isShowAddGroup = false"
+          [nzFooter]="null">
+  <ng-container *nzModalContent>
+    <input style="width: 300px" [(ngModel)]="editingGroupName" nz-input
+           placeholder="{{ 'TIPS.GROUP_NAME' | translate }}" />
+    <button nz-button nzType="primary" [disabled]="editingGroupName.length == 0"
+            (click)="addGroupToServer()">{{ 'CONFIG' | translate }}</button>
+  </ng-container>
+</nz-modal>
+<nz-modal [(nzVisible)]="isShowAddItem"
+          nzTitle="{{ 'ADD_SCRIPT_ITEM' | translate }}"
+          (nzOnCancel)="isShowAddItem = false"
+          [nzFooter]="null">
+  <ng-container *nzModalContent>
+    <div style="margin-bottom: 16px">
+      <input style="width: 300px" [(ngModel)]="editingGroupName" nz-input
+             placeholder="{{ 'TIPS.SCRIPT_NAME' | translate }}" />
+    </div>
+    <div style="margin-bottom: 16px">
+      <nz-select style="width: 300px"
+                 nzShowSearch
+                 nzAllowClear
+                 [(ngModel)]="selectedGroupUuid"
+                 nzPlaceHolder="{{ 'TIPS.GROUP_TYPE' | translate }}">
+        <nz-option *ngFor="let g of group" nzLabel="{{g.key}}" nzValue="{{g.value}}"></nz-option>
+
+      </nz-select>
+    </div>
+    <button nz-button nzType="primary" [disabled]="editingGroupName.length == 0 || selectedGroupUuid.length == 0 "
+            (click)="addScript()">{{ 'CONFIG' | translate }}</button>
+  </ng-container>
+</nz-modal>
+<nz-modal [(nzVisible)]="isShowDiff"
+          nzWidth="80%"
+          nzTitle="The first Modal" (nzOnCancel)="isShowDiff = false" [nzFooter]="null">
+  <ng-container *nzModalContent>
+    <div style="height: 400px">
+      <ngx-monaco-diff-editor [options]="diffConfig" [original]="originalCode" [modified]="modifiedCode">
+      </ngx-monaco-diff-editor>
+    </div>
+  </ng-container>
+</nz-modal>

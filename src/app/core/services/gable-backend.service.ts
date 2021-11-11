@@ -409,6 +409,92 @@ export class GableBackendService {
     return this.httpClient.get(this.prefix + 'api/jsonSchema');
   }
 
+  getScriptList(isPre: boolean): Observable<any> {
+    if (isPre) {
+      return this.httpClient.get(this.prefix + 'api/groovyCode/preScriptList');
+    }else {
+      return this.httpClient.get(this.prefix + 'api/groovyCode/postScriptList');
+    }
+  }
+
+  addScriptGroup(isPre: boolean, gName): Observable<any> {
+    if (isPre) {
+      return this.httpClient.post(this.prefix + 'api/groovyCode/preScriptGroup', null,{
+        params: {
+          groupName: gName
+        }
+      });
+    }else {
+      return this.httpClient.post(this.prefix + 'api/groovyCode/postScriptGroup', null, {
+        params: {
+          groupName: gName
+        }
+      });
+    }
+  }
+
+  getScriptCode(id: string): Observable<any>  {
+    return this.httpClient.get(this.prefix + 'api/groovyCode/readCode', {
+      params: {
+        uuid: id
+      }
+    });
+  }
+
+  updateScriptCode(id: string, groovyCode: string): Observable<any>  {
+    return this.httpClient.put(this.prefix + 'api/groovyCode/updateScript', groovyCode, {
+      params: {
+        uuid: id
+      }
+    });
+  }
+
+  executeScript(isPre: boolean, id: string, data: any): Observable<any> {
+    if (isPre) {
+      return this.httpClient.post(this.prefix + 'api/groovyCode/executePreScript', data);
+    }else {
+      return this.httpClient.post(this.prefix + 'api/groovyCode/executePostScript', data);
+    }
+  }
+
+  addScript(isPre: boolean, name, gUuid: string): Observable<any> {
+    if (isPre) {
+      const code = `
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
+    handle(in,param,instance,global);
+
+    void handle(JsonNode in,ObjectNode param, JsonNode instance, JsonNode global){
+
+    }
+    `;
+      return this.httpClient.post(this.prefix + 'api/groovyCode/preScript', code, {
+        params: {
+          scriptName: name,
+          groupUuid: gUuid
+        }
+      });
+    } else {
+      const code = `
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
+    handle(out,param,instance,global);
+
+    void handle(JsonNode out,ObjectNode param, JsonNode instance, JsonNode global){
+
+    }
+    `;
+      return this.httpClient.post(this.prefix + 'api/groovyCode/postScript', code, {
+        params: {
+          scriptName: name,
+          groupUuid: gUuid
+        }
+      });
+    }
+  }
+
   validateJsonSchema(param: { schema: any; json: any }): Observable<any> {
     return this.httpClient.put(this.prefix + 'api/jsonSchema', param);
   }

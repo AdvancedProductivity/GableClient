@@ -15,6 +15,22 @@
         <app-interpolation-expression></app-interpolation-expression>
       </ng-template>
     </nz-tab>
+    <nz-tab nzTitle="{{ 'PAGES.PLAY_GROUND.PRE_SCRIPT' | translate }}">
+      <ng-template nz-tab>
+        <app-pre-script [isPre]="true"
+                        leftTip="{{ 'TIPS.SCRIPT_CODE_PRE' | translate }}"
+                        rightTip="{{ 'TIPS.SCRIPT_CODE_PRE_PARAM' | translate }}"
+        ></app-pre-script>
+      </ng-template>
+    </nz-tab>
+    <nz-tab nzTitle="{{ 'PAGES.PLAY_GROUND.POST_SCRIPT' | translate }}">
+      <ng-template nz-tab>
+        <app-pre-script [isPre]="false"
+                        leftTip="{{ 'TIPS.SCRIPT_CODE_POST' | translate }}"
+                        rightTip="{{ 'TIPS.SCRIPT_CODE_POST_PARAM' | translate }}"
+        ></app-pre-script>
+      </ng-template>
+    </nz-tab>
     <nz-tab nzTitle="Tab 3">Content of Tab Pane 3</nz-tab>
   </nz-tabset>
 </div>

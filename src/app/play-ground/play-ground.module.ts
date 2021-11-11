@@ -5,6 +5,7 @@ import { SampleGroovyRunningComponent } from '../play-ground/sample-groovy-runni
 import {SharedModule} from '../shared/shared.module';
 import { JsonSchemaValidateComponent } from './json-schema-validate/json-schema-validate.component';
 import {InterpolationExpressionComponent} from './interpolation-expression/interpolation-expression.component';
+import { PreScriptComponent } from './pre-script/pre-script.component';
 
 
 
@@ -13,7 +14,8 @@ import {InterpolationExpressionComponent} from './interpolation-expression/inter
     PlayGroundDrawerIndexComponent,
     SampleGroovyRunningComponent,
     JsonSchemaValidateComponent,
-    InterpolationExpressionComponent
+    InterpolationExpressionComponent,
+    PreScriptComponent
   ],
   imports: [
     CommonModule, SharedModule
