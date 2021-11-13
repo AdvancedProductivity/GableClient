@@ -17,6 +17,7 @@
     <nz-input-number style="width: 60px" placeholder="delay time(ms)"  [(ngModel)]="delayTime"
                      [nzMin]="0" [nzMax]="10000" [nzStep]="1"></nz-input-number>
     <span style="margin-right: 10px">s</span>
+    {{ 'ENV' | translate }}:
     <nz-select style="margin-right: 10px;width: 150px" nzShowSearch nzAllowClear
                nzPlaceHolder="{{ 'SELECT_ENV' | translate }}"
                [(ngModel)]="selectEnvUuid"

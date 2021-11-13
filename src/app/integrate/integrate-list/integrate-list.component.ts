@@ -11,7 +11,6 @@ import {NzMessageService} from 'ng-zorro-antd/message';
 export class IntegrateListComponent implements OnInit,OnDestroy {
   list = [];
   isAddTagModal = false;
-  selectEnv = '';
   tagName = '';
   uuidWaitForAddUnit = '';
   isHandlingData = false;
@@ -22,6 +21,8 @@ export class IntegrateListComponent implements OnInit,OnDestroy {
   historyData = [];
   isGettingHistory = false;
   nodeTotalCount = 0;
+  selectEnv = '';
+  envs = [];
   constructor(private gableBackendService: GableBackendService,
               private message: NzMessageService) {
   }
@@ -34,6 +35,7 @@ export class IntegrateListComponent implements OnInit,OnDestroy {
       }
     }, 3000);
     this.height = document.documentElement.clientHeight - 82;
+    this.setEnv();
   }
 
   ngOnDestroy(): void {
@@ -161,5 +163,18 @@ export class IntegrateListComponent implements OnInit,OnDestroy {
         this.nodeTotalCount = total;
       }
     });
+  }
+
+  private setEnv() {
+    const defaultConfig = {name: 'Un Select', uuid: ''};
+    const envArrays = this.gableBackendService.getEnvs();
+    const arr = [];
+    arr.push(defaultConfig);
+    if (envArrays !== undefined) {
+      envArrays.forEach((value) => {
+        arr.push(value);
+      });
+    }
+    this.envs = arr;
   }
 }

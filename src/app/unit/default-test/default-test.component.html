@@ -9,6 +9,7 @@
     <div class="content-resize-line"></div>
   </nz-resize-handle>
   <div style="padding-left: 10px;padding-bottom: 2px">
+    {{ 'ENV' | translate }}:
     <nz-select style="margin-right: 10px;width: 150px" nzShowSearch nzAllowClear
                nzPlaceHolder="{{ 'SELECT_ENV' | translate }}"
                [(ngModel)]="selectEnvUuid"

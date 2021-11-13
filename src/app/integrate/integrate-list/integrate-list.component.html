@@ -1,5 +1,12 @@
 <div style="overflow-y:auto;padding-top: 20px;padding-left: 10px">
   <div style="padding-bottom: 8px">
+    {{ 'ENV' | translate }}:
+    <nz-select style="margin-right: 10px;width: 150px" nzShowSearch nzAllowClear
+               nzPlaceHolder="{{ 'SELECT_ENV' | translate }}"
+               [(ngModel)]="selectEnv"
+    >
+      <nz-option *ngFor="let env of envs" nzLabel="{{env.name}}" nzValue="{{env.uuid}}"></nz-option>
+    </nz-select>
     <button (click)="refresh()"
             nz-button nzType="primary">{{ 'REFRESH' | translate }}</button>
     <a routerLink="/integrate/add" style="margin-right: 8px;"
