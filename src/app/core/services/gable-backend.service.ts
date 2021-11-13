@@ -355,10 +355,11 @@ export class GableBackendService {
     });
   }
 
-  addIntegrateHistory(integrateUuid: string, record: any[]) {
+  addIntegrateHistory(integrateUuid: string, record: any[], envUuid: string) {
     return this.httpClient.post<Result<any>>(this.prefix + 'api/integrate/addHistory', record, {
       params: {
         uuid: integrateUuid,
+        env: envUuid,
         server: this.getServer()
       }
     });

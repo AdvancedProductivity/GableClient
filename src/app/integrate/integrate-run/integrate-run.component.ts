@@ -160,7 +160,7 @@ export class IntegrateRunComponent implements OnInit {
         if (this.runner !== undefined) {
           clearInterval(this.runner);
         }
-        this.gableBackendService.addIntegrateHistory(this.integrateUuid, this.record).subscribe((res) => {
+        this.gableBackendService.addIntegrateHistory(this.integrateUuid, this.record, this.selectEnvUuid).subscribe((res) => {
           this.haveReport = true;
           this.reportId = res.data.hisId;
         });

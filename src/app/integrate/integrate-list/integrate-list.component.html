@@ -113,6 +113,7 @@
             <th style="text-align: center">{{ 'START_TIME' | translate }}</th>
             <th style="text-align: center">{{ 'END_TIME' | translate }}</th>
             <th style="text-align: center">{{ 'ORIGIN' | translate }}</th>
+            <th style="text-align: center">{{ 'ENV' | translate }}</th>
             <th style="text-align: center">{{ 'DOWNLOAD_PATH' | translate }}</th>
           </tr>
           </thead>
@@ -130,6 +131,9 @@
             <td style="text-align: center">{{data.endAt}}</td>
             <td style="text-align: center">
               <nz-tag [nzColor]="'cyan'">{{data.origin}}</nz-tag>
+            </td>
+            <td style="text-align: center">
+              <nz-tag [nzColor]="'orange'">{{data.env}}</nz-tag>
             </td>
             <td style="text-align: center">
               <a nz-button nzType="link" nzSize="small"  (click)="openReport(data.id, data.uuid)">#{{data.id}}</a>
