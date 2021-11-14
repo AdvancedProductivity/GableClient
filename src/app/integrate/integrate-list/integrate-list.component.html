@@ -10,6 +10,8 @@
     <button (click)="refresh()"
             nz-button nzType="primary">{{ 'REFRESH' | translate }}</button>
     <a routerLink="/integrate/add" style="margin-right: 8px;"
+       nzTooltipTitle="{{ 'TIPS.ADD_INTEGRATE' | translate }}"
+       nzTooltipPlacement="bottomLeft" nz-tooltip
        nz-button nzType="link">{{ 'ADD_TEST' | translate }}</a>
     <nz-tag [nzColor]="'green'">{{nodeTotalCount}}</nz-tag>
   </div>
@@ -52,10 +54,15 @@
           </td>
           <td>
             <a routerLink="/integrate/run"  [queryParams]="{ uuid: data.uuid}" nzSize="small"
+               nzTooltipTitle="{{ 'TIPS.GO_TO_RUN_PAGE' | translate }}"
+               nzTooltipPlacement="bottomLeft" nz-tooltip
                nz-button nzType="link">
               {{ 'RUN' | translate }}
             </a>
-            <a nz-button nzType="link" nzSize="small" routerLink="/integrate/add" [queryParams]="{ uuid: data.uuid}">
+            <a nz-button nzType="link" nzSize="small"
+               nzTooltipTitle="{{ 'TIPS.GO_TO_EDIT_PAGE' | translate }}"
+               nzTooltipPlacement="bottomLeft" nz-tooltip
+               routerLink="/integrate/add" [queryParams]="{ uuid: data.uuid}">
               {{ 'EDIT' | translate }}
             </a>
             <a nz-button nzType="link" nzSize="small" (click)="addTag(data.uuid)">
@@ -69,7 +76,10 @@
                  (click)="stopEntrustRun(data.uuid, i)">
                 {{ 'ENTRUST_RUN_STOP' | translate }}
               </a>
-              <a *ngIf="data.status != 1"  nz-button nzType="link"  nzSize="small" (click)="entrustRun(data.uuid, i)">
+              <a *ngIf="data.status != 1"  nz-button nzType="link"
+                 nzTooltipTitle="{{ 'TIPS.ENTRUST_RUN' | translate }}"
+                 nzTooltipPlacement="bottomLeft" nz-tooltip
+                 nzSize="small" (click)="entrustRun(data.uuid, i)">
                 {{ 'ENTRUST_RUN' | translate }}
               </a>
             </div>

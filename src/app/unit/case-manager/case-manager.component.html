@@ -33,6 +33,8 @@
             (click)="exportAsJson()"
             nz-button nzType="primary">{{ 'EXPORT_CASE_JSON' | translate }}</button>
     <button [disabled]="isElectron" style="margin-right: 8px;"
+            nzTooltipTitle="{{ 'TIPS.SHOW_ALL_FIELD' | translate }}"
+            nzTooltipPlacement="bottomLeft" nz-tooltip
             (click)="showAllField()"
             nz-button nzType="primary">{{ 'SHOW_ALL_FIELD' | translate }}</button>
   </div>
@@ -49,9 +51,18 @@
     <tr *ngFor="let data of middleTable.data">
       <td  *ngFor="let h of headers">{{ data['' + h] }}</td>
       <td>
-        <button style="margin: 3px" nzSize="small" (click)="runCase(data.id)" nz-button nzType="primary">{{ 'RUN' | translate }}</button>
-        <button style="margin: 3px" nzSize="small" (click)="showDetail(data.id)" nz-button nzType="primary">{{ 'DETAIL' | translate }}</button>
-        <button style="margin: 3px" nzSize="small" (click)="showDiff(data.id)" nz-button nzType="primary">{{ 'DIFF' | translate }}</button>
+        <button style="margin: 3px" nzSize="small"
+                nzTooltipTitle="{{ 'TIPS.RUN_CASE' | translate }}"
+                nzTooltipPlacement="bottomLeft" nz-tooltip
+                (click)="runCase(data.id)" nz-button nzType="primary">{{ 'RUN' | translate }}</button>
+        <button style="margin: 3px" nzSize="small"
+                nzTooltipTitle="{{ 'TIPS.SHOW_CASE_DEFINE' | translate }}"
+                nzTooltipPlacement="bottomLeft" nz-tooltip
+                (click)="showDetail(data.id)" nz-button nzType="primary">{{ 'DETAIL' | translate }}</button>
+        <button style="margin: 3px" nzSize="small" (click)="showDiff(data.id)"
+                nzTooltipTitle="{{ 'TIPS.SHOW_DIFF_INFO' | translate }}"
+                nzTooltipPlacement="bottomLeft" nz-tooltip
+                nz-button nzType="primary">{{ 'DIFF' | translate }}</button>
       </td>
     </tr>
     </tbody>

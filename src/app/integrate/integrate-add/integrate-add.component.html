@@ -7,8 +7,14 @@
   <nz-page-header-extra>
     <button (click)="batchDelete()"
             nz-button nzType="primary">{{ 'DELETE_SELECT' | translate }}</button>
-    <button (click)="addStep()" nz-button nzType="primary">{{ 'ADD_STEP' | translate }}</button>
-    <button (click)="addJsonSchemaStep()" nz-button nzType="primary">{{ 'ADD_JSON_SCHEMA' | translate }}</button>
+    <button (click)="addStep()"
+            nzTooltipTitle="{{ 'TIPS.ADD_STEP' | translate }}"
+            nzTooltipPlacement="bottomLeft" nz-tooltip
+            nz-button nzType="primary">{{ 'ADD_STEP' | translate }}</button>
+    <button (click)="addJsonSchemaStep()"
+            nzTooltipTitle="{{ 'TIPS.ADD_JSON_SCHEMA' | translate }}"
+            nzTooltipPlacement="bottomLeft" nz-tooltip
+            nz-button nzType="primary">{{ 'ADD_JSON_SCHEMA' | translate }}</button>
     <button style="margin-left: 12px" (click)="saveIntegrateTest()" nz-button nzType="primary">
       {{ (isAdded ? 'SAVE' : 'UPDATE') | translate }}
     </button>

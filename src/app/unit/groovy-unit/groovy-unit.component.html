@@ -17,20 +17,35 @@
     >
       <nz-option *ngFor="let env of envs" nzLabel="{{env.name}}" nzValue="{{env.uuid}}"></nz-option>
     </nz-select>
-    <button [disabled]="isRunning" nz-button nzType="primary" (click)="run()">
+    <button [disabled]="isRunning" nz-button
+            nzTooltipTitle="{{ 'TIPS.TEST_RUN' | translate }}"
+            nzTooltipPlacement="bottomLeft" nz-tooltip
+            nzType="primary" (click)="run()">
       {{ 'RUN' | translate }}
     </button>
-    <button [disabled]="isRunning" style="margin-left: 10px" nz-button nzType="primary" (click)="getConfig()">
-      {{ 'REFRESH' | translate }}
+    <button [disabled]="isRunning" style="margin-left: 10px"
+            nzTooltipTitle="{{ 'TIPS.RELOAD_IN' | translate }}"
+            nzTooltipPlacement="bottomLeft" nz-tooltip
+            nz-button nzType="primary" (click)="getConfig()">
+      {{ 'RELOAD' | translate }}
     </button>
     <div *ngIf="!isPublicUnit" style="display: inline">
-      <button [disabled]="isRunning" style="margin-left: 10px" nz-button nzType="primary" (click)="update()">
-        {{ 'UPDATE' | translate }}
+      <button [disabled]="isRunning" style="margin-left: 10px"
+              nzTooltipTitle="{{ 'TIPS.UPDATE_IN_JSON' | translate }}"
+              nzTooltipPlacement="bottomLeft" nz-tooltip
+              nz-button nzType="primary" (click)="update()">
+        {{ 'SAVE' | translate }}
       </button>
-      <button [disabled]="isRunning" *ngIf="canPush" style="margin-left: 10px" nz-button nzType="primary" (click)="pushToPublic()">
+      <button [disabled]="isRunning"
+              nzTooltipTitle="{{ 'TIPS.PUSH' | translate }}"
+              nzTooltipPlacement="bottomLeft" nz-tooltip
+              *ngIf="canPush" style="margin-left: 10px" nz-button nzType="primary" (click)="pushToPublic()">
         {{ 'PUSH' | translate }}
       </button>
-      <button [disabled]="isRunning" *ngIf="!canPush" style="margin-left: 10px" nz-button nzType="primary" (click)="updateToPublic()">
+      <button [disabled]="isRunning"
+              nzTooltipTitle="{{ 'TIPS.UPDATE_TO_PUBLIC' | translate }}"
+              nzTooltipPlacement="bottomLeft" nz-tooltip
+              *ngIf="!canPush" style="margin-left: 10px" nz-button nzType="primary" (click)="updateToPublic()">
         {{ 'UPDATE_TO_PUBLIC' | translate }}
       </button>
     </div>
