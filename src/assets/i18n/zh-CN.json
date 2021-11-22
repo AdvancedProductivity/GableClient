@@ -25,7 +25,8 @@
       "SAMPLE_GROOVY": "Groovy Demo代码"
     },
     "UNIT": {
-      "TITLE": "单元测试"
+      "TITLE": "单元测试",
+      "TITLE_TWO": "单测2"
     },
     "INTEGRATE": {
       "TITLE": "集成测试"
