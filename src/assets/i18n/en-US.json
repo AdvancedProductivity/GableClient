@@ -25,7 +25,8 @@
       "SAMPLE_GROOVY": "Groovy Demo Code"
     },
     "UNIT": {
-      "TITLE": "Unit Test"
+      "TITLE": "Unit Test",
+      "TITLE_TWO": "Unit Two"
     },
     "INTEGRATE": {
       "TITLE": "Integrate Test"

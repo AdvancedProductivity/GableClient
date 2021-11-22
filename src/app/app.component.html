@@ -9,6 +9,10 @@
         <i style="font-size: 22px" nz-icon nzType="experiment" nzTheme="twotone" [nzTwotoneColor]="'#ff9900'"></i>
         <h4 style="margin-top: 5px">{{ 'PAGES.INTEGRATE.TITLE' | translate }}</h4>
       </div>
+      <div style="text-align: center;margin-bottom:  45px;cursor: pointer" (click)="isOnUnit =false"  routerLink="/unit-two" routerLinkActive="active">
+        <i style="font-size: 22px" nz-icon nzType="flag" nzTheme="twotone" [nzTwotoneColor]="'#ff9900'"></i>
+        <h4 style="margin-top: 5px">{{ 'PAGES.UNIT.TITLE_TWO' | translate }}</h4>
+      </div>
       <div style="text-align: center;margin-bottom:  45px;cursor: pointer" (click)="isOnUnit =false"  routerLink="/cli" routerLinkActive="active">
         <i style="font-size: 22px" nz-icon nzType="code" nzTheme="twotone" [nzTwotoneColor]="'#ff9900'"></i>
         <h4 style="margin-top: 5px">{{ 'PAGES.CLI.TITLE' | translate }}</h4>

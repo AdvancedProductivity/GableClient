@@ -6,6 +6,7 @@ import {IntegrateRoutingModule} from './integrate/integrate-routing.module';
 import {UnitRoutingModule} from './unit/unit-routing.module';
 import {AppComponent} from './app.component';
 import {CliRoutingModule} from './cli/cli-routing.module';
+import {UnitTwoRoutingModule} from './unit-two/unit-two-routing.module';
 
 const routes: Routes = [
   {
@@ -13,6 +14,7 @@ const routes: Routes = [
     component: AppComponent,
     children: [
       { path: '', loadChildren: () => import('./unit/unit.module').then((m) => m.UnitModule) },
+      { path: 'unit-two', loadChildren: () => import('./unit-two/unit-two.module').then((m) => m.UnitTwoModule) },
       { path: 'cli', loadChildren: () => import('./cli/cli.module').then((m) => m.CliModule) },
       { path: 'integrate', loadChildren: () => import('./integrate/integrate.module').then((m) => m.IntegrateModule) }
     ],
@@ -29,6 +31,7 @@ const routes: Routes = [
     , IntegrateRoutingModule
     , CliRoutingModule
     , UnitRoutingModule
+    , UnitTwoRoutingModule
   ],
   exports: [RouterModule]
 })
